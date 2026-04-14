@@ -7,181 +7,279 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
 :root {
-  --navy:   #0d1b4b;
-  --blue:   #1d5ce8;
-  --light:  #f1f5fb;
-  --border: rgba(13,27,75,0.09);
-  --muted:  #64748b;
-  --text:   #0d1b4b;
-  --white:  #ffffff;
-  --green:  #059669;
-  --amber:  #d97706;
-  --purple: #7c3aed;
-  --teal:   #0891b2;
-  --rose:   #e11d48;
-  --FD: 'Barlow Condensed', sans-serif;
-  --FM: 'IBM Plex Mono', monospace;
-  --FB: 'Barlow', sans-serif;
+  --navy:#0d1b4b; --blue:#1d5ce8; --blueb:#3b82f6; --green:#059669;
+  --amber:#d97706; --purple:#7c3aed; --cyan:#0891b2; --rose:#e11d48;
+  --white:#fff; --light:#f1f5fb; --light2:#e2e8f0;
+  --border:rgba(13,27,75,0.09); --muted:#64748b; --text:#0d1b4b;
+  --FD:'Barlow Condensed',sans-serif; --FM:'IBM Plex Mono',monospace; --FB:'Barlow',sans-serif;
 }
+html,body { min-height:100vh; background:#eef2f8; font-family:var(--FB); color:var(--text); }
+body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(13,27,75,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(13,27,75,0.025) 1px,transparent 1px); background-size:36px 36px; pointer-events:none; }
 
-html, body { min-height:100vh; background:#eef2f8; font-family:var(--FB); color:var(--text); }
+/* ── PASSWORD OVERLAY ── */
+#pw-overlay { position:fixed; inset:0; z-index:9999; background:#0d1b4b; display:none; align-items:center; justify-content:center; }
+#pw-overlay::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
+.pw-box { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:16px; width:320px; }
+.pw-logo { height:30px; object-fit:contain; filter:brightness(0) invert(1); opacity:.7; margin-bottom:6px; }
+.pw-title { font-family:var(--FD); font-weight:800; font-size:26px; text-transform:uppercase; color:#fff; letter-spacing:.02em; }
+.pw-sub { font-family:var(--FM); font-size:10px; letter-spacing:.14em; color:rgba(255,255,255,.35); margin-top:-8px; }
+#pw-input { width:100%; padding:11px 16px; border-radius:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.15); color:#fff; font-family:var(--FM); font-size:14px; letter-spacing:.1em; outline:none; text-align:center; transition:border-color .2s; }
+#pw-input:focus { border-color:rgba(255,255,255,.4); }
+#pw-btn { width:100%; padding:10px; border-radius:8px; background:#1d5ce8; border:none; color:#fff; font-family:var(--FD); font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.08em; cursor:pointer; transition:background .2s; }
+#pw-btn:hover { background:#2563eb; }
+#pw-err { font-family:var(--FM); font-size:10px; color:#f87171; letter-spacing:.1em; display:none; }
 
-body::before {
-  content:''; position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(13,27,75,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(13,27,75,0.025) 1px, transparent 1px);
-  background-size:36px 36px; pointer-events:none;
-}
-
-header {
-  position:sticky; top:0; z-index:100;
-  background:rgba(255,255,255,0.92);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  padding:0 40px; height:54px;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.h-left { display:flex; align-items:center; gap:12px; }
+/* ── HEADER ── */
+header { position:sticky; top:0; z-index:100; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:54px; display:flex; align-items:center; justify-content:space-between; }
+.h-left { display:flex; align-items:center; gap:14px; }
+.h-logo { height:24px; object-fit:contain; }
+.h-div { width:1px; height:18px; background:var(--border); }
 .h-title { font-family:var(--FD); font-weight:800; font-size:18px; text-transform:uppercase; color:var(--navy); letter-spacing:.02em; }
-.h-sub { font-family:var(--FM); font-size:9px; letter-spacing:.14em; color:var(--muted); opacity:.7; }
 .h-right { font-family:var(--FM); font-size:10px; letter-spacing:.1em; color:var(--muted); opacity:.55; }
 
-main { max-width:1000px; margin:0 auto; padding:44px 32px 80px; }
+/* ── BREADCRUMB ── */
+#breadcrumb { display:flex; align-items:center; gap:8px; padding:18px 40px 0; font-family:var(--FM); font-size:10px; letter-spacing:.1em; color:var(--muted); }
+.bc-item { cursor:pointer; transition:color .18s; }
+.bc-item:hover { color:var(--navy); }
+.bc-item.active { color:var(--navy); font-weight:500; cursor:default; }
+.bc-sep { opacity:.35; }
 
-.page-header { margin-bottom:32px; }
-.page-header h1 {
-  font-family:var(--FD); font-weight:900; font-size:52px;
-  line-height:.95; text-transform:uppercase; color:var(--navy);
-}
-.page-header h1 em { color:var(--blue); font-style:normal; }
-.page-header p { font-family:var(--FM); font-size:10px; letter-spacing:.12em; color:var(--muted); margin-top:8px; }
+/* ── MAIN ── */
+main { max-width:1000px; margin:0 auto; padding:32px 32px 80px; }
 
-/* ── GRID OF PROJECT FOLDERS ── */
-.grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px; }
+/* ── VIEWS ── */
+.view { display:none; animation:fadeIn .28s ease both; }
+.view.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-.folder {
+.page-title { font-family:var(--FD); font-weight:900; font-size:46px; line-height:.95; text-transform:uppercase; color:var(--navy); margin-bottom:6px; }
+.page-title em { color:var(--blue); font-style:normal; }
+.page-sub { font-family:var(--FM); font-size:10px; letter-spacing:.12em; color:var(--muted); margin-bottom:28px; }
+
+/* ── FOLDER GRID ── */
+.folder-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+.folder-card {
   background:var(--white); border:1px solid var(--border); border-radius:10px;
-  padding:20px 22px 16px;
-  text-decoration:none; color:inherit;
+  padding:18px 20px 14px; cursor:pointer; text-decoration:none; color:inherit;
   display:flex; flex-direction:column;
-  position:relative; overflow:hidden;
   box-shadow:0 1px 5px rgba(13,27,75,.06);
-  transition:transform .2s, box-shadow .2s, border-color .2s;
-  animation:fadeUp .35s ease both;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  position:relative; overflow:hidden;
 }
-.folder:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(13,27,75,.11); border-color:rgba(29,92,232,.22); }
-.folder:hover .f-arrow { opacity:1; transform:translateX(0); }
+.folder-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; }
+.folder-card.blue::before  { background:var(--blue); }
+.folder-card.green::before { background:var(--green); }
+.folder-card.amber::before { background:var(--amber); }
+.folder-card.purple::before{ background:var(--purple); }
+.folder-card.cyan::before  { background:var(--cyan); }
+.folder-card.rose::before  { background:var(--rose); }
+.folder-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(13,27,75,.11); border-color:rgba(29,92,232,.22); }
+.folder-card:hover .fc-arrow { opacity:1; transform:translateX(0); }
+.fc-icon { font-size:30px; margin-bottom:10px; }
+.fc-name { font-family:var(--FD); font-weight:800; font-size:22px; text-transform:uppercase; color:var(--navy); line-height:1.05; margin-bottom:4px; }
+.fc-count { font-family:var(--FM); font-size:9px; letter-spacing:.1em; color:var(--muted); margin-bottom:12px; }
+.fc-footer { display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border); }
+.fc-tag { font-family:var(--FM); font-size:8.5px; letter-spacing:.12em; padding:3px 8px; border-radius:3px; }
+.folder-card.blue  .fc-tag { background:rgba(29,92,232,.08);  color:var(--blue); }
+.folder-card.green .fc-tag { background:rgba(5,150,105,.08);  color:var(--green); }
+.folder-card.amber .fc-tag { background:rgba(217,119,6,.08);  color:var(--amber); }
+.folder-card.purple.fc-tag { background:rgba(124,58,237,.08); color:var(--purple); }
+.fc-arrow { width:24px; height:24px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; opacity:0; transform:translateX(-5px); transition:opacity .2s,transform .2s; }
 
-.folder::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; background:var(--blue); }
-.folder.green::before  { background:var(--green); }
-.folder.amber::before  { background:var(--amber); }
-.folder.purple::before { background:var(--purple); }
-.folder.teal::before   { background:var(--teal); }
-.folder.rose::before   { background:var(--rose); }
-.folder.navy::before   { background:var(--navy); }
-
-.f-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-.f-icon { font-size:28px; line-height:1; }
-.f-count { font-family:var(--FM); font-size:9px; letter-spacing:.1em; color:var(--muted); opacity:.65; }
-
-.f-name { font-family:var(--FD); font-weight:800; font-size:24px; text-transform:uppercase; color:var(--navy); line-height:1.05; margin-bottom:5px; }
-.f-desc { font-size:11.5px; color:var(--muted); line-height:1.5; margin-bottom:16px; }
-
-.f-footer { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--border); margin-top:auto; }
-.f-tag {
-  font-family:var(--FM); font-size:8.5px; letter-spacing:.12em;
-  text-transform:uppercase; padding:3px 8px; border-radius:3px;
-  background:rgba(29,92,232,.07); color:var(--blue);
+/* ── FILE LIST ── */
+.files-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.back-btn { display:flex; align-items:center; gap:7px; font-family:var(--FM); font-size:10px; letter-spacing:.1em; color:var(--muted); cursor:pointer; background:var(--white); border:1px solid var(--border); border-radius:5px; padding:6px 13px; transition:all .2s; }
+.back-btn:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+.file-list { display:flex; flex-direction:column; gap:8px; }
+.file-row {
+  display:flex; align-items:center; gap:16px;
+  background:var(--white); border:1px solid var(--border); border-radius:8px;
+  padding:14px 18px; cursor:pointer; text-decoration:none; color:inherit;
+  box-shadow:0 1px 4px rgba(13,27,75,.05);
+  transition:transform .18s,box-shadow .18s,border-color .18s;
 }
-.folder.green  .f-tag { background:rgba(5,150,105,.08);   color:var(--green); }
-.folder.amber  .f-tag { background:rgba(217,119,6,.08);   color:var(--amber); }
-.folder.purple .f-tag { background:rgba(124,58,237,.08);  color:var(--purple); }
-.folder.teal   .f-tag { background:rgba(8,145,178,.08);   color:var(--teal); }
-.folder.rose   .f-tag { background:rgba(225,29,72,.08);   color:var(--rose); }
-.folder.navy   .f-tag { background:rgba(13,27,75,.07);    color:var(--navy); }
+.file-row:hover { transform:translateX(4px); box-shadow:0 4px 14px rgba(13,27,75,.1); border-color:rgba(29,92,232,.25); }
+.file-icon { font-size:20px; flex-shrink:0; }
+.file-body { flex:1; min-width:0; }
+.file-name { font-family:var(--FD); font-weight:700; font-size:18px; text-transform:uppercase; color:var(--navy); }
+.file-desc { font-size:11.5px; color:var(--muted); margin-top:2px; }
+.file-meta { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+.file-date { font-family:var(--FM); font-size:9px; letter-spacing:.1em; color:var(--muted); }
+.file-tag { font-family:var(--FM); font-size:8.5px; letter-spacing:.1em; padding:2px 8px; border-radius:3px; background:rgba(29,92,232,.08); color:var(--blue); }
+.file-arrow { font-size:14px; color:var(--blue); margin-left:6px; opacity:.4; transition:opacity .18s; }
+.file-row:hover .file-arrow { opacity:1; }
 
-.f-arrow {
-  width:26px; height:26px; border-radius:50%;
-  background:var(--blue); color:#fff;
-  display:flex; align-items:center; justify-content:center;
-  font-size:12px; opacity:0; transform:translateX(-6px);
-  transition:opacity .2s, transform .2s;
-}
-.folder.green  .f-arrow { background:var(--green); }
-.folder.amber  .f-arrow { background:var(--amber); }
-.folder.purple .f-arrow { background:var(--purple); }
-.folder.teal   .f-arrow { background:var(--teal); }
-.folder.rose   .f-arrow { background:var(--rose); }
-.folder.navy   .f-arrow { background:var(--navy); }
-
-/* Staggered animations */
-.folder:nth-child(1){animation-delay:.04s}
-.folder:nth-child(2){animation-delay:.09s}
-.folder:nth-child(3){animation-delay:.14s}
-.folder:nth-child(4){animation-delay:.19s}
-.folder:nth-child(5){animation-delay:.24s}
-.folder:nth-child(6){animation-delay:.29s}
-
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(12px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-footer {
-  text-align:center; padding:28px;
-  font-family:var(--FM); font-size:9px; letter-spacing:.1em;
-  color:var(--muted); opacity:.4;
-}
+footer { text-align:center; padding:24px; font-family:var(--FM); font-size:9px; letter-spacing:.1em; color:var(--muted); opacity:.4; }
 </style>
 </head>
 <body>
 
+<div id="pw-overlay">
+  <div class="pw-box">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="pw-logo" alt="WRK">
+    <h2 class="pw-title">Keynotes</h2>
+    <p class="pw-sub">// ENTER PASSWORD TO CONTINUE</p>
+    <input type="password" id="pw-input" placeholder="••••••••" autocomplete="off">
+    <button id="pw-btn">Access →</button>
+    <div id="pw-err">Incorrect password. Try again.</div>
+  </div>
+</div>
+
 <header>
   <div class="h-left">
-    <div class="h-title">Keynotes</div>
-    <div class="h-sub">// MY DRIVE</div>
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="h-logo" alt="">
+    <div class="h-div"></div>
+    <span class="h-title">Keynotes</span>
   </div>
   <div class="h-right" id="clock"></div>
 </header>
 
+<div id="breadcrumb">
+  <span class="bc-item" id="bc-home" onclick="showRoot()">My Drive</span>
+  <span class="bc-sep" id="bc-sep" style="display:none">›</span>
+  <span class="bc-item active" id="bc-folder" style="display:none"></span>
+</div>
+
 <main>
-  <div class="page-header">
-    <h1>My <em>Keynotes</em></h1>
-    <p>// SELECT A PROJECT</p>
+
+  <!-- ROOT VIEW: FOLDERS -->
+  <div class="view active" id="view-root">
+    <div class="page-title">My <em>Keynotes</em></div>
+    <p class="page-sub">// SELECT A PROJECT FOLDER</p>
+    <div class="folder-grid" id="folder-grid"></div>
   </div>
 
-  <div class="grid">
-
-    <!-- WRK MARKETING -->
-    <a href="wrk/spa-dealers-division.html" class="folder">
-      <div class="f-top">
-        <div class="f-icon">📁</div>
-        <div class="f-count">1 PRESENTATION</div>
+  <!-- FOLDER VIEW: FILES -->
+  <div class="view" id="view-folder">
+    <div class="files-header">
+      <div>
+        <div class="page-title" id="folder-title"></div>
+        <p class="page-sub" id="folder-sub"></p>
       </div>
-      <div class="f-name">WRK<br>Marketing</div>
-      <div class="f-desc">Spa Dealers Division — operations overview, team, clients & CRM systems.</div>
-      <div class="f-footer">
-        <span class="f-tag">Active</span>
-        <div class="f-arrow">→</div>
-      </div>
-    </a>
-
-    <!-- Add more folders below as you go -->
-
+      <div class="back-btn" onclick="showRoot()">← Back</div>
+    </div>
+    <div class="file-list" id="file-list"></div>
   </div>
+
 </main>
 
 <footer>KEYNOTES &nbsp;·&nbsp; <span id="year"></span></footer>
 
 <script>
+// ── PASSWORD ──────────────────────────────
+const PW = 'test123';
+const overlay = document.getElementById('pw-overlay');
+const pwInput = document.getElementById('pw-input');
+const pwBtn   = document.getElementById('pw-btn');
+const pwErr   = document.getElementById('pw-err');
+
+if (sessionStorage.getItem('wrk_auth') !== '1') {
+  overlay.style.display = 'flex';
+}
+function tryPw() {
+  if (pwInput.value === PW) {
+    sessionStorage.setItem('wrk_auth','1');
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity .4s';
+    setTimeout(() => { overlay.style.display='none'; }, 400);
+  } else {
+    pwErr.style.display = 'block';
+    pwInput.value = ''; pwInput.focus();
+  }
+}
+pwBtn.addEventListener('click', tryPw);
+pwInput.addEventListener('keydown', e => { if(e.key==='Enter') tryPw(); });
+
+// ── DATA ──────────────────────────────────
+const folders = [
+  {
+    id: 'wrk',
+    name: 'WRK Marketing',
+    icon: '📁',
+    color: 'blue',
+    tag: 'Active',
+    files: [
+      {
+        name: 'Spa Dealers Division',
+        desc: 'Operations overview — roles, clients, process & CRM systems',
+        path: 'wrk/spa-dealers-division/spa-dealers-division.html',
+        date: 'Apr 2026',
+        tag: 'Operations',
+        icon: '📊'
+      }
+    ]
+  }
+  // Add more folders here:
+  // { id:'client2', name:'Client Name', icon:'📁', color:'green', tag:'Active', files:[...] }
+];
+
+// ── RENDER ROOT ───────────────────────────
+const folderGrid = document.getElementById('folder-grid');
+folders.forEach(f => {
+  const count = f.files.length;
+  const card = document.createElement('div');
+  card.className = `folder-card ${f.color}`;
+  card.innerHTML = `
+    <div class="fc-icon">${f.icon}</div>
+    <div class="fc-name">${f.name}</div>
+    <div class="fc-count">${count} PRESENTATION${count!==1?'S':''}</div>
+    <div class="fc-footer">
+      <span class="fc-tag">${f.tag}</span>
+      <div class="fc-arrow">›</div>
+    </div>`;
+  card.addEventListener('click', () => openFolder(f));
+  folderGrid.appendChild(card);
+});
+
+// ── OPEN FOLDER ───────────────────────────
+function openFolder(folder) {
+  document.getElementById('view-root').classList.remove('active');
+  document.getElementById('view-folder').classList.add('active');
+  document.getElementById('folder-title').innerHTML = folder.name.replace(' ','<br><em style="color:var(--blue);font-style:normal">') + '</em>';
+  document.getElementById('folder-sub').textContent = `// ${folder.files.length} PRESENTATION${folder.files.length!==1?'S':''} AVAILABLE`;
+  // breadcrumb
+  document.getElementById('bc-home').classList.remove('active');
+  document.getElementById('bc-sep').style.display = '';
+  document.getElementById('bc-folder').style.display = '';
+  document.getElementById('bc-folder').textContent = folder.name;
+  // render files
+  const list = document.getElementById('file-list');
+  list.innerHTML = '';
+  folder.files.forEach(file => {
+    const row = document.createElement('a');
+    row.className = 'file-row';
+    row.href = file.path;
+    row.innerHTML = `
+      <div class="file-icon">${file.icon}</div>
+      <div class="file-body">
+        <div class="file-name">${file.name}</div>
+        <div class="file-desc">${file.desc}</div>
+      </div>
+      <div class="file-meta">
+        <span class="file-date">${file.date}</span>
+        <span class="file-tag">${file.tag}</span>
+      </div>
+      <div class="file-arrow">→</div>`;
+    list.appendChild(row);
+  });
+}
+
+// ── BACK TO ROOT ──────────────────────────
+function showRoot() {
+  document.getElementById('view-folder').classList.remove('active');
+  document.getElementById('view-root').classList.add('active');
+  document.getElementById('bc-home').classList.add('active');
+  document.getElementById('bc-sep').style.display = 'none';
+  document.getElementById('bc-folder').style.display = 'none';
+}
+
+// ── CLOCK ─────────────────────────────────
 function tick() {
   document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
-tick(); setInterval(tick, 1000);
+tick(); setInterval(tick,1000);
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>
