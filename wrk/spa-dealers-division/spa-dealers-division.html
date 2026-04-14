@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WRK — Spa Dealers Division</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── PASSWORD OVERLAY ── */
+#pw-overlay { position:fixed; inset:0; z-index:9999; background:#0d1b4b; display:none; align-items:center; justify-content:center; flex-direction:column; }
+#pw-overlay::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
+.pw-box { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:16px; width:320px; }
+.pw-logo { height:30px; object-fit:contain; filter:brightness(0) invert(1); opacity:.7; margin-bottom:6px; }
+.pw-title { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:26px; text-transform:uppercase; color:#fff; }
+.pw-sub { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.14em; color:rgba(255,255,255,.35); margin-top:-8px; }
+#pw-input { width:100%; padding:11px 16px; border-radius:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.15); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:14px; letter-spacing:.1em; outline:none; text-align:center; transition:border-color .2s; }
+#pw-input:focus { border-color:rgba(255,255,255,.4); }
+#pw-btn { width:100%; padding:10px; border-radius:8px; background:#1d5ce8; border:none; color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.08em; cursor:pointer; transition:background .2s; }
+#pw-btn:hover { background:#2563eb; }
+#pw-err { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#f87171; letter-spacing:.1em; display:none; }
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy:#0d1b4b; --blue:#1d5ce8; --blueb:#3b82f6; --cyan:#0891b2;
+  --green:#059669; --purple:#7c3aed; --amber:#d97706; --rose:#e11d48;
+  --white:#fff; --light:#f4f7fb; --light2:#e2e8f0;
+  --border:rgba(13,27,75,0.09); --muted:#64748b; --text:#0d1b4b;
+  --FD:'Barlow Condensed',sans-serif; --FM:'IBM Plex Mono',monospace; --FB:'Barlow',sans-serif;
+}
+html,body { width:100%; height:100%; background:#e8edf5; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; font-family:var(--FB); }
+body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(13,27,75,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(13,27,75,0.025) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
+
+#viewer { position:relative; z-index:1; flex-shrink:0; box-shadow:0 20px 60px rgba(13,27,75,0.18),0 0 0 1px rgba(13,27,75,0.08); border-radius:8px 8px 0 0; overflow:hidden; background:var(--white); }
+#deck { position:relative; z-index:1; width:100%; height:100%; }
+
+.slide { position:absolute; inset:0; display:flex; flex-direction:column; opacity:0; transform:translateX(30px); transition:opacity .38s cubic-bezier(.4,0,.2,1),transform .38s cubic-bezier(.4,0,.2,1); pointer-events:none; padding:2.4em 3.2em 2.2em; background:var(--white); }
+.slide.active { opacity:1; transform:translateX(0); pointer-events:all; }
+.slide.exit   { opacity:0; transform:translateX(-30px); }
+
+.tag { font-family:var(--FM); font-size:.68em; letter-spacing:.16em; color:var(--blue); margin-bottom:.5em; text-transform:uppercase; opacity:.7; }
+.htitle { font-family:var(--FD); font-weight:800; font-size:3em; line-height:1.0; color:var(--navy); text-transform:uppercase; }
+.htitle em { color:var(--blue); font-style:normal; }
+.rule { height:1px; flex-shrink:0; margin:.55em 0 1em; background:linear-gradient(90deg,var(--blue),transparent 70%); opacity:.25; }
+.logo { position:absolute; top:2.2em; right:3.2em; height:2em; object-fit:contain; }
+.card-accent { background:var(--white); border:1px solid var(--border); border-left:3px solid var(--blue); border-radius:0 .7em .7em 0; box-shadow:0 1px 8px rgba(13,27,75,.06); }
+.card-accent.g{border-left-color:var(--green)} .card-accent.b{border-left-color:var(--blueb)}
+.card-accent.p{border-left-color:var(--purple)} .card-accent.a{border-left-color:var(--amber)} .card-accent.c{border-left-color:var(--cyan)}
+
+/* SVG icon helper */
+.svg-icon { display:block; flex-shrink:0; }
+
+/* ══ S1 COVER ══ */
+#s1 { background:var(--navy); justify-content:flex-end; padding-bottom:3.5em; }
+#s1::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px); background-size:50px 50px; pointer-events:none; }
+#s1::after  { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 65% 55% at 50% 0%,rgba(29,92,232,0.25) 0%,transparent 65%); pointer-events:none; }
+#s1 .inner { position:relative; z-index:1; }
+#s1 .logo-cover { position:absolute; top:2.4em; left:3.2em; height:2.2em; object-fit:contain; z-index:1; filter:brightness(0) invert(1); opacity:.85; }
+#s1 .date { position:absolute; top:2.6em; right:3.2em; font-family:var(--FM); font-size:.68em; letter-spacing:.2em; color:rgba(255,255,255,.35); z-index:1; }
+#s1 .eyebrow { font-family:var(--FM); font-size:.68em; letter-spacing:.22em; color:rgba(255,255,255,.45); margin-bottom:.9em; }
+#s1 h1 { font-family:var(--FD); font-weight:900; font-size:6.8em; line-height:.92; text-transform:uppercase; margin-bottom:1em; color:#fff; }
+#s1 h1 .l2 { color:#7eb8f7; display:block; }
+#s1 .sub { font-family:var(--FM); font-size:.68em; letter-spacing:.2em; color:rgba(255,255,255,.4); margin-bottom:2em; }
+#s1 .by { display:flex; align-items:center; gap:1em; }
+#s1 .by-line { width:2em; height:2px; background:linear-gradient(90deg,var(--blue),#7eb8f7); flex-shrink:0; }
+#s1 .by-name { font-family:var(--FD); font-weight:800; font-size:1.4em; text-transform:uppercase; color:#fff; }
+#s1 .by-role { font-family:var(--FM); font-size:.65em; letter-spacing:.1em; color:rgba(255,255,255,.45); margin-top:.25em; }
+#s1 .ring { position:absolute; border-radius:50%; border:1px solid rgba(255,255,255,0.05); pointer-events:none; z-index:0; }
+#s1 .r1 { width:22em; height:22em; right:-4em; bottom:-4em; }
+#s1 .r2 { width:34em; height:34em; right:-10em; bottom:-10em; }
+#s1 .glow { position:absolute; right:13em; bottom:14em; width:.5em; height:.5em; z-index:1; background:#7eb8f7; border-radius:50%; box-shadow:0 0 1.5em .3em rgba(126,184,247,.5); animation:pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.8)} }
+
+/* ══ S2 ABOUT ME ══ */
+#s2 .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:1em; flex:1; min-height:0; }
+.bio-card { background:var(--navy); border-radius:.8em; padding:1.4em 1.6em; display:flex; flex-direction:column; gap:.7em; box-shadow:0 4px 20px rgba(13,27,75,.18); }
+.bio-card .bc-tag { font-family:var(--FM); font-size:.6em; letter-spacing:.16em; color:rgba(126,184,247,.7); text-transform:uppercase; }
+.bio-card .bc-name { font-family:var(--FD); font-weight:900; font-size:1.55em; text-transform:uppercase; color:#fff; line-height:1.0; }
+.bio-card .bc-role { font-family:var(--FM); font-size:.62em; letter-spacing:.1em; color:#7eb8f7; border-top:1px solid rgba(255,255,255,.1); padding-top:.6em; }
+.bio-card .bc-desc { font-size:.88em; color:rgba(255,255,255,.82); line-height:1.6; flex:1; display:flex; flex-direction:column; justify-content:space-around; }
+.right-col { display:flex; flex-direction:column; gap:.75em; min-height:0; }
+.info-card { background:var(--white); border:1px solid var(--border); border-radius:.7em; padding:.95em 1.2em; overflow:hidden; box-shadow:0 1px 8px rgba(13,27,75,.05); display:flex; flex-direction:column; flex:1; }
+.info-card h5 { font-family:var(--FM); font-size:.62em; letter-spacing:.16em; color:var(--blue); text-transform:uppercase; margin-bottom:.65em; flex-shrink:0; }
+.exp-row { padding:.32em 0; border-bottom:1px solid var(--light2); flex:1; display:flex; flex-direction:column; justify-content:center; }
+.exp-row:last-child { border-bottom:none; }
+.exp-row .co { font-family:var(--FD); font-weight:700; font-size:.9em; text-transform:uppercase; color:var(--navy); }
+.exp-row .ro { font-family:var(--FB); font-size:.75em; color:var(--muted); margin-top:.1em; }
+.edu-row { display:grid; grid-template-columns:1fr auto; gap:.6em; align-items:start; padding:.45em 0; border-bottom:1px solid var(--light2); flex:1; }
+.edu-row:last-child { border-bottom:none; }
+.edu-row .ed-deg { font-family:var(--FB); font-size:.85em; color:var(--text); font-weight:600; line-height:1.3; }
+.edu-row .ed-uni { font-family:var(--FM); font-size:.7em; color:var(--muted); letter-spacing:.04em; text-align:right; white-space:nowrap; padding-top:.1em; }
+
+/* ══ S3 TEAM ══ */
+#s3 .team-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:0; min-height:0; }
+#s3 .hub { background:var(--navy); border-radius:.7em; padding:1em 2.5em; text-align:center; box-shadow:0 4px 20px rgba(13,27,75,.2); width:fit-content; }
+#s3 .hub-name { font-family:var(--FD); font-weight:800; font-size:1.3em; text-transform:uppercase; color:#fff; }
+#s3 .hub-role { font-family:var(--FM); font-size:.62em; letter-spacing:.1em; color:rgba(255,255,255,.5); margin-top:.25em; }
+#s3 .conn-row { position:relative; height:2.6em; width:100%; }
+#s3 .conn-row::before { content:''; position:absolute; top:50%; left:11%; right:11%; height:1px; background:var(--light2); }
+#s3 .conn-dot { position:absolute; top:50%; transform:translateY(-50%); width:.38em; height:.38em; background:var(--blue); border-radius:50%; box-shadow:0 0 .5em rgba(29,92,232,.4); }
+#s3 .tgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:.9em; width:100%; }
+.tc { background:var(--white); border:1px solid var(--border); border-radius:.7em; padding:1.1em 1em; text-align:center; position:relative; overflow:hidden; box-shadow:0 1px 8px rgba(13,27,75,.05); }
+.tc .bar { position:absolute; top:0; left:0; right:0; height:3px; }
+.tc .tn { font-family:var(--FD); font-weight:800; font-size:1.3em; text-transform:uppercase; color:var(--navy); margin:.5em 0 .15em; }
+.tc .tp { font-family:var(--FB); font-size:.82em; color:var(--navy); font-weight:600; margin-bottom:.25em; }
+.tc .tr { font-family:var(--FM); font-size:.62em; color:var(--muted); letter-spacing:.06em; line-height:1.5; }
+
+/* ══ S4 ROSTER ══ */
+#s4 .rcols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.85em; flex:1; min-height:0; }
+.rcol h5 { font-family:var(--FM); font-size:.58em; letter-spacing:.16em; margin-bottom:.5em; display:flex; align-items:center; gap:.45em; text-transform:uppercase; white-space:nowrap; }
+.rcol.on h5{color:var(--green)} .rcol.both h5{color:var(--blue)} .rcol.ev h5{color:var(--muted)}
+.rcol h5::after { content:''; flex:1; height:1px; background:currentColor; opacity:.2; }
+.dlist { display:flex; flex-direction:column; gap:.2em; overflow:hidden; }
+.dr { display:flex; align-items:center; gap:.45em; padding:.28em .6em; border-radius:.35em; background:var(--light); border:1px solid var(--light2); font-size:.72em; color:var(--text); font-family:var(--FB); transition:all .18s; }
+.dr:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+.dr .pip { width:.3em; height:.3em; border-radius:50%; flex-shrink:0; }
+.dlist.on .pip{background:var(--green)} .dlist.both .pip{background:var(--blue)} .dlist.ev .pip{background:var(--muted)}
+
+/* ══ S4b/S4c RECENT CAMPAIGNS — 3-col list ══ */
+.camp-list { flex:1; min-height:0; display:flex; flex-direction:column; gap:.22em; overflow:hidden; }
+.cl-hdr { display:grid; grid-template-columns:1.6fr 3fr 1fr; gap:.4em 1em; padding:.15em .7em .5em; border-bottom:2px solid var(--light2); flex-shrink:0; }
+.cl-hdr span { font-family:var(--FM); font-size:.6em; letter-spacing:.16em; color:var(--blue); text-transform:uppercase; }
+.cl-row { display:grid; grid-template-columns:1.6fr 3fr 1fr; gap:.3em 1em; align-items:center; padding:.42em .7em; border-radius:.4em; }
+.cl-row:nth-child(odd) { background:var(--light); }
+.cl-row:hover { background:rgba(29,92,232,.07); }
+.cl-dealer { font-family:var(--FD); font-weight:700; font-size:.85em; text-transform:uppercase; color:var(--navy); line-height:1.1; }
+.cl-campaign { font-size:.78em; color:var(--text); line-height:1.3; }
+.cl-date { font-family:var(--FM); font-size:.68em; color:var(--blue); white-space:nowrap; text-align:right; }
+.cl-row.ongoing .cl-date { color:var(--green); }
+
+/* ══ SECTION DIVIDERS ══ */
+.sdiv { background:var(--navy) !important; justify-content:center; align-items:flex-start; overflow:hidden; }
+.sdiv::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px); background-size:50px 50px; pointer-events:none; }
+.sdiv .bnum { position:absolute; right:-1.5em; top:50%; transform:translateY(-55%); font-family:var(--FD); font-weight:900; font-size:16em; line-height:1; color:rgba(255,255,255,0.05); pointer-events:none; user-select:none; text-transform:uppercase; }
+.sdiv .stag { font-family:var(--FM); font-size:.72em; letter-spacing:.22em; color:#7eb8f7; margin-bottom:1.1em; display:flex; align-items:center; gap:.65em; position:relative; z-index:1; }
+.sdiv .stag::before { content:''; width:2.2em; height:1px; background:#7eb8f7; }
+.sdiv h2 { font-family:var(--FD); font-weight:900; font-size:5em; line-height:.95; text-transform:uppercase; color:#fff; position:relative; z-index:1; }
+.sdiv h2 span { color:#7eb8f7; display:block; }
+.sdiv .sdesc { margin-top:1.2em; font-family:var(--FM); font-size:.68em; color:rgba(255,255,255,.4); letter-spacing:.07em; max-width:30em; line-height:1.6; position:relative; z-index:1; }
+
+/* ══ S6 PROCESS ══ */
+#s6 .sgrid { display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr 1fr; gap:.75em; flex:1; min-height:0; }
+.sc { background:var(--white); border:1px solid var(--border); border-radius:.6em; padding:.85em .95em; overflow:hidden; transition:border-color .2s,box-shadow .2s; box-shadow:0 1px 6px rgba(13,27,75,.05); display:flex; flex-direction:column; }
+.sc:hover { border-color:rgba(29,92,232,.3); box-shadow:0 4px 16px rgba(29,92,232,.1); }
+.sc .snum { font-family:var(--FM); font-size:.6em; letter-spacing:.14em; background:rgba(29,92,232,.08); border:1px solid rgba(29,92,232,.2); color:var(--blue); border-radius:.25em; padding:.15em .5em; display:inline-block; margin-bottom:.5em; }
+.sc.r2 .snum { color:var(--cyan); background:rgba(8,145,178,.08); border-color:rgba(8,145,178,.2); }
+.sc h4 { font-family:var(--FD); font-weight:700; font-size:.95em; text-transform:uppercase; color:var(--navy); margin-bottom:.3em; }
+.sc p { font-size:.72em; color:var(--muted); line-height:1.5; flex:1; }
+.tool-tags { display:flex; gap:.28em; flex-wrap:wrap; margin-top:.5em; }
+.tt { font-family:var(--FM); font-size:.52em; letter-spacing:.08em; padding:.18em .5em; border-radius:.25em; white-space:nowrap; }
+.tt-cu{background:rgba(124,58,237,.09);color:var(--purple);border:1px solid rgba(124,58,237,.2)}
+.tt-em{background:rgba(29,92,232,.08);color:var(--blue);border:1px solid rgba(29,92,232,.18)}
+.tt-gs{background:rgba(5,150,105,.08);color:var(--green);border:1px solid rgba(5,150,105,.18)}
+.tt-ca{background:rgba(8,145,178,.08);color:var(--cyan);border:1px solid rgba(8,145,178,.18)}
+.tt-gl{background:rgba(217,119,6,.08);color:var(--amber);border:1px solid rgba(217,119,6,.18)}
+
+/* ══ SERVICE LAYOUT ══ */
+.slayout { display:grid; grid-template-columns:1fr 1.65fr; gap:1em; flex:1; min-height:0; }
+.sleft { padding:1.2em 1.4em; display:flex; flex-direction:column; gap:.7em; }
+.sleft h5 { font-family:var(--FM); font-size:.62em; letter-spacing:.15em; color:var(--blue); text-transform:uppercase; margin-bottom:.15em; }
+.sleft.g h5{color:var(--green)} .sleft.b h5{color:var(--blueb)} .sleft.p h5{color:var(--purple)} .sleft.a h5{color:var(--amber)} .sleft.c h5{color:var(--cyan)}
+.bi { display:flex; gap:.55em; align-items:flex-start; font-size:.8em; color:var(--text); line-height:1.55; }
+.bi::before { content:'›'; color:var(--blue); flex-shrink:0; margin-top:.05em; font-size:.95em; font-weight:bold; }
+.sleft.g .bi::before{color:var(--green)} .sleft.b .bi::before{color:var(--blueb)} .sleft.p .bi::before{color:var(--purple)} .sleft.a .bi::before{color:var(--amber)} .sleft.c .bi::before{color:var(--cyan)}
+.ph { background:var(--light); border:1.5px dashed var(--light2); border-radius:.7em; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.7em; }
+.ph .ph-icon { opacity:.25; }
+.ph .pt { font-family:var(--FM); font-size:.65em; color:var(--muted); letter-spacing:.1em; }
+
+/* ══ S14 CASCADE ══ */
+#s14 .hbar { background:var(--navy); border-radius:.6em; padding:.9em 1.2em; margin-bottom:1em; font-size:.8em; color:rgba(255,255,255,.75); line-height:1.6; }
+#s14 .hbar strong { color:#7eb8f7; }
+#s14 .fgrid { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:1fr 1fr; gap:.75em; flex:1; min-height:0; }
+.fc { background:var(--white); border:1px solid var(--border); border-radius:.6em; padding:.9em 1.1em; position:relative; overflow:hidden; transition:border-color .2s,transform .2s; box-shadow:0 1px 6px rgba(13,27,75,.05); }
+.fc:hover { border-color:rgba(29,92,232,.3); transform:translateY(-2px); }
+.fc::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; background:var(--blue); border-radius:.6em 0 0 .6em; }
+.fc.c::before{background:var(--cyan)}
+.fc h4 { font-family:var(--FD); font-weight:700; font-size:.9em; text-transform:uppercase; color:var(--navy); margin-bottom:.3em; padding-left:.75em; }
+.fc p  { font-size:.75em; color:var(--muted); line-height:1.45; padding-left:.75em; }
+
+/* ══ S18 AUTOMATION ══ */
+#s18 .flow { display:flex; align-items:center; margin-bottom:1em; }
+.fn { flex:1; background:var(--white); border:1px solid var(--border); border-radius:.6em; padding:.8em .9em; text-align:center; box-shadow:0 1px 5px rgba(13,27,75,.05); }
+.fn.ct{border-top:2px solid var(--blue)} .fn.bt{border-top:2px solid var(--cyan)} .fn.gt{border-top:2px solid var(--green)}
+.fn h5 { font-family:var(--FD); font-weight:700; font-size:.88em; text-transform:uppercase; color:var(--navy); margin-bottom:.2em; }
+.fn p  { font-size:.7em; color:var(--muted); line-height:1.4; }
+.fa { width:1.6em; flex-shrink:0; font-family:var(--FM); font-size:.9em; color:var(--light2); text-align:center; }
+#s18 .note { background:var(--light); border:1px solid rgba(5,150,105,.2); border-radius:.5em; padding:.8em 1em; font-family:var(--FM); font-size:.68em; color:var(--green); line-height:1.55; margin-bottom:1em; }
+
+/* ══ S21 AI VIDEO ══ */
+#s21 .avlayout { display:grid; grid-template-columns:1fr 1fr; gap:1em; flex:1; min-height:0; }
+#s21 .avc { background:var(--navy); border-radius:.7em; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1em; padding:2em; box-shadow:0 4px 20px rgba(13,27,75,.15); }
+#s21 .avbadge { font-family:var(--FM); font-size:.65em; letter-spacing:.18em; color:#7eb8f7; background:rgba(126,184,247,.1); border:1px solid rgba(126,184,247,.25); border-radius:999px; padding:.35em 1.1em; }
+#s21 .avtitle { font-family:var(--FD); font-weight:900; font-size:2.2em; text-transform:uppercase; color:#fff; text-align:center; line-height:1.1; }
+#s21 .avdesc { font-size:.78em; color:rgba(255,255,255,.5); text-align:center; line-height:1.6; }
+
+/* ══ S23 CLOSE ══ */
+#s23 { background:var(--navy) !important; justify-content:center; align-items:flex-start; }
+#s23::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px); background-size:50px 50px; pointer-events:none; }
+#s23::after  { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(29,92,232,0.2) 0%,transparent 65%); pointer-events:none; }
+#s23 .inner { position:relative; z-index:1; }
+#s23 .bq { font-family:var(--FD); font-weight:900; font-size:6em; text-transform:uppercase; line-height:.9; margin-bottom:.5em; color:#fff; }
+#s23 .bq span { color:#7eb8f7; display:block; }
+#s23 .crow { display:flex; gap:.75em; margin-top:2em; flex-wrap:wrap; }
+#s23 .cpill { display:flex; align-items:center; gap:.5em; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:.45em 1.1em; font-family:var(--FM); font-size:.7em; color:rgba(255,255,255,.65); letter-spacing:.05em; }
+#s23 .cpill .dot { width:.38em; height:.38em; background:#7eb8f7; border-radius:50%; }
+#s23 .ainfo { margin-top:1.8em; }
+#s23 .aname { font-family:var(--FD); font-weight:800; font-size:1.5em; text-transform:uppercase; color:#fff; }
+#s23 .arole { font-family:var(--FM); font-size:.65em; letter-spacing:.12em; color:rgba(255,255,255,.4); margin-top:.3em; }
+#s23 .ring { position:absolute; border-radius:50%; border:1px solid rgba(255,255,255,.05); pointer-events:none; }
+#s23 .r1 { width:20em; height:20em; right:-3em; top:50%; transform:translateY(-50%); }
+#s23 .r2 { width:31em; height:31em; right:-8.5em; top:50%; transform:translateY(-50%); }
+#s23 .gd { position:absolute; right:12em; top:50%; width:.45em; height:.45em; background:#7eb8f7; border-radius:50%; transform:translateY(-50%); box-shadow:0 0 1.2em .25em rgba(126,184,247,.45); animation:pulse 2.4s ease-in-out infinite; }
+#s23 .logo-w { position:absolute; top:2.2em; right:3.2em; height:2em; object-fit:contain; filter:brightness(0) invert(1); opacity:.5; z-index:1; }
+
+/* ══ NAV ══ */
+#nav { display:flex; align-items:center; justify-content:space-between; flex-shrink:0; width:100%; padding:8px 18px; background:#fff; border:1px solid rgba(13,27,75,.1); border-top:none; border-radius:0 0 8px 8px; box-shadow:0 8px 30px rgba(13,27,75,.12); }
+#nc { font-family:var(--FM); font-size:10px; color:var(--muted); letter-spacing:.12em; }
+#nc span { color:var(--blue); font-weight:500; }
+#pb { width:130px; height:2px; background:var(--light2); border-radius:2px; overflow:hidden; margin-left:10px; }
+#pf { height:100%; background:linear-gradient(90deg,var(--navy),var(--blue)); border-radius:2px; transition:width .35s ease; }
+#ndots { display:flex; gap:5px; align-items:center; flex-wrap:nowrap; overflow:hidden; max-width:560px; }
+.ndot { width:5px; height:5px; border-radius:50%; background:var(--light2); cursor:pointer; transition:all .25s; flex-shrink:0; }
+.ndot.active { background:var(--navy); transform:scale(1.5); }
+.ndot.sec { border-radius:2px; width:10px; background:rgba(13,27,75,.15); }
+.ndot.sec.active { background:var(--navy); }
+#nbtns { display:flex; gap:7px; }
+.nb { background:var(--light); border:1px solid var(--border); color:var(--navy); font-family:var(--FM); font-size:10px; padding:5px 14px; border-radius:4px; cursor:pointer; letter-spacing:.05em; transition:all .2s; }
+.nb:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+/* ── LIGHTBOX ── */
+.lbx-overlay { position:fixed; inset:0; background:rgba(13,27,75,.85); z-index:1000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
+.lbx-overlay.open { display:flex; }
+.lbx-inner { position:relative; max-width:90vw; max-height:88vh; display:flex; flex-direction:column; align-items:center; }
+.lbx-inner img { max-width:100%; max-height:calc(88vh - 3em); object-fit:contain; border-radius:.5em; box-shadow:0 24px 60px rgba(0,0,0,.6); }
+.lbx-close { position:absolute; top:-.2em; right:-.2em; transform:translate(100%,-100%); width:2em; height:2em; background:var(--navy); border:1px solid var(--border); border-radius:50%; color:var(--muted); font-size:1.1em; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .18s; }
+.lbx-close:hover { background:var(--blue); color:#fff; }
+.lbx-caption { font-family:var(--FM); font-size:.65em; color:rgba(255,255,255,.5); letter-spacing:.1em; margin-top:.7em; text-align:center; }
+
+/* ── EMAIL BUTTONS ── */
+.example-row { display:flex; gap:.75em; flex-wrap:wrap; }
+.ex-btn { display:flex; align-items:center; gap:.5em; background:var(--light); border:1px solid var(--border); border-radius:.45em; padding:.55em .9em; cursor:pointer; font-family:var(--FM); font-size:.62em; letter-spacing:.08em; color:var(--navy); transition:all .2s; white-space:nowrap; }
+.ex-btn:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+.ex-btn svg { flex-shrink:0; }
+
+/* ── AD GRID ── */
+.ad-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.65em; height:100%; }
+.ad-card { border-radius:.55em; overflow:hidden; border:1px solid var(--border); cursor:pointer; position:relative; transition:transform .2s, box-shadow .2s; }
+.ad-card:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(13,27,75,.15); }
+.ad-card img { width:100%; height:100%; object-fit:cover; display:block; }
+.ad-card .ad-overlay { position:absolute; inset:0; background:rgba(13,27,75,0); transition:background .2s; display:flex; align-items:center; justify-content:center; }
+.ad-card:hover .ad-overlay { background:rgba(13,27,75,.35); }
+.ad-card .ad-zoom { opacity:0; transition:opacity .2s; }
+.ad-card:hover .ad-zoom { opacity:1; }
+
+/* ── SMS BUBBLES ── */
+.sms-wrap { display:flex; flex-direction:column; gap:.6em; justify-content:center; height:100%; overflow:hidden; }
+.sms-card { background:var(--light); border:1px solid var(--light2); border-radius:.65em; overflow:hidden; }
+.sms-card-hdr { background:var(--navy); padding:.35em .8em; display:flex; align-items:center; gap:.5em; }
+.sms-card-hdr svg { opacity:.7; }
+.sms-card-hdr span { font-family:var(--FM); font-size:.55em; letter-spacing:.1em; color:rgba(255,255,255,.6); }
+.sms-bubble-wrap { padding:.55em .75em .65em; display:flex; gap:.55em; align-items:flex-start; }
+.sms-avatar { width:1.7em; height:1.7em; background:var(--blue); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:.1em; }
+.sms-bubble { background:var(--white); border:1px solid var(--light2); border-radius:0 .6em .6em .6em; padding:.45em .7em; font-size:.7em; color:var(--text); line-height:1.5; box-shadow:0 1px 4px rgba(13,27,75,.06); }
+.sms-bubble .sms-var { color:var(--blue); font-weight:600; }
+
+/* ── LANDING PAGE BUTTONS ── */
+.lp-grid { display:flex; flex-direction:column; gap:.55em; justify-content:center; height:100%; overflow:hidden; }
+.lp-btn { display:flex; align-items:center; gap:.65em; background:var(--light); border:1px solid var(--border); border-radius:.5em; padding:.6em .9em; text-decoration:none; color:var(--navy); transition:all .2s; }
+.lp-btn:hover { background:var(--navy); color:#fff; border-color:var(--navy); transform:translateX(4px); }
+.lp-btn .lp-url { font-family:var(--FM); font-size:.6em; letter-spacing:.04em; opacity:.6; margin-top:.08em; }
+.lp-btn:hover .lp-url { opacity:.5; color:#fff; }
+.lp-btn .lp-name { font-family:var(--FD); font-weight:700; font-size:.88em; text-transform:uppercase; }
+
+</style>
+</head>
+<body>
+
+<div id="pw-overlay">
+  <div class="pw-box">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="pw-logo" alt="WRK">
+    <h2 class="pw-title">Keynotes</h2>
+    <p class="pw-sub">// ENTER PASSWORD TO CONTINUE</p>
+    <input type="password" id="pw-input" placeholder="••••••••" autocomplete="off">
+    <button id="pw-btn">Access →</button>
+    <div id="pw-err">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<div id="viewer">
+ <div id="deck">
+
+  <!-- S1 COVER -->
+  <div class="slide" id="s1">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="glow"></div>
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo-cover" alt="WRK">
+    <div class="date">APR — 2026</div>
+    <div class="inner">
+      <p class="eyebrow">// OPERATIONS OVERVIEW</p>
+      <h1>Spa Dealers<span class="l2">Division</span></h1>
+      <p class="sub">ROLES &nbsp;·&nbsp; CLIENTS &nbsp;·&nbsp; PROCESS &nbsp;·&nbsp; SYSTEMS</p>
+      <div class="by">
+        <div class="by-line"></div>
+        <div><div class="by-name">Patricio González Aceves</div><div class="by-role">MARKETING MANAGER · LEAD GEN TEAM · WRK MARKETING</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 ABOUT ME -->
+  <div class="slide" id="s2">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// ABOUT ME</p>
+    <h2 class="htitle">Patricio <em>González Aceves</em></h2>
+    <div class="rule"></div>
+    <div class="about-grid">
+      <div class="bio-card">
+        <div class="bc-tag">// WHO I AM</div>
+        <div class="bc-name">Marketing<br>Manager</div>
+        <div class="bc-role">LEAD GEN TEAM · WRK MARKETING</div>
+        <div class="bc-desc">
+          <p style="line-height:1.65;">I'm a digital marketing manager specialized in paid lead generation for the spa retail industry. At WRK Marketing, I oversee the full campaign lifecycle for 25+ dealers across the US &amp; Canada — from paid media strategy, creative direction, and AI implementation across channels, to CRM automation in Cascade and day-to-day client management.</p>
+          <p style="font-size:.78em;color:rgba(255,255,255,.5);border-top:1px solid rgba(255,255,255,.1);padding-top:.65em;line-height:1.55;">A little about myself — I love football (not soccer, lol), playing tennis, hiking and camping. A life goal of mine is to attend all 4 ATP Grand Slams.</p>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="info-card" style="flex:1.1">
+          <h5>Professional Experience</h5>
+          <div class="exp-row"><span class="co">WRK Marketing</span><div class="ro">Marketing Manager, Lead Gen Team · 2024–Present</div></div>
+          <div class="exp-row"><span class="co">WRK Marketing</span><div class="ro">Digital Marketing Analyst · 2023</div></div>
+          <div class="exp-row"><span class="co">zero2one Digital Agency</span><div class="ro">Key Account Manager – CRM &amp; Digital · 2022–2023</div></div>
+        </div>
+        <div class="info-card" style="flex:1">
+          <h5>Education</h5>
+          <div class="edu-row">
+            <div class="ed-deg">Business Innovation &amp; Entrepreneurship</div>
+            <div class="ed-uni">UDEM, MX · 2021</div>
+          </div>
+          <div class="edu-row">
+            <div class="ed-deg">International Economic &amp; Business Program</div>
+            <div class="ed-uni">Innsbruck, AUT · 2020</div>
+          </div>
+          <div class="edu-row">
+            <div class="ed-deg">IDE Business Program for Senior Management</div>
+            <div class="ed-uni">IPADE, MX · 2019</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 TEAM -->
+  <div class="slide" id="s3">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// THE TEAM</p>
+    <h2 class="htitle">Team <em>Structure</em></h2>
+    <div class="rule"></div>
+    <div class="team-wrap">
+      <div class="hub">
+        <div class="hub-name">Patricio González Aceves</div>
+        <div class="hub-role">MARKETING MANAGER · ACCOUNT MANAGER</div>
+      </div>
+      <div class="conn-row">
+        <div class="conn-dot" style="left:10%"></div><div class="conn-dot" style="left:33%"></div>
+        <div class="conn-dot" style="left:56%"></div><div class="conn-dot" style="left:79%"></div>
+      </div>
+      <div class="tgrid">
+        <div class="tc"><div class="bar" style="background:var(--blueb)"></div><div class="tn">Meta Ads</div><div class="tp">Merry Jane &amp; Sha</div><div class="tr">Campaign monitoring<br>&amp; Cascade setup</div></div>
+        <div class="tc"><div class="bar" style="background:var(--green)"></div><div class="tn">Google Ads</div><div class="tp">Mark</div><div class="tr">Google search &amp;<br>performance campaigns</div></div>
+        <div class="tc"><div class="bar" style="background:var(--purple)"></div><div class="tn">Design</div><div class="tp">Cath</div><div class="tr">Creative assets<br>&amp; ad design</div></div>
+        <div class="tc"><div class="bar" style="background:var(--amber)"></div><div class="tn">Web Dev</div><div class="tp">Omar</div><div class="tr">Landing pages<br>&amp; website builds</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 ROSTER -->
+  <div class="slide" id="s4">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// CLIENT PORTFOLIO</p>
+    <h2 class="htitle">Active Dealer <em>Roster</em> — 25 Clients</h2>
+    <div class="rule"></div>
+    <div class="rcols">
+      <div class="rcol on"><h5>⬤ ONGOING ONLY</h5>
+        <div class="dlist on">
+          <div class="dr"><span class="pip"></span>Atlas Backyard Systems</div>
+          <div class="dr"><span class="pip"></span>Swimming Pool Supply</div>
+        </div>
+      </div>
+      <div class="rcol ev"><h5>◇ EVENT-BASED ONLY</h5>
+        <div class="dlist ev">
+          <div class="dr"><span class="pip"></span>Allstar Pool &amp; Spa</div>
+          <div class="dr"><span class="pip"></span>Aqua Spas</div>
+          <div class="dr"><span class="pip"></span>Backyard Living</div>
+          <div class="dr"><span class="pip"></span>David Home Entertainment</div>
+          <div class="dr"><span class="pip"></span>East Coast Spas</div>
+          <div class="dr"><span class="pip"></span>Hot Tubs Inc</div>
+          <div class="dr"><span class="pip"></span>Leisure Works</div>
+          <div class="dr"><span class="pip"></span>Life's Great Spas</div>
+          <div class="dr"><span class="pip"></span>Master Spas of Ontario</div>
+          <div class="dr"><span class="pip"></span>Preferred Pools</div>
+          <div class="dr"><span class="pip"></span>Premium Wholesale</div>
+          <div class="dr"><span class="pip"></span>Swim Spa International – TN</div>
+          <div class="dr"><span class="pip"></span>World of Spas – Edmonton</div>
+        </div>
+      </div>
+      <div class="rcol both"><h5>◈ ONGOING + EVENTS</h5>
+        <div class="dlist both">
+          <div class="dr"><span class="pip"></span>Atlas Spas</div>
+          <div class="dr"><span class="pip"></span>Good Health Saunas</div>
+          <div class="dr"><span class="pip"></span>Innovative Spas</div>
+          <div class="dr"><span class="pip"></span>Krevco</div>
+          <div class="dr"><span class="pip"></span>Master Spas Local Showrooms</div>
+          <div class="dr"><span class="pip"></span>Master Spas of Western Michigan</div>
+          <div class="dr"><span class="pip"></span>Master Spas of Wisconsin</div>
+          <div class="dr"><span class="pip"></span>Phoenix Hot Tubs &amp; Swim Spas</div>
+          <div class="dr"><span class="pip"></span>Pool Tech Plus</div>
+          <div class="dr"><span class="pip"></span>Spas and More</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4b RECENT CAMPAIGNS — Part 1 of 2 -->
+  <div class="slide" id="s4b">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// CLIENT PORTFOLIO · 1 OF 2</p>
+    <h2 class="htitle">Most Recent <em>Campaign</em> per Dealer</h2>
+    <div class="rule"></div>
+    <div class="camp-list">
+      <div class="cl-hdr"><span>Dealer</span><span>Campaign</span><span style="text-align:right">Date</span></div>
+      <div class="cl-row"><span class="cl-dealer">Allstar Pool &amp; Spa</span><span class="cl-campaign">Hot Tub Swim Spa Blowout Sale at The Venue at Cotton Creek</span><span class="cl-date">Mar 13–15, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Aqua Spas</span><span class="cl-campaign">Hot Tub Swim Spa Blowout Sale at the Castle Rock Showroom</span><span class="cl-date">Apr 13–19, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Atlas Spas</span><span class="cl-campaign">Hot Tub Swim Spa Blowout Sale at Marriott Dallas Allen Convention Center</span><span class="cl-date">Apr 24–26, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Backyard Living</span><span class="cl-campaign">Hot Tub Swim Spa Holdover Sale</span><span class="cl-date">Mar 16–22, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">David Home Entertainment</span><span class="cl-campaign">Swim Spa Blowout Sale</span><span class="cl-date">Mar 24–Apr 24, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">East Coast Spas</span><span class="cl-campaign">Spring Into Savings Sale</span><span class="cl-date">Mar 2–22, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Good Health Saunas</span><span class="cl-campaign">Madison Build, Remodel &amp; Landscape Show</span><span class="cl-date">Mar 27–29, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Hot Tubs Inc</span><span class="cl-campaign">Get Ready for Summer Swim Spa Blowout Sale</span><span class="cl-date">Mar 2–31, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Innovative Spas</span><span class="cl-campaign">Spring Warehouse Blowout Sale</span><span class="cl-date">Apr 1–30, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Krevco</span><span class="cl-campaign">Spring Into Savings Sale</span><span class="cl-date">Mar 2–22, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Leisure Works</span><span class="cl-campaign">Fenton 25th Anniversary Blowout Sale</span><span class="cl-date">Apr 1–30, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Life's Great Spas</span><span class="cl-campaign">Spring Into Savings Blowout Sale</span><span class="cl-date">Apr 10–16, 2026</span></div>
+    </div>
+  </div>
+
+  <!-- S4c RECENT CAMPAIGNS — Part 2 of 2 -->
+  <div class="slide" id="s4c">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// CLIENT PORTFOLIO · 2 OF 2</p>
+    <h2 class="htitle">Most Recent <em>Campaign</em> per Dealer</h2>
+    <div class="rule"></div>
+    <div class="camp-list">
+      <div class="cl-hdr"><span>Dealer</span><span>Campaign</span><span style="text-align:right">Date</span></div>
+      <div class="cl-row"><span class="cl-dealer">Master Spas Local Showrooms</span><span class="cl-campaign">Swim Spa Blowout Sale</span><span class="cl-date">Mar 20–Apr 19, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Master Spas of Ontario</span><span class="cl-campaign">Spring Into Savings Sale (Barrie &amp; Meyer)</span><span class="cl-date">Apr 1–30, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Master Spas of Western Michigan</span><span class="cl-campaign">Hot Tub Swim Spa Blowout Sale at the Kellogg Arena</span><span class="cl-date">Apr 10–12, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Master Spas of Wisconsin</span><span class="cl-campaign">(Southern) Hot Tub Swim Spa Blowout Sale</span><span class="cl-date">Apr 10–12, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Phoenix Hot Tubs &amp; Swim Spas</span><span class="cl-campaign">Spring Blowout Sale</span><span class="cl-date">Apr 1–30, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Pool Tech Plus</span><span class="cl-campaign">Hot Tub Swim Spa Blowout Sale at the El Paso Home &amp; Garden Show</span><span class="cl-date">Mar 6–8, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Premium Wholesale</span><span class="cl-campaign">Spring Into Savings Sale</span><span class="cl-date">Apr 1–30, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">Spas and More</span><span class="cl-campaign">Hot Tub and Swim Spa Spring Sale at the St. Charles Home Show</span><span class="cl-date">Apr 10–12, 2026</span></div>
+      <div class="cl-row ongoing"><span class="cl-dealer">Swimming Pool Supply</span><span class="cl-campaign">Ongoing — Global Sales Event</span><span class="cl-date">Ongoing</span></div>
+      <div class="cl-row"><span class="cl-dealer">Swim Spa International – TN</span><span class="cl-campaign">Spring Blowout Sale (Chattanooga &amp; Nashville)</span><span class="cl-date">Apr 1–30, 2026</span></div>
+      <div class="cl-row"><span class="cl-dealer">World of Spas – Edmonton</span><span class="cl-campaign">Hot Tub Swim Spa Blowout Sale at the Great Canadian Trade Fair &amp; Sale</span><span class="cl-date">Apr 10–12, 2026</span></div>
+    </div>
+  </div>
+
+  <!-- SEC 01 -->
+  <div class="slide sdiv" id="s5"><div class="bnum">01</div><div class="stag">SECTION ONE</div><h2>The Daily<span>Process</span></h2><p class="sdesc">// From promo calendar approval to post-campaign review</p></div>
+
+  <!-- S6 PROCESS -->
+  <div class="slide" id="s6">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 01 · THE PROCESS</p>
+    <h2 class="htitle">Campaign Lifecycle — <em>8 Steps</em></h2>
+    <div class="rule"></div>
+    <div class="sgrid">
+      <div class="sc"><span class="snum">01</span><h4>Promo Calendar</h4><p>Sent at year-start. Client approves all events, shows &amp; ongoing campaigns.</p><div class="tool-tags"><span class="tt tt-em">Email</span><span class="tt tt-gs">Google Sheets</span></div></div>
+      <div class="sc"><span class="snum">02</span><h4>ClickUp Reminders</h4><p>Tasks auto-created per campaign with build, go-live, and event dates.</p><div class="tool-tags"><span class="tt tt-cu">ClickUp</span></div></div>
+      <div class="sc"><span class="snum">03</span><h4>Client Reach Out</h4><p>Mon/Tue confirmation: ad spend, salespeople, location, hours &amp; coupon.</p><div class="tool-tags"><span class="tt tt-em">Email</span></div></div>
+      <div class="sc"><span class="snum">04</span><h4>Project Form</h4><p>All details submitted — feeds paid media &amp; creative with full specs.</p><div class="tool-tags"><span class="tt tt-cu">ClickUp</span></div></div>
+      <div class="sc r2"><span class="snum">05</span><h4>Cascade Setup</h4><p>MJ builds lead workflow: assignment rules, sequences &amp; follow-up triggers.</p><div class="tool-tags"><span class="tt tt-ca">Cascade</span></div></div>
+      <div class="sc r2"><span class="snum">06</span><h4>Preview &amp; Approval</h4><p>Ad previews shared with select clients for sign-off before going live.</p><div class="tool-tags"><span class="tt tt-cu">ClickUp</span><span class="tt tt-em">Email</span></div></div>
+      <div class="sc r2"><span class="snum">07</span><h4>Go Live + Monitor</h4><p>Daily: cost per result, lead volume &amp; Meta → Cascade link integrity.</p><div class="tool-tags"><span class="tt tt-cu">ClickUp</span></div></div>
+      <div class="sc r2"><span class="snum">08</span><h4>Post-Campaign Review</h4><p>Weekly debrief: CPL, trends &amp; adjustments for the next cycle.</p><div class="tool-tags"><span class="tt tt-cu">ClickUp</span><span class="tt tt-gl">Google Slides</span></div></div>
+    </div>
+  </div>
+
+  <!-- SEC 02 -->
+  <div class="slide sdiv" id="s7"><div class="bnum">02</div><div class="stag">SECTION TWO</div><h2>Marketing<span>Services</span></h2><p class="sdesc">// Email · SMS · Creative Design · Landing Pages · Blog &amp; SEO</p></div>
+
+  <!-- SERVICE SLIDES — SVG placeholders -->
+  <div class="slide" id="s8">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 02 · MARKETING SERVICES</p>
+    <h2 class="htitle">Email <em>Marketing</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent sleft">
+        <h5>What We Do</h5>
+        <div class="bi">Campaign emails aligned with active promotions and events</div>
+        <div class="bi">Personalized messaging matched to each dealer's brand voice</div>
+        <div class="bi">For both event-based and ongoing campaigns</div>
+        <div class="bi">Coordinated with Meta ad launches for consistent messaging</div>
+        <div class="bi">Managed for select dealers as a value-added service</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.8em;justify-content:center;padding:.4em 0;">
+        <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.16em;color:var(--blue);text-transform:uppercase;margin-bottom:.2em">// Email Examples</div>
+        <button class="ex-btn" style="width:100%;padding:.8em 1.1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/chilly_goat_email.png','Chilly GOAT — Quantity Pricing Email')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Chilly GOAT</div><div style="font-size:.85em;opacity:.55;margin-top:.15em">Quantity Pricing — Cascade Email</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.8em 1.1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/spa_guy_hawaii_email.png','Spa Guy Hawaii — Products & Services Email')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Spa Guy Hawaii</div><div style="font-size:.85em;opacity:.55;margin-top:.15em">Products &amp; Services Campaign</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.8em 1.1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/spas_and_more_email.png','Spas and More — Blowout Sale Email')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Spas and More</div><div style="font-size:.85em;opacity:.55;margin-top:.15em">Hot Tub &amp; Swim Spa Blowout Sale</div></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s9">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 02 · MARKETING SERVICES</p>
+    <h2 class="htitle">SMS <em>Campaigns</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent b sleft b">
+        <h5>What We Do</h5>
+        <div class="bi">Personalized SMS blasts via Cascade CRM to existing lead databases</div>
+        <div class="bi">First-name + salesperson dynamic personalization in every message</div>
+        <div class="bi">Copy written internally and client-approved before each send</div>
+        <div class="bi">Coordinated timing with Meta campaigns for maximum impact</div>
+      </div>
+      <div class="sms-wrap">
+        <div class="sms-card">
+          <div class="sms-card-hdr"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>SMS BLAST — GREENVILLE, NC</span></div>
+          <div class="sms-bubble-wrap">
+            <div class="sms-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="sms-bubble">Hey <span class="sms-var">{{contact.first_name}}</span>, don't miss this! The Hot Tub &amp; Swim Spa Expo is happening this weekend only at the Greenville Convention Center in Greenville, NC.<br><br>✔️ 50+ models on display<br>✔️ Ready for immediate delivery<br><br>If you're interested in attending, let me know and I'll send you money-saving coupons and show specials. Hope to see you there!</div>
+          </div>
+        </div>
+        <div class="sms-card">
+          <div class="sms-card-hdr"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>SMS BLAST — EDISON, NJ</span></div>
+          <div class="sms-bubble-wrap">
+            <div class="sms-avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="sms-bubble">Hey <span class="sms-var">{{contact.first_name}}</span>, don't miss this! The Hot Tub &amp; Swim Spa Expo is happening this weekend at the NJ Convention Center in Edison.<br><br>🗓 Fri 2–8p | Sat 10a–8p | Sun 10a–5p<br>🎟 Free Admission<br><br>If you're interested in attending, let me know and I'll send you money-saving coupons and show specials. Hope to see you there!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s10">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 02 · MARKETING SERVICES</p>
+    <h2 class="htitle">Creative <em>Design</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent p sleft p">
+        <h5>What We Do</h5>
+        <div class="bi">Static images, videos &amp; carousels for Meta ad campaigns at scale</div>
+        <div class="bi">Cath leads design; Patricio coordinates briefs and reviews</div>
+        <div class="bi">Branded per dealer — aligned with event themes and promotions</div>
+        <div class="bi">Assets delivered on schedule to meet go-live dates</div>
+        <div class="bi">Coupon graphics, banners and all standard social formats</div>
+      </div>
+      <div class="ad-grid">
+        <div class="ad-card" onclick="openLbx('assets/ad1.jpeg','Spring Into Savings Sale — Creative')">
+          <img src="assets/ad1.jpeg" alt="Ad 1">
+          <div class="ad-overlay"><svg class="ad-zoom" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </div>
+        <div class="ad-card" onclick="openLbx('assets/ad2.jpeg','March Mania Blowout Sale — Creative')">
+          <img src="assets/ad2.jpeg" alt="Ad 2">
+          <div class="ad-overlay"><svg class="ad-zoom" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </div>
+        <div class="ad-card" onclick="openLbx('assets/ad3.jpg','End of Year Clearance Sale — Creative')">
+          <img src="assets/ad3.jpg" alt="Ad 3">
+          <div class="ad-overlay"><svg class="ad-zoom" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s11">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 02 · MARKETING SERVICES</p>
+    <h2 class="htitle">Landing Pages <em>&amp; Websites</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent g sleft g">
+        <h5>What We Do</h5>
+        <div class="bi">Campaign-specific landing pages designed per event and promotion</div>
+        <div class="bi">Connected directly to Meta lead forms and Cascade CRM workflows</div>
+        <div class="bi">Website updates for dealer promotions and seasonal messaging</div>
+        <div class="bi">New page builds and existing page redesigns as needed</div>
+        <div class="bi">Tracked via Cascade form submissions and ad attribution</div>
+      </div>
+      <div class="lp-grid">
+        <a class="lp-btn" href="https://nashville.spaeventsale.com/" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <div>
+            <div class="lp-name">Nashville Spa Event Sale</div>
+            <div class="lp-url">nashville.spaeventsale.com</div>
+          </div>
+          <svg style="margin-left:auto;opacity:.35" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a class="lp-btn" href="https://spasandmore.wrkmarketing.com/" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <div>
+            <div class="lp-name">Spas and More</div>
+            <div class="lp-url">spasandmore.wrkmarketing.com</div>
+          </div>
+          <svg style="margin-left:auto;opacity:.35" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a class="lp-btn" href="https://pooltech.wrkmarketing.com/" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <div>
+            <div class="lp-name">Pool Tech Plus</div>
+            <div class="lp-url">pooltech.wrkmarketing.com</div>
+          </div>
+          <svg style="margin-left:auto;opacity:.35" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 03 -->
+  <div class="slide sdiv" id="s13"><div class="bnum">03</div><div class="stag">SECTION THREE</div><h2>CRM —<span>Cascade</span></h2><p class="sdesc">// Lead management, dashboards, automations &amp; dealer-specific builds</p></div>
+
+  <!-- CASCADE SLIDES -->
+  <div class="slide" id="s14">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 03 · CRM — CASCADE</p>
+    <h2 class="htitle">What is <em>Cascade</em></h2>
+    <div class="rule"></div>
+    <div class="hbar">Cascade is the <strong>CRM platform</strong> — built on the <strong>GoHighLevel</strong> platform — connecting Meta ad campaigns to dealer pipelines. Every lead generated flows automatically — <strong>assigned, sequenced, and tracked</strong> from first contact to close.</div>
+    <div class="fgrid">
+      <div class="fc"><h4>Lead Capture</h4><p>Meta instant forms feed directly into dealer pipelines via real-time integration</p></div>
+      <div class="fc"><h4>Workflow Automation</h4><p>Automated sequences assign leads, trigger follow-ups &amp; route by salesperson</p></div>
+      <div class="fc"><h4>Sales Dashboard</h4><p>Real-time pipeline visibility for dealer managers and sales teams</p></div>
+      <div class="fc c"><h4>AI Bot</h4><p>Conversational AI handles initial lead engagement and qualification</p></div>
+      <div class="fc c"><h4>Digital Contracts</h4><p>E-signature contracts deployed within CRM — piloted for MS Wisconsin</p></div>
+      <div class="fc c"><h4>Shark Tank</h4><p>Gamified real-time lead competition built for Atlas Spas — reps race to close incoming leads live</p></div>
+    </div>
+  </div>
+
+  <div class="slide" id="s15">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 03 · CRM — CASCADE</p>
+    <h2 class="htitle">Sales <em>Dashboards</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent sleft">
+        <h5>Details</h5>
+        <div class="bi">Custom dashboards built inside Cascade for dealer sales managers</div>
+        <div class="bi">Real-time view of leads, pipeline stages &amp; conversion rates</div>
+        <div class="bi">Salesperson-level performance breakdown per active campaign</div>
+        <div class="bi">Quick identification of stale leads needing immediate follow-up</div>
+        <div class="bi">Configured and maintained per each dealer's specific needs</div>
+      </div>
+      
+        <div style="display:flex;flex-direction:column;gap:.65em;justify-content:center;height:100%;padding:.4em 0;">
+        <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.16em;color:var(--blue);text-transform:uppercase;margin-bottom:.2em">// Screenshots</div>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/sales_dashboard_1.png','Sales Manager Dashboard')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Sales Manager Dashboard</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">Calls by salesperson · New leads by date</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/sales_dashboard_2.png','Calls Placed Dashboard')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Calls Placed Dashboard</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">Per-rep call volume with % change trend</div></div>
+        </button>
+        </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s16">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 03 · CRM — CASCADE</p>
+    <h2 class="htitle">Digital Contract — <em>MS Wisconsin</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent b sleft b">
+        <h5>Details</h5>
+        <div class="bi">E-signature contract deployed directly within Cascade CRM</div>
+        <div class="bi">Eliminates manual paperwork from the dealer's full sales process</div>
+        <div class="bi">Triggered automatically at deal closure stage in the pipeline</div>
+        <div class="bi">Customer signs digitally — stored within the lead record</div>
+        <div class="bi">Custom-built for Master Spas of Wisconsin as a pilot program</div>
+      </div>
+      
+        <div style="display:flex;flex-direction:column;gap:.65em;justify-content:center;height:100%;padding:.4em 0;">
+        <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.16em;color:var(--blue);text-transform:uppercase;margin-bottom:.2em">// Screenshots</div>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/digital_contract_1.png','Sales Agreement')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Sales Agreement</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">Dynamic contract with CRM field variables</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/digital_contract_2.png','Terms & Conditions')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Terms & Conditions</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">Full T&C page with e-signature field</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/purchase_form.png','Purchase Form')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Purchase Form</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">Digital form feeding directly into Cascade</div></div>
+        </button>
+        </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s17">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 03 · CRM — CASCADE</p>
+    <h2 class="htitle">Shark Tank — <em>Atlas Spas</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent a sleft a">
+        <h5>Details</h5>
+        <div class="bi">Custom Cascade config built for Atlas Spas high-volume show events</div>
+        <div class="bi">Real-time lead competition between salespeople on the event floor</div>
+        <div class="bi">Gamified pipeline — reps compete for incoming leads live</div>
+        <div class="bi">Drives urgency and engagement from the full sales team</div>
+        <div class="bi">Named "Shark Tank" — each rep races to close leads first</div>
+      </div>
+      
+        <div style="display:flex;flex-direction:column;gap:.65em;justify-content:center;height:100%;padding:.4em 0;">
+        <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.16em;color:var(--blue);text-transform:uppercase;margin-bottom:.2em">// Screenshots</div>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/shark_tank_workflow.png','Shark Tank Workflow')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Shark Tank Workflow</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">Automation that reassigns stale leads live</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.75em 1em;justify-content:flex-start;gap:.75em;" onclick="openLbx('assets/shark_tank_pipeline.png','Shark Tank Pipeline')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Shark Tank Pipeline</div><div style="font-size:.85em;opacity:.55;margin-top:.12em">45,000+ opportunities — real-time floor view</div></div>
+        </button>
+        </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s18">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 03 · CRM — CASCADE</p>
+    <h2 class="htitle">Automation <em>Workflows</em></h2>
+    <div class="rule"></div>
+    <!-- Row 1: Lead flow process -->
+    <div style="flex-shrink:0;margin-bottom:.55em;">
+      <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-bottom:.5em;padding-left:.1em">// Lead entry flow</div>
+      <div style="display:flex;align-items:stretch;">
+        <div class="fn ct" style="display:flex;flex-direction:column;justify-content:center;"><h5>Lead Enters Meta Form</h5><p>Prospect submits form</p></div>
+        <div class="fa">→</div>
+        <div class="fn bt" style="display:flex;flex-direction:column;justify-content:center;"><h5>Cascade Receives Lead</h5><p>Real-time pipeline entry</p></div>
+        <div class="fa">→</div>
+        <div class="fn bt" style="display:flex;flex-direction:column;justify-content:center;"><h5>Auto-Assigned to Rep</h5><p>By location or rotation</p></div>
+        <div class="fa">→</div>
+        <div class="fn bt" style="display:flex;flex-direction:column;justify-content:center;"><h5>SMS + Email Sent</h5><p>First touch in seconds</p></div>
+        <div class="fa">→</div>
+        <div class="fn gt" style="display:flex;flex-direction:column;justify-content:center;"><h5>Pipeline Updated</h5><p>Stage tracking begins</p></div>
+      </div>
+    </div>
+    <!-- Row 2: Workflow types -->
+    <div style="flex-shrink:0;margin-bottom:.5em;">
+      <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:.5em;padding-left:.1em">// Standard workflow types</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.6em;flex:1;min-height:0;">
+      <div style="background:var(--white);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:.6em;padding:.75em .85em;box-shadow:0 1px 6px rgba(13,27,75,.05);display:flex;flex-direction:column;">
+        <div style="font-family:var(--FM);font-size:.54em;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.4em">01 · Ongoing</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.88em;text-transform:uppercase;color:var(--navy);margin-bottom:.3em;">Ongoing Campaign</div>
+        <div style="font-size:.67em;color:var(--muted);line-height:1.5;flex:1;">Enters via ongoing Meta campaigns. Static — updated only when client requests a change or coupon update.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-top:3px solid var(--cyan);border-radius:.6em;padding:.75em .85em;box-shadow:0 1px 6px rgba(13,27,75,.05);display:flex;flex-direction:column;">
+        <div style="font-family:var(--FM);font-size:.54em;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;margin-bottom:.4em">02 · Event</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.88em;text-transform:uppercase;color:var(--navy);margin-bottom:.3em;">One-Time Event</div>
+        <div style="font-size:.67em;color:var(--muted);line-height:1.5;flex:1;">Built alongside the campaign. Turned off immediately after the event to prevent overlap with other clients.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-top:3px solid var(--purple);border-radius:.6em;padding:.75em .85em;box-shadow:0 1px 6px rgba(13,27,75,.05);display:flex;flex-direction:column;">
+        <div style="font-family:var(--FM);font-size:.54em;letter-spacing:.12em;color:var(--purple);text-transform:uppercase;margin-bottom:.4em">03 · Factory</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.88em;text-transform:uppercase;color:var(--navy);margin-bottom:.3em;">Factory Leads</div>
+        <div style="font-size:.67em;color:var(--muted);line-height:1.5;flex:1;">Leads from Master Spas Corporate received via webhook and pushed into the CRM as directed.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-top:3px solid var(--green);border-radius:.6em;padding:.75em .85em;box-shadow:0 1px 6px rgba(13,27,75,.05);display:flex;flex-direction:column;">
+        <div style="font-family:var(--FM);font-size:.54em;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:.4em">04 · Nurture</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.88em;text-transform:uppercase;color:var(--navy);margin-bottom:.3em;">Nurture Sequence</div>
+        <div style="font-size:.67em;color:var(--muted);line-height:1.5;flex:1;">For leads that didn't convert. Keeps them warm with a long-term follow-up sequence. Not enabled for all dealers.</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-top:3px solid var(--amber);border-radius:.6em;padding:.75em .85em;box-shadow:0 1px 6px rgba(13,27,75,.05);display:flex;flex-direction:column;">
+        <div style="font-family:var(--FM);font-size:.54em;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;margin-bottom:.4em">05 · Manual</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.88em;text-transform:uppercase;color:var(--navy);margin-bottom:.3em;">Manual Entry</div>
+        <div style="font-size:.67em;color:var(--muted);line-height:1.5;flex:1;">Pushed manually by a salesperson. Entry triggers a workflow based on the rep's selection at time of creation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 04 -->
+  <div class="slide sdiv" id="s19"><div class="bnum">04</div><div class="stag">SECTION FOUR</div><h2>AI<span>Capabilities</span></h2><p class="sdesc">// Intelligent automation and emerging AI tools under active development</p></div>
+
+  <div class="slide" id="s20">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 04 · AI CAPABILITIES</p>
+    <h2 class="htitle">AI Bot — <em>Cascade Config</em></h2>
+    <div class="rule"></div>
+    <div class="slayout">
+      <div class="card-accent p sleft p">
+        <h5>Current Status &amp; Capabilities</h5>
+        <div class="bi">Configured inside Cascade (GoHighLevel) for automatic lead engagement</div>
+        <div class="bi">Handles initial contact — warming up leads before handoff to a human rep</div>
+        <div class="bi">Responds to questions about products, pricing &amp; events in real time</div>
+        <div class="bi">Configuration has been evolving as GoHighLevel's AI capabilities update — we've adapted accordingly</div>
+        <div class="bi">Currently at a functional baseline — capable of growing in complexity (appointment scheduling, live quoting)</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.65em;height:100%;padding:.2em 0;">
+        <div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:.55em;padding:.7em .9em;flex-shrink:0;">
+          <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.1em;color:var(--purple);margin-bottom:.3em;text-transform:uppercase">// When we enable it</div>
+          <div style="font-size:.73em;color:var(--muted);line-height:1.55;">Adoption varies by dealer. Sales teams that are reliable typically don't need it. Best fit: dealers with limited staff or high lead volume where response speed is critical.</div>
+        </div>
+        <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.16em;color:var(--purple);text-transform:uppercase;margin-top:.1em">// Conversation Examples</div>
+        <button class="ex-btn" style="width:100%;padding:.72em 1em;justify-content:flex-start;gap:.75em;border-color:rgba(124,58,237,.2);" onclick="openLbx('assets/ai_bot_1.png','AI Bot — Premium Wholesale: Lead qualification conversation')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Premium Wholesale</div><div style="font-size:.85em;opacity:.55;margin-top:.1em">Lead qualification — showroom visit</div></div>
+        </button>
+        <button class="ex-btn" style="width:100%;padding:.72em 1em;justify-content:flex-start;gap:.75em;border-color:rgba(124,58,237,.2);" onclick="openLbx('assets/ai_bot_2.png','AI Bot — Pool Tech Plus: Product inquiry conversation')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div style="text-align:left"><div style="font-weight:700;letter-spacing:.04em">Pool Tech Plus</div><div style="font-size:.85em;opacity:.55;margin-top:.1em">Product inquiry — swim spa sizing</div></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="s21">
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo" alt="WRK">
+    <p class="tag">// SECTION 04 · AI CAPABILITIES</p>
+    <h2 class="htitle">AI Video — <em>Opportunity</em></h2>
+    <div class="rule"></div>
+    <div class="avlayout">
+      <div class="card-accent p sleft p">
+        <h5>The Opportunity</h5>
+        <div class="bi">AI-generated video content for Meta ad campaigns at scale</div>
+        <div class="bi">Dramatically reduces time and cost of video creative production</div>
+        <div class="bi">Enables video ad scaling across all 25+ dealers simultaneously</div>
+        <div class="bi">Personalized video variants per dealer, product, or event type</div>
+        <div class="bi">Under evaluation — tools assessed for quality and brand fit</div>
+      </div>
+      <div class="avc">
+        <div class="avbadge">UNDER EVALUATION</div>
+        <div class="avtitle">Assessing<br>Viability</div>
+        <div class="avdesc">Being assessed for creative quality,<br>brand alignment &amp; scalability<br>across the full dealer network.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S23 CLOSE -->
+  <div class="slide" id="s23">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="gd"></div>
+    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="logo-w" alt="WRK">
+    <div class="inner" style="margin-top:3em">
+      <p style="font-family:var(--FM);font-size:.68em;letter-spacing:.22em;color:rgba(255,255,255,.4);margin-bottom:.8em">// WRK MARKETING · SPA DEALERS DIVISION</p>
+      <div class="bq">Thank<span>You.</span></div>
+      <div class="ainfo" style="margin-top:1.5em;">
+        <div class="aname">Patricio González Aceves</div>
+        <div class="arole">MARKETING MANAGER · LEAD GEN TEAM · WRK MARKETING</div>
+      </div>
+    </div>
+  </div>
+
+ </div>
+</div>
+
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nc"><span id="cur">1</span> / <span id="tot">24</span></div>
+    <div id="pb"><div id="pf"></div></div>
+  </div>
+  <div id="ndots"></div>
+  <div id="nbtns"><button class="nb" id="bp">← PREV</button><button class="nb" id="bn">NEXT →</button></div>
+</div>
+
+<script>
+const PW = 'test123';
+const overlay = document.getElementById('pw-overlay');
+const pwInput = document.getElementById('pw-input');
+const pwBtn   = document.getElementById('pw-btn');
+const pwErr   = document.getElementById('pw-err');
+if (sessionStorage.getItem('wrk_auth') !== '1') { overlay.style.display = 'flex'; }
+function tryPw() {
+  if (pwInput.value === PW) {
+    sessionStorage.setItem('wrk_auth','1');
+    overlay.style.opacity='0'; overlay.style.transition='opacity .4s';
+    setTimeout(()=>{ overlay.style.display='none'; },400);
+  } else { pwErr.style.display='block'; pwInput.value=''; pwInput.focus(); }
+}
+pwBtn.addEventListener('click',tryPw);
+pwInput.addEventListener('keydown',e=>{ if(e.key==='Enter') tryPw(); });
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const TOTAL  = slides.length;
+const SECS   = new Set(['s5','s7','s13','s19']);
+let cur = 0;
+const ndots = document.getElementById('ndots');
+slides.forEach((s,i)=>{ const d=document.createElement('div'); d.className='ndot'+(SECS.has(s.id)?' sec':''); d.addEventListener('click',()=>goTo(i)); ndots.appendChild(d); });
+const dots = ndots.querySelectorAll('.ndot');
+function goTo(n) {
+  if(n<0||n>=TOTAL)return;
+  slides[cur].classList.remove('active'); slides[cur].classList.add('exit');
+  const prev=cur; cur=n; slides[cur].classList.add('active');
+  setTimeout(()=>slides[prev].classList.remove('exit'),420); update();
+}
+function update() {
+  document.getElementById('cur').textContent=cur+1;
+  document.getElementById('tot').textContent=TOTAL;
+  document.getElementById('pf').style.width=((cur+1)/TOTAL*100)+'%';
+  dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+}
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{
+  if(overlay.style.display!=='none'&&overlay.style.display!=='')return;
+  if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}
+  if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}
+});
+const ASPECT=16/9; const viewer=document.getElementById('viewer'); const nav=document.getElementById('nav');
+function resize(){
+  const navH=nav.offsetHeight; const aw=window.innerWidth-24; const ah=window.innerHeight-navH-20;
+  let w=aw,h=w/ASPECT; if(h>ah){h=ah;w=h*ASPECT;}
+  w=Math.floor(w);h=Math.floor(h);
+  viewer.style.width=w+'px'; viewer.style.height=h+'px';
+  viewer.style.fontSize=(w/1280)*21+'px'; nav.style.width=w+'px';
+}
+window.addEventListener('resize',resize); resize();
+slides[0].classList.add('active'); update();
+</script>
+
+<div class="lbx-overlay" id="lightbox" onclick="closeLbx(event)">
+  <div class="lbx-inner" onclick="event.stopPropagation()">
+    <div class="lbx-close" onclick="closeLbx()">✕</div>
+    <img id="lbx-img" src="" alt="">
+    <div class="lbx-caption" id="lbx-cap"></div>
+  </div>
+</div>
+<script>
+function openLbx(src, cap) {
+  document.getElementById('lbx-img').src = src;
+  document.getElementById('lbx-cap').textContent = cap || '';
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLbx(e) {
+  if (!e || e.target === document.getElementById('lightbox')) {
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lbx-img').src = '';
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLbx(); });
+</script>
+</body>
+</html>
