@@ -6,18 +6,7 @@
 <title>WRK — Spa Dealers Division</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ── PASSWORD OVERLAY ── */
-#pw-overlay { position:fixed; inset:0; z-index:9999; background:#0d1b4b; display:none; align-items:center; justify-content:center; flex-direction:column; }
-#pw-overlay::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
-.pw-box { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:16px; width:320px; }
-.pw-logo { height:30px; object-fit:contain; filter:brightness(0) invert(1); opacity:.7; margin-bottom:6px; }
-.pw-title { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:26px; text-transform:uppercase; color:#fff; }
-.pw-sub { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.14em; color:rgba(255,255,255,.35); margin-top:-8px; }
-#pw-input { width:100%; padding:11px 16px; border-radius:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.15); color:#fff; font-family:'IBM Plex Mono',monospace; font-size:14px; letter-spacing:.1em; outline:none; text-align:center; transition:border-color .2s; }
-#pw-input:focus { border-color:rgba(255,255,255,.4); }
-#pw-btn { width:100%; padding:10px; border-radius:8px; background:#1d5ce8; border:none; color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.08em; cursor:pointer; transition:background .2s; }
-#pw-btn:hover { background:#2563eb; }
-#pw-err { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#f87171; letter-spacing:.1em; display:none; }
+
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
@@ -274,14 +263,6 @@ body::before { content:''; position:fixed; inset:0; background-image:linear-grad
 </head>
 <body>
 
-<div id="pw-overlay">
-  <div class="pw-box">
-    <img src="https://wrkmarketing.com/wp-content/uploads/2024/05/wrk1.png" class="pw-logo" alt="WRK">
-    <h2 class="pw-title">Keynotes</h2>
-    <p class="pw-sub">// ENTER PASSWORD TO CONTINUE</p>
-    <input type="password" id="pw-input" placeholder="••••••••" autocomplete="off">
-    <button id="pw-btn">Access →</button>
-    <div id="pw-err">Incorrect password. Try again.</div>
   </div>
 </div>
 
@@ -757,10 +738,10 @@ body::before { content:''; position:fixed; inset:0; background-image:linear-grad
       </div>
     </div>
     <!-- Row 2: Workflow types -->
-    <div style="flex-shrink:0;margin-bottom:.5em;">
-      <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:.5em;padding-left:.1em">// Standard workflow types</div>
+    <div style="flex-shrink:0;margin-bottom:.45em;">
+      <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:0;padding-left:.1em">// Standard workflow types</div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.6em;flex:1;min-height:0;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.55em;flex:1;min-height:0;">
       <div style="background:var(--white);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:.6em;padding:.75em .85em;box-shadow:0 1px 6px rgba(13,27,75,.05);display:flex;flex-direction:column;">
         <div style="font-family:var(--FM);font-size:.54em;letter-spacing:.12em;color:var(--blue);text-transform:uppercase;margin-bottom:.4em">01 · Ongoing</div>
         <div style="font-family:var(--FD);font-weight:700;font-size:.88em;text-transform:uppercase;color:var(--navy);margin-bottom:.3em;">Ongoing Campaign</div>
@@ -874,20 +855,7 @@ body::before { content:''; position:fixed; inset:0; background-image:linear-grad
 
 <script>
 const PW = 'test123';
-const overlay = document.getElementById('pw-overlay');
-const pwInput = document.getElementById('pw-input');
-const pwBtn   = document.getElementById('pw-btn');
-const pwErr   = document.getElementById('pw-err');
-if (sessionStorage.getItem('wrk_auth') !== '1') { overlay.style.display = 'flex'; }
-function tryPw() {
-  if (pwInput.value === PW) {
-    sessionStorage.setItem('wrk_auth','1');
-    overlay.style.opacity='0'; overlay.style.transition='opacity .4s';
-    setTimeout(()=>{ overlay.style.display='none'; },400);
-  } else { pwErr.style.display='block'; pwInput.value=''; pwInput.focus(); }
 }
-pwBtn.addEventListener('click',tryPw);
-pwInput.addEventListener('keydown',e=>{ if(e.key==='Enter') tryPw(); });
 
 const slides = Array.from(document.querySelectorAll('.slide'));
 const TOTAL  = slides.length;
@@ -911,7 +879,6 @@ function update() {
 document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
 document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
 document.addEventListener('keydown',e=>{
-  if(overlay.style.display!=='none'&&overlay.style.display!=='')return;
   if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}
   if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}
 });
