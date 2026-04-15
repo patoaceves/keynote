@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Solar — Presentación</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0C1A11;--s1:#1C2E1E;--s2:#233527;--b1:#2A4432;--b2:#34553F;
+  --cyan:#00FF87;--cdim:rgba(0,255,135,.12);--cring:rgba(0,255,135,.22);
+  --amber:#1ED760;--adim:rgba(30,215,96,.12);
+  --orange:#FB923C;--odim:rgba(251,146,60,.12);
+  --yellow:#FACC15;--ydim:rgba(250,204,21,.1);
+  --violet:#A78BFA;--vdim:rgba(167,139,250,.1);
+  --green:#34D399;--gdim:rgba(52,211,153,.1);
+  --red:#F87171;--rdim:rgba(248,113,113,.1);
+  --text:#F0FFF4;--t2:#8FB89E;--t3:#6A9A78;--t4:#2A4433;
+  --FD:'Outfit',sans-serif;--FM:'DM Mono',monospace;--FB:'Manrope',sans-serif;
+}
+html,body{width:100%;height:100%;background:#09110a;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-family:var(--FB);}
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,255,135,.012) 39px,rgba(0,255,135,.012) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,255,135,.012) 39px,rgba(0,255,135,.012) 40px);pointer-events:none;}
+#viewer{position:relative;z-index:1;flex-shrink:0;box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(0,255,135,.07);border-radius:10px 10px 0 0;overflow:hidden;background:var(--bg);}
+#deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(28px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:2em 2.8em 1.8em;background:var(--bg);overflow:hidden;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit{opacity:0;transform:translateX(-28px);}
+
+/* ── ATOMS ── */
+.stag{font-family:var(--FM);font-size:.6em;letter-spacing:.18em;color:var(--cyan);margin-bottom:.4em;text-transform:uppercase;opacity:.75;}
+.htitle{font-family:var(--FD);font-weight:800;font-size:2.5em;line-height:1.0;color:var(--text);text-transform:uppercase;}
+.htitle em{color:var(--cyan);font-style:normal;}
+.rule{height:1px;flex-shrink:0;margin:.4em 0 .8em;background:linear-gradient(90deg,rgba(0,255,135,.4),transparent 70%);}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(0,255,135,.05);pointer-events:none;}
+.gd{position:absolute;width:.4em;height:.4em;background:var(--cyan);border-radius:50%;box-shadow:0 0 1.5em .4em rgba(0,255,135,.3);animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(1.8)}}
+.chip{display:inline-flex;align-items:center;gap:.3em;font-family:var(--FM);font-size:.55em;letter-spacing:.09em;text-transform:uppercase;padding:.22em .65em;border-radius:100px;}
+.chip::before{content:'';width:.4em;height:.4em;border-radius:50%;background:currentColor;flex-shrink:0;}
+.chip-c{background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);}
+.chip-o{background:var(--odim);color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.chip-v{background:var(--vdim);color:var(--violet);border:1px solid rgba(167,139,250,.2);}
+.chip-g{background:var(--gdim);color:var(--green);border:1px solid rgba(52,211,153,.2);}
+.chip-a{background:var(--adim);color:var(--amber);border:1px solid rgba(30,215,96,.2);}
+
+/* ══ S1 — COVER ══ */
+#s1{background:var(--bg);}
+#s1::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 50% 0%,rgba(0,255,135,.09) 0%,transparent 65%);pointer-events:none;}
+.cover-wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.cover-label{font-family:var(--FM);font-size:.82em;letter-spacing:.16em;color:rgba(240,255,244,.4);}
+.cover-mid{display:flex;flex-direction:column;}
+.cover-eyebrow{font-family:var(--FM);font-size:.8em;letter-spacing:.16em;color:rgba(240,255,244,.35);margin-bottom:.65em;}
+.cover-h1{font-family:var(--FD);font-weight:900;font-size:4.6em;line-height:.9;text-transform:uppercase;color:var(--text);margin-bottom:.65em;}
+.cover-h1 em{color:var(--cyan);font-style:normal;display:block;}
+.cover-sub{font-family:var(--FM);font-size:.82em;letter-spacing:.13em;color:rgba(240,255,244,.35);max-width:36em;line-height:1.65;}
+.cover-bottom{display:flex;align-items:center;gap:1.4em;}
+.cover-rule{width:2.2em;height:2px;background:linear-gradient(90deg,var(--cyan),var(--amber));flex-shrink:0;}
+.cover-contact{}
+.cover-name{font-family:var(--FD);font-weight:800;font-size:1.3em;text-transform:uppercase;color:var(--text);}
+.cover-role{font-family:var(--FM);font-size:.78em;letter-spacing:.1em;color:rgba(240,255,244,.5);margin-top:.3em;}
+.cover-contact-line{font-family:var(--FM);font-size:.75em;letter-spacing:.07em;color:rgba(240,255,244,.4);margin-top:.18em;}
+
+/* ══ S2 — PROBLEMA + SOLUCIÓN ══ */
+#s2{padding-bottom:1.5em;}
+.s2-body{display:flex;flex-direction:column;gap:0;flex:1;min-height:0;}
+/* Track */
+.track{display:flex;align-items:stretch;gap:0;position:relative;flex:1;}
+.track-label{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);padding:.6em .5em;flex-shrink:0;border-radius:.5em 0 0 .5em;display:flex;align-items:center;justify-content:center;min-width:2.2em;}
+.track-label.bad{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.18);border-right:none;}
+.track-label.good{background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);border-right:none;}
+.track-steps{display:flex;flex:1;border-radius:0 .5em .5em 0;overflow:hidden;}
+.track.bad .track-steps{border:1px solid rgba(248,113,113,.18);border-left:none;background:rgba(248,113,113,.04);}
+.track.good .track-steps{border:1px solid var(--cring);border-left:none;background:var(--cdim);}
+.step{flex:1;display:flex;flex-direction:column;padding:.82em .92em;border-right:1px solid;}
+.track.bad .step{border-color:rgba(248,113,113,.12);}
+.track.good .step{border-color:rgba(0,255,135,.12);}
+.step:last-child{border-right:none;}
+.step-ico{font-family:var(--FD);font-weight:800;font-size:1.3em;line-height:1;margin-bottom:.35em;flex-shrink:0;}
+.step-n{font-family:var(--FM);font-size:.6em;letter-spacing:.1em;margin-bottom:.15em;text-transform:uppercase;}
+.track.bad .step-n{color:rgba(248,113,113,.6);}
+.track.good .step-n{color:rgba(0,255,135,.6);}
+.step-t{font-family:var(--FD);font-weight:700;font-size:.92em;text-transform:uppercase;line-height:1.15;margin-bottom:.25em;}
+.track.bad .step-t{color:rgba(240,255,244,.8);}
+.track.good .step-t{color:var(--text);}
+.step-d{font-size:.76em;line-height:1.45;flex:1;}
+.track.bad .step-d{color:rgba(240,255,244,.4);}
+.track.good .step-d{color:var(--t2);}
+.step-outcome{margin-top:.4em;padding:.3em .55em;border-radius:.3em;font-family:var(--FM);font-size:.52em;letter-spacing:.08em;align-self:flex-start;}
+.track.bad .step-outcome{background:rgba(248,113,113,.12);color:var(--red);}
+.track.good .step-outcome{background:rgba(0,255,135,.12);color:var(--cyan);}
+.track-vs{display:flex;align-items:center;justify-content:center;gap:1em;padding:.4em 0;flex-shrink:0;}
+.track-vs-line{flex:1;height:1px;background:var(--b2);}
+.track-vs-badge{font-family:var(--FM);font-size:.58em;letter-spacing:.12em;color:var(--t3);background:var(--s1);border:1px solid var(--b1);padding:.25em .7em;border-radius:100px;}
+
+/* ══ S3 — 9 PREGUNTAS TABLA ══ */
+#s3{padding-bottom:1.6em;}
+.q-tbl-wrap{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+.q-tbl{width:100%;border-collapse:collapse;flex:1;}
+.q-tbl thead tr{border-bottom:1px solid var(--b2);}
+.q-tbl thead th{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding:.5em .75em;text-align:left;font-weight:500;}
+.q-tbl thead th:first-child{width:5.5em;}
+.q-tbl thead th:nth-child(2){width:17em;}
+.q-tbl thead th:nth-child(3){width:auto;}
+.q-tbl thead th:last-child{width:22em;}
+.q-tbl tbody tr{border-bottom:1px solid var(--b1);transition:background .15s;}
+.q-tbl tbody tr:last-child{border-bottom:none;}
+.q-tbl tbody tr:hover{background:rgba(0,255,135,.03);}
+.q-tbl td{padding:.48em .7em;vertical-align:middle;}
+.td-num{font-family:var(--FM);font-size:.65em;font-weight:500;color:var(--t3);white-space:nowrap;}
+.td-concept{font-family:var(--FD);font-weight:700;font-size:.85em;text-transform:uppercase;color:var(--text);line-height:1.1;display:flex;flex-direction:column;align-items:flex-start;}
+.td-concept small{display:block;font-family:var(--FM);font-size:.62em;letter-spacing:.07em;color:var(--t3);font-weight:400;text-transform:none;margin-top:.1em;}
+.td-desc{font-size:.78em;color:var(--t2);line-height:1.45;}
+.td-range{font-family:var(--FM);font-size:.72em;color:var(--t3);line-height:1.55;}
+.td-range em{font-style:normal;color:var(--cyan);}
+/* left color stripe + row tint per category */
+.q-tbl tbody tr td:first-child{position:relative;}
+.q-tbl tbody tr td:first-child::before{content:'';position:absolute;left:0;top:15%;bottom:15%;width:2px;border-radius:1px;}
+tr.qc-n td:first-child::before{background:var(--cyan);}
+tr.qc-o td:first-child::before{background:var(--orange);}
+tr.qc-y td:first-child::before{background:var(--yellow);}
+tr.qc-v td:first-child::before{background:var(--violet);}
+tr.qc-g td:first-child::before{background:var(--green);}
+tr.qc-n{background:rgba(0,255,135,.025);}
+tr.qc-o{background:rgba(251,146,60,.025);}
+tr.qc-y{background:rgba(250,204,21,.025);}
+tr.qc-v{background:rgba(167,139,250,.025);}
+tr.qc-g{background:rgba(52,211,153,.025);}
+.td-cat{display:block;font-family:var(--FM);font-size:.6em;letter-spacing:.08em;padding:.18em .55em;border-radius:100px;margin-top:.55em;font-weight:400;text-transform:none;align-self:flex-start;}
+/* S6 admin distribute vertically */
+.adm-split.s6-layout{grid-template-rows:1fr;align-items:stretch;}
+.adm-desc.s6-desc{justify-content:space-between;}
+/* S8 HSP - layout sin badge, solo nombre+barra+valor */
+.ui-hsp-row{display:flex;align-items:center;gap:.6em;}
+.ui-hsp-name{font-size:.66em;color:var(--t2);width:11em;flex-shrink:0;white-space:nowrap;}
+.ui-hsp-bar{height:.32em;background:var(--b2);border-radius:100px;flex:1;overflow:hidden;}
+.ui-hsp-fill{height:100%;background:var(--cyan);border-radius:100px;}
+.ui-hsp-val{font-family:var(--FM);font-size:.62em;color:var(--cyan);width:2.2em;text-align:right;flex-shrink:0;}
+
+/* ══ S4, S5 — GRÁFICAS ══ */
+.ch-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8em;flex:1;min-height:0;}
+.ch-grid2{display:grid;grid-template-columns:1fr 1fr;gap:1em;flex:1;min-height:0;}
+.ch-card{background:var(--s1);border:1px solid var(--b1);border-radius:.7em;padding:.8em 1em;display:flex;flex-direction:column;gap:.4em;min-height:0;overflow:hidden;}
+.cc-num{font-family:var(--FM);font-size:.54em;letter-spacing:.1em;color:var(--t3);}
+.cc-title{font-family:var(--FD);font-weight:700;font-size:.9em;text-transform:uppercase;color:var(--text);line-height:1.1;}
+.cc-why{font-size:.78em;color:var(--t2);line-height:1.4;}
+.cc-chart{flex:1;min-height:0;position:relative;}
+.cc-chips{display:flex;gap:.3em;flex-wrap:wrap;flex-shrink:0;}
+
+/* ══ S6-S8 — ADMIN PANEL ══ */
+.adm-split{display:grid;grid-template-columns:1fr 1.3fr;gap:1.2em;flex:1;min-height:0;align-items:stretch;}
+.adm-desc{display:flex;flex-direction:column;gap:.45em;min-height:0;justify-content:space-between;}
+.adm-hero{background:var(--s1);border:1px solid rgba(0,255,135,.2);border-radius:.8em;padding:1em 1.2em;display:flex;flex-direction:column;gap:.35em;}
+.ah-tag{font-family:var(--FM);font-size:.54em;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);}
+.ah-title{font-family:var(--FD);font-weight:800;font-size:1.3em;color:var(--text);}
+.ah-desc{font-size:.68em;color:var(--t2);line-height:1.5;}
+.feat-list{display:flex;flex-direction:column;gap:.38em;flex:1;justify-content:flex-start;margin-top:.3em;}
+.feat-item{display:flex;align-items:flex-start;gap:.55em;font-size:.8em;color:var(--t2);line-height:1.4;}
+.feat-dot{width:.45em;height:.45em;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:.25em;}
+/* Admin UI preview */
+.adm-ui{display:flex;flex-direction:column;gap:.5em;min-height:0;}
+.ui-panel{background:var(--s2);border:1px solid var(--b2);border-radius:.75em;padding:.85em 1em;flex:1;display:flex;flex-direction:column;gap:.45em;min-height:0;overflow:hidden;}
+.ui-panel-title{font-family:var(--FM);font-size:.56em;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding-bottom:.35em;border-bottom:1px solid var(--b1);flex-shrink:0;}
+.ui-fields{display:flex;flex-direction:column;gap:.38em;flex:1;}
+.ui-field{display:flex;flex-direction:column;gap:.12em;}
+.ui-label{font-family:var(--FM);font-size:.52em;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);}
+.ui-input{background:var(--s1);border:1px solid var(--b1);border-radius:.35em;padding:.38em .65em;font-family:var(--FB);font-size:.65em;color:var(--text);display:flex;justify-content:space-between;align-items:center;}
+.ui-input .ui-val{color:var(--cyan);font-family:var(--FM);font-size:.9em;}
+.ui-input-row{display:flex;gap:.5em;}
+.ui-color-swatch{width:1.4em;height:1.4em;border-radius:.25em;flex-shrink:0;}
+.ui-slider-wrap{display:flex;flex-direction:column;gap:.15em;}
+.ui-slider-track{height:.25em;background:var(--b2);border-radius:100px;position:relative;}
+.ui-slider-fill{height:100%;border-radius:100px;}
+.ui-slider-thumb{position:absolute;top:50%;transform:translateY(-50%);width:.75em;height:.75em;border-radius:50%;}
+.ui-slider-ends{display:flex;justify-content:space-between;font-family:var(--FM);font-size:.5em;color:var(--t3);}
+.ui-slider-ends .ui-cur{color:var(--text);}
+/* Tariff table */
+.ui-tariff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.3em;}
+.ui-tariff-item{background:var(--s1);border:1px solid var(--b1);border-radius:.3em;padding:.35em .5em;}
+.ui-tariff-name{font-family:var(--FM);font-size:.48em;color:var(--t3);}
+.ui-tariff-val{font-family:var(--FM);font-size:.65em;color:var(--cyan);font-weight:500;margin-top:.1em;}
+/* HSP mini table */
+.ui-hsp-list{display:flex;flex-direction:column;gap:.25em;}
+.ui-hsp-row{display:flex;align-items:center;gap:.5em;}
+.ui-hsp-name{font-size:.62em;color:var(--t2);flex:1;}
+.ui-hsp-bar{height:.3em;background:var(--b2);border-radius:100px;flex:1;overflow:hidden;}
+.ui-hsp-fill{height:100%;background:var(--cyan);border-radius:100px;}
+.ui-hsp-val{font-family:var(--FM);font-size:.58em;color:var(--cyan);min-width:2.5em;text-align:right;}
+.ui-hsp-badge{font-family:var(--FM);font-size:.48em;padding:.15em .4em;border-radius:100px;}
+/* Fin plans */
+.ui-plan-grid{display:flex;flex-direction:column;gap:.3em;}
+.ui-plan-row{display:grid;grid-template-columns:1fr .6fr .6fr .7fr .6fr;gap:.35em;align-items:center;}
+.ui-plan-hd{display:grid;grid-template-columns:1fr .6fr .6fr .7fr .6fr;gap:.35em;padding-bottom:.3em;border-bottom:1px solid var(--b1);}
+.ui-plan-hd span,.ui-plan-col{font-family:var(--FM);font-size:.5em;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);}
+.ui-plan-input{background:var(--s1);border:1px solid var(--b1);border-radius:.25em;padding:.3em .45em;font-family:var(--FM);font-size:.58em;color:var(--text);}
+
+/* ══ S9 — PLAN 8 SEMANAS ══ */
+#s9 .plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75em;flex:1;min-height:0;align-items:start;}
+.plan-phase{background:var(--s1);border:1px solid var(--b1);border-radius:.75em;padding:.9em 1em;display:flex;flex-direction:column;gap:.38em;position:relative;overflow:hidden;}
+.plan-phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.pp1::before{background:var(--cyan)}.pp2::before{background:var(--orange)}.pp3::before{background:var(--amber)}.pp4::before{background:var(--violet)}
+.ph-weeks{font-family:var(--FD);font-size:.82em;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.pp1 .ph-weeks{color:var(--cyan)}.pp2 .ph-weeks{color:var(--orange)}.pp3 .ph-weeks{color:var(--amber)}.pp4 .ph-weeks{color:var(--violet)}
+.ph-name{font-family:var(--FD);font-weight:800;font-size:1.1em;text-transform:uppercase;color:var(--text);line-height:1.1;}
+.ph-desc{font-size:.82em;color:var(--t2);line-height:1.5;}
+.ph-items{display:flex;flex-direction:column;gap:.28em;margin-top:.25em;flex:none;}
+.ph-item{display:flex;align-items:flex-start;gap:.5em;font-size:.79em;color:var(--t2);line-height:1.35;}
+.ph-dot{width:.45em;height:.45em;border-radius:50%;flex-shrink:0;margin-top:.28em;}
+.pp1 .ph-dot{background:var(--cyan)}.pp2 .ph-dot{background:var(--orange)}.pp3 .ph-dot{background:var(--amber)}.pp4 .ph-dot{background:var(--violet)}
+.plan-footer{margin-top:.7em;background:var(--s2);border:1px solid var(--b2);border-radius:.5em;padding:.55em .8em;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.pf-t{font-family:var(--FM);font-size:.58em;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
+.pf-v{font-family:var(--FD);font-weight:700;font-size:.9em;color:var(--cyan);}
+
+/* ══ S10 — PROPUESTA ECONÓMICA ══ */
+#s10 .prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9em;flex:1;min-height:0;}
+.prop-card{background:var(--s1);border:1px solid var(--b1);border-radius:.8em;padding:1em 1.2em;display:flex;flex-direction:column;gap:.5em;position:relative;overflow:hidden;}
+.prop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.pc-base::before{background:var(--cyan)}.pc-full::before{background:var(--amber)}.pc-ent::before{background:var(--violet)}
+.prop-card.featured{border-color:rgba(30,215,96,.28);background:linear-gradient(135deg,rgba(30,215,96,.04),transparent);}
+.prop-tag{font-family:var(--FM);font-size:.54em;letter-spacing:.14em;text-transform:uppercase;align-self:flex-start;padding:.22em .65em;border-radius:100px;}
+.pc-base .prop-tag{background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);}
+.pc-full .prop-tag{background:var(--adim);color:var(--amber);border:1px solid rgba(30,215,96,.2);}
+.pc-ent .prop-tag{background:var(--vdim);color:var(--violet);border:1px solid rgba(167,139,250,.2);}
+.prop-name{font-family:var(--FD);font-weight:800;font-size:1.2em;text-transform:uppercase;color:var(--text);}
+.prop-price{font-family:var(--FM);font-size:1.8em;font-weight:500;color:var(--text);line-height:1;}
+.prop-price .pp-cur{font-size:.45em;color:var(--t2);margin-right:.1em;}
+.prop-price .pp-per{font-size:.38em;color:var(--t3);}
+.prop-div{height:1px;background:var(--b1);}
+.prop-items{display:flex;flex-direction:column;gap:.3em;flex:1;}
+.pi-row{display:flex;align-items:flex-start;gap:.5em;font-size:.66em;color:var(--t2);line-height:1.35;}
+.pi-c{color:var(--cyan);flex-shrink:0;font-weight:600;}
+.pi-x{color:var(--t4);flex-shrink:0;}
+.prop-footer{font-size:.6em;color:var(--t3);font-family:var(--FM);letter-spacing:.06em;text-align:center;}
+
+/* ── NAV ── */
+#nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:16px;flex-shrink:0;}
+#nc{font-family:var(--FM);font-size:11px;letter-spacing:.12em;color:rgba(240,255,244,.3);}
+#pb{flex:1;max-width:200px;height:3px;background:rgba(0,255,135,.1);border-radius:100px;overflow:hidden;}
+#pf{height:100%;background:var(--amber);border-radius:100px;transition:width .35s ease;}
+#ndots{display:flex;gap:6px;align-items:center;}
+.ndot{width:7px;height:7px;border-radius:50%;background:rgba(0,255,135,.15);cursor:pointer;transition:all .2s;}
+.ndot.active{background:var(--amber);transform:scale(1.3);}
+#nbtns{display:flex;gap:8px;}
+.nb{padding:7px 18px;border-radius:6px;background:rgba(0,255,135,.06);border:1px solid rgba(0,255,135,.14);color:rgba(240,255,244,.5);font-family:var(--FM);font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s;}
+.nb:hover{background:rgba(0,255,135,.14);color:var(--text);}
+</style>
+</head>
+<body>
+<div id="viewer">
+<div id="deck">
+
+<!-- ══════ S1 — COVER ══════════════════════════════════════════════════ -->
+<div class="slide active" id="s1">
+  <div class="ring" style="width:20em;height:20em;right:-3em;bottom:-3em;"></div>
+  <div class="ring" style="width:34em;height:34em;right:-10em;bottom:-10em;"></div>
+  <div class="gd" style="right:13em;bottom:14em;"></div>
+  <div class="cover-wrap">
+    <div class="cover-top">
+      <div class="cover-label">// HERRAMIENTA DE CALIFICACIÓN DE LEADS SOLAR</div>
+      <div class="cover-label">ABRIL 2026</div>
+    </div>
+    <div class="cover-mid">
+      <div class="cover-h1">Diagnóstico<em>Solar</em></div>
+      <div class="cover-sub">CALIFICACIÓN INTELIGENTE · VALOR AL USUARIO · CRM-READY</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-rule"></div>
+      <div class="cover-contact">
+        <div class="cover-name">Patricio González Aceves</div>
+        <div class="cover-role">Consultor de Publicidad</div>
+        <div class="cover-contact-line">pgzzaceves@gmail.com · +52 81 2622 4761</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S2 — EL PROBLEMA Y LA SOLUCIÓN ══════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="stag">// 01 · CONTEXTO Y SOLUCIÓN</div>
+  <div class="htitle">Antes y después<br><em>del diagnóstico solar</em></div>
+  <div class="rule"></div>
+  <div class="s2-body">
+    <!-- TRACK ACTUAL -->
+    <div class="track bad">
+      <div class="track-label bad">Estado actual</div>
+      <div class="track-steps">
+        <div class="step">
+          <div class="step-ico" style="color:rgba(248,113,113,.65);">01 · Fuente</div>
+          <div class="step-t">Inversión en Google o Meta</div>
+          <div class="step-d">La empresa paga por tráfico. El usuario llega y encuentra una landing o sitio web.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(248,113,113,.65);">02 · CTA</div>
+          <div class="step-t">Formulario genérico</div>
+          <div class="step-d">Nombre, teléfono, enviar. Sin valor, sin contexto, sin diagnóstico a cambio.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(248,113,113,.65);">03 · CRM</div>
+          <div class="step-t">Lead frío sin contexto</div>
+          <div class="step-d">El CRM recibe nombre y teléfono. Sin tarifa, consumo, ubicación ni perfil.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(248,113,113,.65);">04 · Vendedor</div>
+          <div class="step-t">Llamada de calificación ciega</div>
+          <div class="step-d">El vendedor llama sin saber si el lead vale la pena. Tiempo invertido en calificación básica.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(248,113,113,.65);">05 · Resultado</div>
+          <div class="step-t">Conversión baja, costo alto</div>
+          <div class="step-d">Pocas propuestas formales. Alto costo por lead calificado. Ciclo largo sin datos.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VS -->
+    <div class="track-vs">
+      <div class="track-vs-line"></div>
+      <div class="track-vs-badge">CON DIAGNÓSTICO SOLAR</div>
+      <div class="track-vs-line"></div>
+    </div>
+
+    <!-- TRACK NUEVO -->
+    <div class="track good">
+      <div class="track-label good">Con la herramienta</div>
+      <div class="track-steps">
+        <div class="step">
+          <div class="step-ico" style="color:rgba(0,255,135,.65);">01 · Fuente</div>
+          <div class="step-t">Google, Meta, vendedor, link</div>
+          <div class="step-d">El usuario llega por cualquier canal y encuentra una experiencia interactiva.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(0,255,135,.65);">02 · Experiencia</div>
+          <div class="step-t">Quiz de 9 preguntas + valor inmediato</div>
+          <div class="step-d">3-5 minutos. El usuario recibe su diagnóstico <em style="color:var(--text);">antes de que se le pidan datos.</em></div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(0,255,135,.65);">03 · Captación</div>
+          <div class="step-t">Datos completos del lead</div>
+          <div class="step-d">Nombre, email, WhatsApp más tarifa, estado, A/C, EV, meta y financiamiento.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(0,255,135,.65);">04 · CRM</div>
+          <div class="step-t">Lead con perfil completo</div>
+          <div class="step-d">"DAC, A/C, Sonora, 24 meses." El vendedor sabe exactamente cómo abrir la conversación.</div>
+        </div>
+        <div class="step">
+          <div class="step-ico" style="color:rgba(0,255,135,.65);">05 · Resultado</div>
+          <div class="step-t">Más cierres, menor costo por lead</div>
+          <div class="step-d">El usuario ya vio el ROI. La conversación empieza con el argumento correcto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S3a — PREGUNTAS 1–5 ═════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="stag">// 02 · CALIFICACIÓN INTELIGENTE · 1 DE 2</div>
+  <div class="htitle"><em>Preguntas 01 a 05</em></div>
+  <div class="rule"></div>
+  <div class="q-tbl-wrap">
+    <table class="q-tbl">
+      <thead>
+        <tr>
+          <th style="width:5em;">#</th>
+          <th style="width:22em;">Concepto</th>
+          <th>Descripción y propósito</th>
+          <th style="width:21em;">Rango / Valores esperados</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="qc-n">
+          <td class="td-num">01</td>
+          <td><div class="td-concept">Recibo bimestral CFE<span class="td-cat" style="background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);">Consumo económico</span></div></td>
+          <td class="td-desc">Variable principal del cálculo. Convierte el monto en kWh consumidos y determina el tamaño mínimo del sistema viable para el hogar.</td>
+          <td class="td-range"><em>$200</em> – <em>$10,000</em> MXN bimestrales.<br>Promedio nacional: ~$800.</td>
+        </tr>
+        <tr class="qc-o">
+          <td class="td-num">02</td>
+          <td><div class="td-concept">Estado de la República<span class="td-cat" style="background:var(--odim);color:var(--orange);border:1px solid rgba(251,146,60,.2);">Recurso solar</span></div></td>
+          <td class="td-desc">Define las Horas Sol Pico disponibles. Sonora con 6.2 HSP genera un 38% más de energía que Chiapas con 4.5 HSP usando los mismos paneles.</td>
+          <td class="td-range">32 estados. HSP: <em>4.5</em> (Chiapas) a <em>6.4</em> (BCS, Sonora).</td>
+        </tr>
+        <tr class="qc-n">
+          <td class="td-num">03</td>
+          <td><div class="td-concept">Tarifa CFE<span class="td-cat" style="background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);">Consumo económico</span></div></td>
+          <td class="td-desc">Determina el costo real por kWh consumido. Tarifa DAC cobra 5× más que Tarifa 1 — cambia el ROI y la urgencia de compra radicalmente.</td>
+          <td class="td-range">Tarifa 1: <em>$1.10/kWh</em> · DAC: <em>$5.50/kWh</em><br>Opciones: 1 / DAC / No sé.</td>
+        </tr>
+        <tr class="qc-y">
+          <td class="td-num">04</td>
+          <td><div class="td-concept">Personas en el hogar<span class="td-cat" style="background:var(--ydim);color:var(--yellow);border:1px solid rgba(250,204,21,.2);">Perfil del hogar</span></div></td>
+          <td class="td-desc">Valida y contextualiza el consumo declarado. Ayuda a detectar inconsistencias — una familia de 8 con recibo de $300 bimestral es una señal de alerta.</td>
+          <td class="td-range">1 a <em>12</em> personas. Promedio hogares MX: 3.7.</td>
+        </tr>
+        <tr class="qc-y">
+          <td class="td-num">05</td>
+          <td><div class="td-concept">Aire acondicionado<span class="td-cat" style="background:var(--ydim);color:var(--yellow);border:1px solid rgba(250,204,21,.2);">Perfil del hogar</span></div></td>
+          <td class="td-desc">El A/C puede representar hasta el 60% del consumo residencial. Ajusta la curva estacional del diagnóstico y el cálculo del pico de verano.</td>
+          <td class="td-range">Sin A/C · <em>Sí, uno</em> · <em>Sí, varios</em><br>Mayor impacto en estados con clima extremo.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════ S3b — PREGUNTAS 6–9 ═════════════════════════════════════════ -->
+<div class="slide" id="s3b">
+  <div class="stag">// 02 · CALIFICACIÓN INTELIGENTE · 2 DE 2</div>
+  <div class="htitle"><em>Preguntas 06 a 09</em></div>
+  <div class="rule"></div>
+  <div class="q-tbl-wrap">
+    <table class="q-tbl">
+      <thead>
+        <tr>
+          <th style="width:5em;">#</th>
+          <th style="width:22em;">Concepto</th>
+          <th>Descripción y propósito</th>
+          <th style="width:21em;">Rango / Valores esperados</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="qc-y">
+          <td class="td-num">06</td>
+          <td><div class="td-concept">Espacio en techo<span class="td-cat" style="background:var(--ydim);color:var(--yellow);border:1px solid rgba(250,204,21,.2);">Perfil del hogar</span></div></td>
+          <td class="td-desc">Limita el número máximo de paneles instalables. Un techo de 10m² no puede albergar más de 5 paneles estándar de 550W (~2m² c/u).</td>
+          <td class="td-range">Amplio <em>(+20m²)</em> · Limitado <em>(10–20m²)</em><br>No estoy seguro.</td>
+        </tr>
+        <tr class="qc-v">
+          <td class="td-num">07</td>
+          <td><div class="td-concept">Vehículo eléctrico<span class="td-cat" style="background:var(--vdim);color:var(--violet);border:1px solid rgba(167,139,250,.2);">Segmento premium</span></div></td>
+          <td class="td-desc">Los EVs suman hasta 200 kWh/mes adicionales al consumo. Identifica prospectos de alto perfil con mayor necesidad de generación y ticket de inversión más alto.</td>
+          <td class="td-range">No · <em>Sí, ya tengo</em> · <em>Lo planeo</em><br>+200 kWh/mes si aplica.</td>
+        </tr>
+        <tr class="qc-g">
+          <td class="td-num">08</td>
+          <td><div class="td-concept">Meta principal<span class="td-cat" style="background:var(--gdim);color:var(--green);border:1px solid rgba(52,211,153,.2);">Intención de compra</span></div></td>
+          <td class="td-desc">Define el pitch del asesor y cómo presentar el ROI. Ahorro = reducir recibo. Independencia = no depender de CFE. Plusvalía = inversión en la propiedad.</td>
+          <td class="td-range"><em>Ahorrar</em> · <em>Independencia energética</em><br><em>Plusvalía.</em></td>
+        </tr>
+        <tr class="qc-g">
+          <td class="td-num">09</td>
+          <td><div class="td-concept">Interés en financiar<span class="td-cat" style="background:var(--gdim);color:var(--green);border:1px solid rgba(52,211,153,.2);">Intención de compra</span></div></td>
+          <td class="td-desc">Pre-califica intención y capacidad de compra. Filtra leads de contado vs. financiamiento antes del primer contacto, activando el módulo de planes en el resultado.</td>
+          <td class="td-range"><em>Contado</em> · <em>Sí, financiar</em><br>Ver todas las opciones.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════ S4 — GRÁFICAS 1–3 ══════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="stag">// 03 · DIAGNÓSTICO VISUAL · PARTE 1 DE 2</div>
+  <div class="htitle">Gráficas que<br><em>convierten prospectos</em></div>
+  <div class="rule"></div>
+  <div class="ch-grid3">
+    <div class="ch-card">
+      <div class="cc-num">01 / 05 — DONA</div>
+      <div class="cc-title">Autosuficiencia energética</div>
+      <div class="cc-why">El primer dato que ve el usuario. Ancla la conversación en independencia energética, no en precio.</div>
+      <div class="cc-chart" style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;">
+        <div style="position:relative;width:min(100%,14em);aspect-ratio:1/1;">
+          <canvas id="ch1"></canvas>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;">
+            <span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:2.8em;color:#F0FFF4;line-height:1;">92%</span>
+            <span style="font-family:'DM Mono',monospace;font-size:.7em;color:#6A9A78;letter-spacing:.08em;text-transform:uppercase;margin-top:.25em;">cubierto</span>
+          </div>
+        </div>
+      </div>
+      <div class="cc-chips"><span class="chip chip-c">Impacto emocional</span><span class="chip chip-g">Cierre rápido</span></div>
+    </div>
+    <div class="ch-card">
+      <div class="cc-num">02 / 05 — BARRAS</div>
+      <div class="cc-title">Recibo mensual: ahora vs con paneles</div>
+      <div class="cc-why">Muestra la variación estacional mes a mes. El pico de verano es 1.7× mayor — con paneles, siempre la misma barra.</div>
+      <div class="cc-chart"><canvas id="ch2"></canvas></div>
+      <div class="cc-chips"><span class="chip chip-o">Urgencia estacional</span><span class="chip chip-c">Certeza</span></div>
+    </div>
+    <div class="ch-card">
+      <div class="cc-num">03 / 05 — LÍNEAS</div>
+      <div class="cc-title">Proyección 10 años con inflación CFE</div>
+      <div class="cc-why">CFE sube ~8% anual. En 10 años un recibo de $2,000 llega a $4,300. Convierte el gasto futuro en argumento de inversión.</div>
+      <div class="cc-chart"><canvas id="ch3"></canvas></div>
+      <div class="cc-chips"><span class="chip chip-o">Miedo a pérdida</span><span class="chip chip-v">ROI</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S5 — GRÁFICAS 4–5 ══════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="stag">// 03 · DIAGNÓSTICO VISUAL · PARTE 2 DE 2</div>
+  <div class="htitle">Las gráficas que<br><em>superan la objeción de precio</em></div>
+  <div class="rule"></div>
+  <div class="ch-grid2">
+    <div class="ch-card">
+      <div class="cc-num">04 / 05 — ÁREA</div>
+      <div class="cc-title">Ahorro neto acumulado y punto de retorno (25 años)</div>
+      <div class="cc-why">Cuando la curva cruza cero, la inversión quedó pagada. El usuario ve lo que ahorra — y lo que pierde si no actúa.</div>
+      <div class="cc-chart"><canvas id="ch4"></canvas></div>
+      <div class="cc-chips"><span class="chip chip-g">Supera objeción</span><span class="chip chip-a">Ticket alto</span><span class="chip chip-v">25 años</span></div>
+    </div>
+    <div class="ch-card">
+      <div class="cc-num">05 / 05 — BARRAS + LÍNEA</div>
+      <div class="cc-title">Generación mensual estimada del sistema</div>
+      <div class="cc-why">Producción mes a mes con variación estacional vs. consumo del usuario. Responde "¿qué pasa en invierno?" con datos reales de HSP.</div>
+      <div class="cc-chart"><canvas id="ch5"></canvas></div>
+      <div class="cc-chips"><span class="chip chip-c">Confianza técnica</span><span class="chip chip-g">Educación</span><span class="chip chip-o">Regional</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S6 — ADMIN: IDENTIDAD VISUAL ════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="stag">// 04 · PANEL DE ADMINISTRACIÓN · 1 DE 3</div>
+  <div class="htitle">Todo configurable —<br><em>identidad visual</em></div>
+  <div class="rule"></div>
+  <div class="adm-split">
+    <div class="adm-desc">
+      <div class="adm-hero">
+        <div class="ah-tag">// Sin tocar código</div>
+        <div class="ah-title">Identidad de marca</div>
+        <div class="ah-desc">Cada elemento visual del cotizador — nombre, colores, textos y CTA — se configura desde el panel en segundos. Los cambios se reflejan en tiempo real para todos los usuarios.</div>
+      </div>
+      <div class="feat-list">
+        <div class="feat-item"><div class="feat-dot" style="background:var(--cyan);"></div>Nombre de la empresa (aparece en header y pantalla de bienvenida)</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--cyan);"></div>Color primario y color de acento con selector visual</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--cyan);"></div>Headline y subtítulo de la pantalla de bienvenida</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--cyan);"></div>Texto del botón de contacto (CTA) personalizable</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--cyan);"></div>Número de WhatsApp del asesor — actualizable en cualquier momento</div>
+      </div>
+    </div>
+    <div class="adm-ui">
+      <div class="ui-panel" style="flex:none;">
+        <div class="ui-panel-title">// Identidad visual</div>
+        <div class="ui-fields">
+          <div class="ui-field">
+            <div class="ui-label">Nombre de la empresa</div>
+            <div class="ui-input"><span>Nombre de la empresa</span><span class="ui-val">SolarMax México</span></div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Color primario</div>
+            <div class="ui-input">
+              <div style="display:flex;align-items:center;gap:.5em;">
+                <div class="ui-color-swatch" style="background:#00FF87;"></div>
+                <span style="font-family:var(--FM);font-size:.65em;color:var(--t2);">Color primario</span>
+              </div>
+              <span class="ui-val">#00FF87</span>
+            </div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Color de acento</div>
+            <div class="ui-input">
+              <div style="display:flex;align-items:center;gap:.5em;">
+                <div class="ui-color-swatch" style="background:#1ED760;"></div>
+                <span style="font-family:var(--FM);font-size:.65em;color:var(--t2);">Color de acento</span>
+              </div>
+              <span class="ui-val">#1ED760</span>
+            </div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Título principal (bienvenida)</div>
+            <div class="ui-input"><span style="font-size:.85em;color:var(--t2);">Descubre cuánto puedes ahorrar con...</span></div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Texto del botón CTA</div>
+            <div class="ui-input"><span>Texto del CTA</span><span class="ui-val">Quiero que me contacten</span></div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Número de WhatsApp</div>
+            <div class="ui-input">
+              <div style="display:flex;align-items:center;gap:.5em;">
+                <span style="font-family:var(--FM);font-size:.65em;color:var(--t3);">MX +52</span>
+                <span style="width:1px;height:1em;background:var(--b2);"></span>
+                <span style="font-family:var(--FM);font-size:.65em;color:var(--t2);">8110000000</span>
+              </div>
+              <span class="ui-val" style="font-size:.7em;color:var(--green);">✓ Activo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S7 — ADMIN: PARÁMETROS DE CÁLCULO ══════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="stag">// 04 · PANEL DE ADMINISTRACIÓN · 2 DE 3</div>
+  <div class="htitle">Todo configurable —<br><em>parámetros de cálculo</em></div>
+  <div class="rule"></div>
+  <div class="adm-split">
+    <div class="adm-desc">
+      <div class="adm-hero">
+        <div class="ah-tag" style="color:var(--orange);">// Motor financiero personalizable</div>
+        <div class="ah-title">Sistema solar y proyecciones</div>
+        <div class="ah-desc">El administrador puede ajustar cada variable técnica y financiera que alimenta los cálculos. Un cambio en el precio del panel se refleja instantáneamente en todos los diagnósticos nuevos.</div>
+      </div>
+      <div class="feat-list">
+        <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Potencia por panel (W) y precio unitario (MXN)</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Costo fijo de instalación</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Factor de eficiencia del sistema (incluye inversor y pérdidas)</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Inflación eléctrica anual proyectada para el ROI a 25 años</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Cargo fijo CFE residual (el mínimo que siempre se paga)</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Planes de financiamiento: enganche %, plazo, tasa y plan destacado</div>
+      </div>
+    </div>
+    <div class="adm-ui">
+      <div class="ui-panel">
+        <div class="ui-panel-title">// Parámetros del sistema solar</div>
+        <div class="ui-fields">
+          <div class="ui-field">
+            <div class="ui-label">Potencia por panel</div>
+            <div class="ui-input"><span>Watts por panel</span><span class="ui-val">550 W</span></div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Precio por panel</div>
+            <div class="ui-input"><span>Precio unitario</span><span class="ui-val">$5,500 MXN</span></div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Costo de instalación</div>
+            <div class="ui-input"><span>Cargo fijo</span><span class="ui-val">$15,000 MXN</span></div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Factor de eficiencia del sistema</div>
+            <div class="ui-slider-wrap">
+              <div class="ui-slider-track">
+                <div class="ui-slider-fill" style="width:80%;background:var(--orange);"></div>
+                <div class="ui-slider-thumb" style="left:78%;background:var(--orange);box-shadow:0 0 .5em rgba(251,146,60,.5);"></div>
+              </div>
+              <div class="ui-slider-ends"><span>0.50</span><span class="ui-cur" style="color:var(--orange);">0.80 (80%)</span><span>1.00</span></div>
+            </div>
+          </div>
+          <div class="ui-field">
+            <div class="ui-label">Inflación eléctrica anual</div>
+            <div class="ui-input"><span>Para proyección ROI</span><span class="ui-val">8%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ui-panel" style="flex:none;">
+        <div class="ui-panel-title">// Planes de financiamiento</div>
+        <div class="ui-plan-grid">
+          <div class="ui-plan-hd">
+            <span>Nombre del plan</span><span>Enganche %</span><span>Meses</span><span>Tasa anual %</span><span>Destacado</span>
+          </div>
+          <div class="ui-plan-row">
+            <div class="ui-plan-input">Contado</div>
+            <div class="ui-plan-input" style="color:var(--t3);">100%</div>
+            <div class="ui-plan-input" style="color:var(--t3);">0</div>
+            <div class="ui-plan-input" style="color:var(--t3);">0%</div>
+            <div class="ui-plan-input" style="color:var(--t3);">No</div>
+          </div>
+          <div class="ui-plan-row">
+            <div class="ui-plan-input">12 meses sin int.</div>
+            <div class="ui-plan-input">20%</div>
+            <div class="ui-plan-input">12</div>
+            <div class="ui-plan-input">0%</div>
+            <div class="ui-plan-input" style="color:var(--amber);">⭐ Sí</div>
+          </div>
+          <div class="ui-plan-row">
+            <div class="ui-plan-input">24 meses</div>
+            <div class="ui-plan-input">20%</div>
+            <div class="ui-plan-input">24</div>
+            <div class="ui-plan-input">18%</div>
+            <div class="ui-plan-input" style="color:var(--t3);">No</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S8 — ADMIN: MOTOR DE PRECISIÓN ════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="stag">// 04 · PANEL DE ADMINISTRACIÓN · 3 DE 3</div>
+  <div class="htitle">Todo configurable —<br><em>motor de precisión regional</em></div>
+  <div class="rule"></div>
+  <div class="adm-split">
+    <div class="adm-desc">
+      <div class="adm-hero">
+        <div class="ah-tag" style="color:var(--amber);">// Actualizable en minutos</div>
+        <div class="ah-title">Tarifas CFE y HSP por estado</div>
+        <div class="ah-desc">Cuando CFE actualiza sus tarifas o cuando el equipo comercial identifica mejor los valores de HSP locales, el administrador puede actualizarlos desde el panel — sin esperar a un desarrollador.</div>
+      </div>
+      <div class="feat-list">
+        <div class="feat-item"><div class="feat-dot" style="background:var(--amber);"></div>8 tarifas CFE editables: 1, 1A, 1B, 1C, 1D, 1E, 1F y DAC</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--amber);"></div>Valores de HSP para los 32 estados de la República</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--amber);"></div>Basados en datos NREL — ajustables por experiencia de campo</div>
+        <div class="feat-item"><div class="feat-dot" style="background:var(--amber);"></div>Los cambios impactan directamente en todos los diagnósticos futuros</div>
+      </div>
+    </div>
+    <div class="adm-ui">
+      <div class="ui-panel" style="flex:none;">
+        <div class="ui-panel-title">// Tarifas CFE ($/kWh)</div>
+        <div class="ui-tariff-grid">
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1</div><div class="ui-tariff-val">$1.10</div></div>
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1A</div><div class="ui-tariff-val">$1.50</div></div>
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1B</div><div class="ui-tariff-val">$1.80</div></div>
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1C</div><div class="ui-tariff-val">$2.20</div></div>
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1D</div><div class="ui-tariff-val">$2.80</div></div>
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1E</div><div class="ui-tariff-val">$3.50</div></div>
+          <div class="ui-tariff-item"><div class="ui-tariff-name">Tarifa 1F</div><div class="ui-tariff-val">$4.20</div></div>
+          <div class="ui-tariff-item" style="border-color:rgba(251,146,60,.3);"><div class="ui-tariff-name" style="color:var(--orange);">Tarifa DAC</div><div class="ui-tariff-val" style="color:var(--orange);">$5.50</div></div>
+        </div>
+      </div>
+      <div class="ui-panel">
+        <div class="ui-panel-title">// HSP por estado — Horas Sol Pico diarias</div>
+        <div class="ui-hsp-list">
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Baja California Sur</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:100%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.4</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Sonora</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:97%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.2</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Chihuahua</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:87%;"></div></div><span class="ui-hsp-val">6.0</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Zacatecas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:78%;"></div></div><span class="ui-hsp-val">5.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Sinaloa</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:78%;"></div></div><span class="ui-hsp-val">5.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Coahuila</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:78%;"></div></div><span class="ui-hsp-val">5.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Nuevo León</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:68%;"></div></div><span class="ui-hsp-val">5.6</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Jalisco</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:62%;"></div></div><span class="ui-hsp-val">5.3</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Ciudad de México</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:54%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.1</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Oaxaca</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:62%;"></div></div><span class="ui-hsp-val">5.4</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Tabasco</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:40%;background:var(--t3);"></div></div><span class="ui-hsp-val" style="color:var(--t3);">4.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Chiapas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:26%;background:var(--t3);"></div></div><span class="ui-hsp-val" style="color:var(--t3);">4.5</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ S9 — PLAN 8 SEMANAS ════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="stag">// 05 · IMPLEMENTACIÓN</div>
+  <div class="htitle">Plan de implementación —<br><em>8 semanas al lanzamiento</em></div>
+  <div class="rule"></div>
+  <div class="plan-grid">
+    <div class="plan-phase pp1">
+      <div class="ph-weeks">Semanas 01 – 02</div>
+      <div class="ph-name">Descubrimiento</div>
+      <div class="ph-desc">Entrevistas con el equipo para mapear el proceso actual e identificar funcionalidades y parámetros específicos.</div>
+      <div class="ph-items">
+        <div class="ph-item"><div class="ph-dot"></div>Entrevistas con vendedores y dirección</div>
+        <div class="ph-item"><div class="ph-dot"></div>Revisión de tarifas, precios y portafolio</div>
+        <div class="ph-item"><div class="ph-dot"></div>Mapeo de fuentes de leads actuales</div>
+        <div class="ph-item"><div class="ph-dot"></div>Definición de integraciones requeridas</div>
+      </div>
+    </div>
+    <div class="plan-phase pp2">
+      <div class="ph-weeks">Semanas 03 – 04</div>
+      <div class="ph-name">Implementación</div>
+      <div class="ph-desc">Setup técnico completo con parámetros reales. Integración con CRM, webhooks y sistemas del cliente.</div>
+      <div class="ph-items">
+        <div class="ph-item"><div class="ph-dot"></div>Configuración de branding y parámetros</div>
+        <div class="ph-item"><div class="ph-dot"></div>Integración con CRM del cliente</div>
+        <div class="ph-item"><div class="ph-dot"></div>Setup de webhook y automatizaciones</div>
+        <div class="ph-item"><div class="ph-dot"></div>Configuración de WhatsApp Business</div>
+        <div class="ph-item"><div class="ph-dot"></div>Pruebas internas de flujo completo</div>
+      </div>
+    </div>
+    <div class="plan-phase pp3">
+      <div class="ph-weeks">Semanas 05 – 06</div>
+      <div class="ph-name">Lanzamiento</div>
+      <div class="ph-desc">Publicación, activación de campañas y capacitación del equipo de ventas.</div>
+      <div class="ph-items">
+        <div class="ph-item"><div class="ph-dot"></div>Deploy en dominio del cliente</div>
+        <div class="ph-item"><div class="ph-dot"></div>Activación de campañas Google y Meta</div>
+        <div class="ph-item"><div class="ph-dot"></div>Capacitación al equipo de ventas</div>
+        <div class="ph-item"><div class="ph-dot"></div>Scripts de seguimiento por perfil de lead</div>
+        <div class="ph-item"><div class="ph-dot"></div>Testeo con primeros leads reales</div>
+      </div>
+    </div>
+    <div class="plan-phase pp4">
+      <div class="ph-weeks">Semanas 07 – 08</div>
+      <div class="ph-name">Monitoreo y entrega</div>
+      <div class="ph-desc">Seguimiento activo, ajuste de parámetros y entrega formal con documentación completa.</div>
+      <div class="ph-items">
+        <div class="ph-item"><div class="ph-dot"></div>Revisión de métricas de conversión</div>
+        <div class="ph-item"><div class="ph-dot"></div>Ajuste de parámetros si aplica</div>
+        <div class="ph-item"><div class="ph-dot"></div>Sesión de feedback con equipo</div>
+        <div class="ph-item"><div class="ph-dot"></div>Documentación y manual de admin</div>
+        <div class="ph-item"><div class="ph-dot"></div>Entrega formal y handoff al cliente</div>
+      </div>
+    </div>
+  </div>
+  <div class="plan-footer">
+    <span class="pf-t">Duración total</span>
+    <span class="pf-v">8 semanas desde kickoff hasta entrega final</span>
+    <span class="pf-t">Todo personalizable según necesidades del cliente</span>
+  </div>
+</div>
+
+<!-- ══════ S10 — PROPUESTA ECONÓMICA ══════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="stag">// 06 · PROPUESTA ECONÓMICA</div>
+  <div class="htitle">Dos planes de<br><em>implementación</em></div>
+  <div class="rule"></div>
+
+  <style>
+  .prop2-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1em;flex:1;min-height:0;}
+  .prop2-card{background:var(--s1);border:1px solid var(--b1);border-radius:.85em;padding:1em 1.2em;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;}
+  .prop2-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .p2-cyan::before{background:var(--cyan)}.p2-amber::before{background:var(--amber)}
+  .prop2-card.featured{border-color:rgba(30,215,96,.25);background:linear-gradient(160deg,rgba(30,215,96,.04),transparent 60%);}
+  .p2-label{font-family:var(--FM);font-size:.58em;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.5em;}
+  .p2-name{font-family:var(--FD);font-weight:900;font-size:1.7em;text-transform:uppercase;color:var(--text);line-height:1;margin-bottom:.2em;}
+  .p2-desc{font-size:.68em;color:var(--t2);line-height:1.5;margin-bottom:.7em;}
+  .p2-total{display:flex;align-items:baseline;gap:.35em;margin-bottom:.7em;padding-bottom:.7em;border-bottom:1px solid var(--b2);}
+  .p2-total-val{font-family:var(--FM);font-size:2em;font-weight:500;color:var(--text);line-height:1;}
+  .p2-total-sub{font-family:var(--FM);font-size:.6em;color:var(--t3);}
+  .p2-items{display:flex;flex-direction:column;gap:0;flex:1;}
+  .p2-row{display:flex;align-items:center;justify-content:space-between;padding:.42em 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .p2-row:last-child{border-bottom:none;}
+  .p2-row-lbl{display:flex;align-items:center;gap:.55em;font-size:.7em;color:var(--t2);line-height:1.3;flex:1;}
+  .p2-row-dot{width:.45em;height:.45em;border-radius:50%;flex-shrink:0;}
+  .p2-cyan .p2-row-dot{background:var(--cyan);}.p2-amber .p2-row-dot{background:var(--amber);}
+  .p2-row-new{background:rgba(30,215,96,.1);color:var(--cyan);border:1px solid rgba(0,255,135,.2);font-family:var(--FM);font-size:.48em;letter-spacing:.08em;padding:.1em .45em;border-radius:100px;white-space:nowrap;margin-left:.4em;flex-shrink:0;}
+  .p2-price{font-family:var(--FM);font-size:.72em;color:var(--t3);white-space:nowrap;text-align:right;margin-left:.6em;flex-shrink:0;}
+  .p2-amber .p2-price{color:var(--t2);}
+  .p2-divider{height:1px;background:var(--b2);margin:.5em 0;flex-shrink:0;}
+  .p2-section-lbl{font-family:var(--FM);font-size:.52em;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:.35em 0 .2em;flex-shrink:0;}
+  </style>
+
+  <div class="prop2-grid">
+
+    <!-- OPCIÓN 1 — READY TO MARKET -->
+    <div class="prop2-card p2-cyan">
+      <div class="p2-label">// Opción 01</div>
+      <div class="p2-name">Ready to<br>Market</div>
+      <div class="p2-desc">Implementación completa con integración a sistemas existentes y activación en 8 semanas.</div>
+      <div class="p2-items p2-cyan" style="flex:1;">
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Diagnóstico solar configurado e implementado</div><div class="p2-price">$14,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Integración con CRM del cliente</div><div class="p2-price">$7,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Configuración de campañas Google y Meta</div><div class="p2-price">$5,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Capacitación equipo de ventas</div><div class="p2-price">$4,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Soporte y ajustes 15 días post-lanzamiento</div><div class="p2-price">$4,000</div></div>
+      </div>
+      <div class="p2-total" style="margin-top:.65em;margin-bottom:0;padding-bottom:0;border-bottom:none;border-top:1px solid var(--cring);padding-top:.65em;">
+        <div class="p2-total-val">$34,000</div>
+        <div class="p2-total-sub">MXN + IVA · Inversión total</div>
+      </div>
+    </div>
+
+    <!-- OPCIÓN 2 — FULL LAUNCH -->
+    <div class="prop2-card p2-amber featured">
+      <div class="p2-label">// Opción 02</div>
+      <div class="p2-name">Full<br>Launch</div>
+      <div class="p2-desc">Todo lo anterior más módulos de automatización, analytics y desarrollo adicional para escalar la operación.</div>
+      <div class="p2-items p2-amber" style="flex:1;">
+        <div class="p2-section-lbl">Incluye todo en Ready to Market</div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Diagnóstico + CRM + campañas + capacitación + soporte</div><div class="p2-price" style="color:var(--t3);">$34,000</div></div>
+        <div class="p2-divider"></div>
+        <div class="p2-section-lbl">Módulos adicionales</div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Dashboard de analytics y gestión de leads<span class="p2-row-new">+</span></div><div class="p2-price">$8,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Automatización de seguimiento vía WhatsApp<span class="p2-row-new">+</span></div><div class="p2-price">$7,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Landing page dedicada con diagnóstico integrado<span class="p2-row-new">+</span></div><div class="p2-price">$4,000</div></div>
+        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Integración con sitio web y modificaciones adicionales del cliente<span class="p2-row-new">+</span></div><div class="p2-price">$3,000</div></div>
+      </div>
+      <div class="p2-total" style="margin-top:.65em;margin-bottom:0;padding-bottom:0;border-bottom:none;border-top:1px solid rgba(30,215,96,.25);padding-top:.65em;">
+        <div class="p2-total-val" style="color:var(--amber);">$56,000</div>
+        <div class="p2-total-sub">MXN + IVA · Inversión total</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /deck -->
+</div><!-- /viewer -->
+
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nc"><span id="cur">1</span> / <span id="tot">11</span></div>
+    <div id="pb"><div id="pf"></div></div>
+  </div>
+  <div id="ndots"></div>
+  <div id="nbtns"><button class="nb" id="bp">← PREV</button><button class="nb" id="bn">NEXT →</button></div>
+</div>
+
+<script>
+const slides=Array.from(document.querySelectorAll('.slide'));
+const TOTAL=slides.length;let cur=0;
+const ndots=document.getElementById('ndots');
+slides.forEach((s,i)=>{const d=document.createElement('div');d.className='ndot';d.addEventListener('click',()=>goTo(i));ndots.appendChild(d);});
+const dots=ndots.querySelectorAll('.ndot');
+function goTo(n){if(n<0||n>=TOTAL)return;slides[cur].classList.remove('active');slides[cur].classList.add('exit');const prev=cur;cur=n;slides[cur].classList.add('active');setTimeout(()=>slides[prev].classList.remove('exit'),400);update();}
+function update(){document.getElementById('cur').textContent=cur+1;document.getElementById('tot').textContent=TOTAL;document.getElementById('pf').style.width=((cur+1)/TOTAL*100)+'%';dots.forEach((d,i)=>d.classList.toggle('active',i===cur));}
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}});
+const ASPECT=16/9;const viewer=document.getElementById('viewer');const nav=document.getElementById('nav');
+function resize(){const navH=nav.offsetHeight;const aw=window.innerWidth-24;const ah=window.innerHeight-navH-20;let w=aw,h=w/ASPECT;if(h>ah){h=ah;w=h*ASPECT;}w=Math.floor(w);h=Math.floor(h);viewer.style.width=w+'px';viewer.style.height=h+'px';viewer.style.fontSize=(w/1280)*19+'px';nav.style.width=w+'px';}
+window.addEventListener('resize',resize);resize();slides[0].classList.add('active');update();
+
+// ── CHARTS ───────────────────────────────────
+Chart.defaults.color='#6A9A78';Chart.defaults.borderColor='rgba(42,68,50,.5)';
+const MONTHS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const BILL_SF=[0.74,0.76,0.85,0.93,1.12,1.23,1.27,1.22,1.14,0.96,0.82,0.74];
+const GEN_SF=[0.85,0.88,0.97,1.03,1.05,0.98,0.93,0.93,0.92,0.94,0.88,0.84];
+const mBill=2000,fixed=90,inf=0.08,invest=60000;
+
+function cBase(yfmt){return{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{color:'#6A9A78',boxWidth:8,padding:8,font:{family:'DM Mono',size:9}}},tooltip:{backgroundColor:'#1C2E1E',borderColor:'#2A4432',borderWidth:1,titleColor:'#F0FFF4',bodyColor:'#8FB89E',padding:8,cornerRadius:6,titleFont:{family:'Manrope',size:10},bodyFont:{family:'DM Mono',size:9},callbacks:{label:ctx=>` ${ctx.dataset.label}: ${yfmt(ctx.raw)}`}}},scales:{y:{grid:{color:'rgba(42,68,50,.3)'},ticks:{color:'#8FB89E',font:{family:'DM Mono',size:8},callback:yfmt}},x:{grid:{display:false},ticks:{color:'#8FB89E',font:{family:'Manrope',size:8}}}}};}
+
+// CH1 — Donut, center text scoped ONLY to this chart
+const ch1Canvas=document.getElementById('ch1');
+const ch1=new Chart(ch1Canvas,{type:'doughnut',data:{datasets:[{data:[92,8],backgroundColor:['#00FF87','#1C2E1E'],borderWidth:0}]},options:{cutout:'70%',maintainAspectRatio:false,responsive:true,plugins:{legend:{display:false},tooltip:{enabled:false}},animation:{duration:800}}});
+
+// CH2 — Barras recibo estacional
+new Chart(document.getElementById('ch2'),{type:'bar',data:{labels:MONTHS,datasets:[{label:'Sin paneles',data:BILL_SF.map(f=>Math.round(mBill*f)),backgroundColor:'rgba(248,113,113,.18)',borderColor:'rgba(248,113,113,.65)',borderWidth:1,borderRadius:3},{label:'Con paneles',data:Array(12).fill(fixed),backgroundColor:'rgba(0,255,135,.15)',borderColor:'rgba(0,255,135,.6)',borderWidth:1,borderRadius:3}]},options:{...cBase(v=>'$'+Math.round(v).toLocaleString('es-MX'))}});
+
+// CH3 — Proyección inflación
+const proj10=Array.from({length:11},(_,i)=>Math.round(mBill*12*Math.pow(1+inf,i)));
+const with10=Array.from({length:11},()=>Math.round(fixed*12));
+new Chart(document.getElementById('ch3'),{type:'line',data:{labels:Array.from({length:11},(_,i)=>i===0?'Hoy':'Año '+i),datasets:[{label:'Sin paneles',data:proj10,borderColor:'rgba(248,113,113,.75)',backgroundColor:'rgba(248,113,113,.06)',fill:true,tension:0.4,pointRadius:2},{label:'Con paneles',data:with10,borderColor:'rgba(0,255,135,.75)',backgroundColor:'rgba(0,255,135,.06)',fill:true,tension:0.4,pointRadius:2}]},options:{...cBase(v=>'$'+Math.round(v).toLocaleString('es-MX'))}});
+
+// CH4 — Ahorro acumulado 25 años
+let cumArr=[0],tot=0,yrS=(mBill-fixed)*12;
+for(let i=1;i<=25;i++){tot+=yrS;cumArr.push(Math.round(tot-invest));yrS*=(1+inf);}
+new Chart(document.getElementById('ch4'),{type:'line',data:{labels:Array.from({length:26},(_,i)=>i===0?'Hoy':'Año '+i),datasets:[{label:'Ahorro neto acumulado',data:cumArr,borderColor:'rgba(52,211,153,.8)',backgroundColor:'rgba(52,211,153,.07)',fill:true,tension:0.4,pointRadius:0,pointHoverRadius:4},{label:'Punto de equilibrio',data:Array(26).fill(0),borderColor:'rgba(255,255,255,.12)',borderDash:[5,5],borderWidth:1,pointRadius:0,fill:false}]},options:{...cBase(v=>'$'+Math.round(v/1000)+'k')}});
+
+// CH5 — Generación mensual
+const genM=GEN_SF.map(f=>Math.round(10*(550/1000)*5.6*0.80*30*f));
+const totKwh=Math.round(mBill/1.10);
+new Chart(document.getElementById('ch5'),{type:'bar',data:{labels:MONTHS,datasets:[{label:'Generación (kWh)',data:genM,backgroundColor:'rgba(30,215,96,.18)',borderColor:'rgba(30,215,96,.65)',borderWidth:1,borderRadius:3},{label:'Consumo mensual',data:Array(12).fill(totKwh),type:'line',borderColor:'rgba(0,255,135,.55)',borderDash:[4,4],borderWidth:1.5,pointRadius:0,fill:false}]},options:{...cBase(v=>v+' kWh')}});
+</script>
+</body>
+</html>
