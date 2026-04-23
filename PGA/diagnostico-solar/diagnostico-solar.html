@@ -843,105 +843,167 @@ tr.qc-g{background:rgba(52,211,153,.025);}
   <div class="rule"></div>
 
   <style>
-  .ads-grid{display:flex;justify-content:center;align-items:center;gap:1.1em;flex:1;min-height:0;padding:.3em 0;}
-  .ad-card{position:relative;aspect-ratio:4/5;height:100%;max-height:100%;border-radius:.9em;overflow:hidden;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);display:flex;flex-direction:column;}
-  .ad-frame{position:relative;flex:1;min-height:0;overflow:hidden;}
-  .ad-bg{position:absolute;inset:0;background-size:cover;background-position:center;}
-  .ad-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,0) 35%,rgba(14,52,34,.35) 70%,rgba(14,52,34,.88) 100%);}
-  .ad-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:.95em 1.1em;}
-  .ad-brand-wrap{display:flex;align-items:center;gap:.55em;background:rgba(255,255,255,.92);padding:.38em .65em .38em .5em;border-radius:100px;backdrop-filter:blur(8px);box-shadow:0 4px 14px rgba(0,0,0,.15);}
-  .ad-brand-logo{height:1.35em;width:auto;display:block;}
-  .ad-brand-name{font-family:var(--FD);font-weight:800;font-size:.65em;color:#0C1A11;letter-spacing:-.01em;line-height:1;}
-  .ad-sponsored{font-family:var(--FM);font-size:.52em;letter-spacing:.14em;color:rgba(255,255,255,.85);text-transform:uppercase;background:rgba(0,0,0,.35);padding:.35em .65em;border-radius:100px;backdrop-filter:blur(8px);}
-  .ad-content{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:1.1em 1.1em 1em;display:flex;flex-direction:column;gap:.6em;}
-  .ad-h1{font-family:var(--FD);font-weight:900;font-size:1.35em;line-height:1;color:#fff;margin-bottom:.1em;letter-spacing:-.015em;text-shadow:0 2px 14px rgba(0,0,0,.4);}
-  .ad-h1 em{color:#A6F5C5;font-style:normal;}
-  .ad-sub{font-family:var(--FB);font-size:.68em;color:rgba(255,255,255,.9);line-height:1.45;text-shadow:0 1px 6px rgba(0,0,0,.35);max-width:20em;}
-  .ad-cta{display:inline-flex;align-items:center;gap:.45em;background:#fff;color:#0C3422;font-family:var(--FD);font-weight:800;font-size:.72em;padding:.7em 1.15em;border-radius:.45em;text-transform:uppercase;letter-spacing:.02em;align-self:flex-start;box-shadow:0 4px 14px rgba(0,0,0,.2);}
-  .ad-meta-bar{background:#fff;padding:.55em .85em;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(0,0,0,.06);flex-shrink:0;}
-  .ad-meta-l{display:flex;flex-direction:column;gap:.1em;}
-  .ad-meta-url{font-family:var(--FM);font-size:.52em;color:#888;letter-spacing:.04em;text-transform:uppercase;}
-  .ad-meta-headline{font-family:var(--FD);font-weight:700;font-size:.66em;color:#0C1A11;line-height:1;}
-  .ad-meta-btn{background:#0C3422;color:#fff;font-family:var(--FD);font-weight:700;font-size:.58em;padding:.55em .9em;border-radius:.3em;text-transform:uppercase;letter-spacing:.04em;}
+  /* ── Paleta light scoped al slide s11 ── */
+  #s11{--adbg:#FAFBF8;--adbg2:#F0F7F2;--adtext:#0C2E1E;--admute:#6B857B;--adline:#E4EDE7;--adgreen:#059669;--adg-lt:#10B981;--adg-bg:#E8F7EE;--admono:'DM Mono',monospace;}
+  .ads-grid{display:flex;justify-content:center;align-items:center;gap:1em;flex:1;min-height:0;padding:.3em 0;}
+  .ad-card{position:relative;aspect-ratio:4/5;height:100%;max-height:100%;border-radius:1em;overflow:hidden;background:var(--adbg);box-shadow:0 20px 50px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.05);display:flex;flex-direction:column;}
+
+  /* ── Logo chip + Publicidad tag (compartidos) ── */
+  .ad-chip{display:inline-flex;align-items:center;background:#fff;padding:.45em .9em;border-radius:100px;box-shadow:0 3px 12px rgba(12,46,30,.12),0 0 0 1px rgba(12,46,30,.06);}
+  .ad-chip img{height:1.7em;width:auto;display:block;}
+  .ad-spons{font-family:var(--admono);font-size:.55em;letter-spacing:.14em;color:var(--admute);text-transform:uppercase;}
+
+  /* ── Footer Meta (compartido por ad 1) ── */
+  .ad-foot{background:#fff;padding:.55em .9em;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--adline);flex-shrink:0;gap:.5em;}
+  .ad-foot-url{font-family:var(--admono);font-size:.54em;letter-spacing:.08em;color:var(--admute);text-transform:uppercase;line-height:1.2;margin-bottom:.15em;}
+  .ad-foot-h{font-family:var(--FD);font-weight:700;font-size:.68em;color:var(--adtext);line-height:1;}
+  .ad-foot-btn{background:var(--adgreen);color:#fff;font-family:var(--FD);font-weight:700;font-size:.58em;padding:.55em .85em;border-radius:.3em;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;white-space:nowrap;}
+
+  /* ════════ AD 1 — PHOTO HERO + LIGHT CARD ════════ */
+  .ad-1{display:flex;flex-direction:column;}
+  .ad-1-photo{position:relative;flex:1.1;min-height:0;background-size:cover;background-position:center;overflow:hidden;}
+  .ad-1-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,var(--adbg) 100%);}
+  .ad-1-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:.85em 1em;}
+  .ad-1-top .ad-spons{color:rgba(255,255,255,.9);background:rgba(0,0,0,.4);padding:.3em .6em;border-radius:100px;backdrop-filter:blur(6px);}
+  .ad-1-content{background:var(--adbg);padding:1em 1.1em 1.1em;display:flex;flex-direction:column;gap:.5em;position:relative;}
+  .ad-1-content::before{content:'';position:absolute;top:0;left:1.1em;right:1.1em;height:1px;background:linear-gradient(90deg,var(--adgreen),transparent 70%);opacity:.45;}
+  .ad-1-tag{font-family:var(--admono);font-size:.55em;letter-spacing:.16em;color:var(--adgreen);text-transform:uppercase;font-weight:500;}
+  .ad-1-h1{font-family:var(--FD);font-weight:900;font-size:1.22em;line-height:1.05;color:var(--adtext);letter-spacing:-.015em;}
+  .ad-1-h1 em{color:var(--adgreen);font-style:normal;}
+  .ad-1-meta{display:flex;gap:.7em;flex-wrap:wrap;font-family:var(--admono);font-size:.54em;color:var(--admute);letter-spacing:.04em;}
+  .ad-1-meta span{display:inline-flex;align-items:center;gap:.35em;}
+  .ad-1-meta span::before{content:'';width:.32em;height:.32em;background:var(--adgreen);border-radius:50%;flex-shrink:0;}
+  .ad-1-cta{display:inline-flex;align-items:center;gap:.4em;background:var(--adtext);color:#fff;font-family:var(--FD);font-weight:800;font-size:.72em;padding:.65em 1em;border-radius:.4em;align-self:flex-start;letter-spacing:-.005em;margin-top:.15em;}
+
+  /* ════════ AD 2 — NUMERIC HERO + MINI CHART ════════ */
+  .ad-2{background:linear-gradient(170deg,var(--adbg) 0%,var(--adg-bg) 100%);padding:.95em 1.05em 1em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:hidden;}
+  .ad-2::before{content:'';position:absolute;top:-3em;right:-3em;width:10em;height:10em;border-radius:50%;background:radial-gradient(circle,rgba(5,150,105,.08) 0%,transparent 65%);pointer-events:none;}
+  .ad-2-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
+  .ad-2-label{font-family:var(--admono);font-size:.56em;letter-spacing:.16em;color:var(--adgreen);text-transform:uppercase;margin-top:.05em;font-weight:500;}
+  .ad-2-hero{position:relative;z-index:1;display:flex;flex-direction:column;gap:.1em;}
+  .ad-2-num{font-family:var(--FD);font-weight:900;font-size:4.4em;line-height:.82;color:var(--adgreen);letter-spacing:-.04em;text-shadow:0 4px 24px rgba(5,150,105,.18);}
+  .ad-2-numsub{font-family:var(--FD);font-weight:800;font-size:.9em;color:var(--adtext);text-transform:uppercase;letter-spacing:-.005em;line-height:1.05;margin-top:.15em;}
+  .ad-2-numsub em{color:var(--adgreen);font-style:normal;}
+  .ad-2-photo{height:3.5em;border-radius:.55em;background-size:cover;background-position:center;position:relative;overflow:hidden;flex-shrink:0;box-shadow:0 6px 18px rgba(0,0,0,.18);}
+  .ad-2-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,46,30,.25),transparent 55%);}
+  .ad-2-photo-tag{position:absolute;top:.4em;left:.5em;z-index:1;font-family:var(--admono);font-size:.5em;letter-spacing:.1em;color:#fff;background:rgba(5,150,105,.9);padding:.25em .55em;border-radius:100px;text-transform:uppercase;backdrop-filter:blur(4px);font-weight:500;}
+  .ad-2-chart{background:rgba(255,255,255,.75);border:1px solid var(--adline);border-radius:.55em;padding:.6em .7em;display:flex;flex-direction:column;gap:.42em;backdrop-filter:blur(6px);}
+  .ad-2-chart-ttl{font-family:var(--admono);font-size:.5em;letter-spacing:.12em;color:var(--admute);text-transform:uppercase;}
+  .ad-2-row{display:flex;align-items:center;gap:.45em;}
+  .ad-2-row-lbl{font-family:var(--admono);font-size:.5em;color:var(--admute);width:3em;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em;}
+  .ad-2-row-bar{flex:1;height:.55em;background:var(--adline);border-radius:100px;overflow:hidden;position:relative;}
+  .ad-2-row-bar-fill{position:absolute;top:0;left:0;bottom:0;background:#E57373;border-radius:100px;}
+  .ad-2-row-bar-fill.good{background:linear-gradient(90deg,var(--adg-lt),var(--adgreen));}
+  .ad-2-row-val{font-family:var(--admono);font-size:.55em;color:var(--adtext);font-weight:500;width:3em;text-align:right;flex-shrink:0;}
+  .ad-2-row-val.good{color:var(--adgreen);font-weight:600;}
+  .ad-2-cta{display:flex;align-items:center;justify-content:center;gap:.4em;background:var(--adgreen);color:#fff;font-family:var(--FD);font-weight:800;font-size:.75em;padding:.7em 1em;border-radius:.4em;letter-spacing:-.005em;box-shadow:0 6px 18px rgba(5,150,105,.28);}
+
+  /* ════════ AD 3 — RECEIPT + ANNOTATION OVERLAY ════════ */
+  .ad-3{background:var(--adbg);display:flex;flex-direction:column;}
+  .ad-3-head{padding:.95em 1em .8em;position:relative;flex-shrink:0;}
+  .ad-3-head::after{content:'';position:absolute;bottom:0;left:1em;right:1em;height:1px;background:linear-gradient(90deg,var(--adgreen),transparent 70%);opacity:.4;}
+  .ad-3-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.55em;}
+  .ad-3-eyebrow{font-family:var(--admono);font-size:.55em;letter-spacing:.16em;color:var(--adgreen);text-transform:uppercase;font-weight:500;margin-bottom:.3em;}
+  .ad-3-h1{font-family:var(--FD);font-weight:900;font-size:1.08em;line-height:1.05;color:var(--adtext);letter-spacing:-.015em;}
+  .ad-3-h1 em{color:var(--adgreen);font-style:normal;}
+  .ad-3-stage{position:relative;flex:1;min-height:0;background-image:url('assets/ad-recibo-cfe.jpg');background-size:cover;background-position:center 35%;overflow:hidden;}
+  .ad-3-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,251,248,.15) 0%,rgba(250,251,248,.5) 100%);}
+  .ad-3-anno{position:absolute;z-index:2;font-family:var(--admono);padding:.4em .65em;border-radius:.4em;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:.1em;line-height:1;}
+  .ad-3-anno-lbl{font-size:.48em;letter-spacing:.12em;color:var(--admute);text-transform:uppercase;}
+  .ad-3-anno-val{font-family:var(--FD);font-weight:900;font-size:1em;letter-spacing:-.02em;}
+  .ad-3-anno.bad{top:15%;left:7%;border-left:3px solid #DC2626;}
+  .ad-3-anno.bad .ad-3-anno-val{color:#B91C1C;text-decoration:line-through;text-decoration-thickness:2px;}
+  .ad-3-anno.good{bottom:18%;right:7%;border-left:3px solid var(--adgreen);}
+  .ad-3-anno.good .ad-3-anno-val{color:var(--adgreen);}
+  .ad-3-arrow{position:absolute;z-index:1;top:32%;left:32%;width:34%;height:34%;pointer-events:none;}
+  .ad-3-cta-wrap{padding:.8em 1em .9em;background:var(--adbg);flex-shrink:0;display:flex;align-items:center;gap:.65em;}
+  .ad-3-cta{display:inline-flex;align-items:center;gap:.4em;background:var(--adtext);color:#fff;font-family:var(--FD);font-weight:800;font-size:.72em;padding:.65em 1em;border-radius:.4em;letter-spacing:-.005em;}
+  .ad-3-note{font-family:var(--admono);font-size:.52em;color:var(--admute);letter-spacing:.04em;line-height:1.3;}
+  .ad-3-note b{color:var(--adgreen);font-weight:500;}
   </style>
 
   <div class="ads-grid">
 
-    <!-- AD 1 -->
-    <div class="ad-card">
-      <div class="ad-frame">
-        <div class="ad-bg" style="background-image:url('https://procoma.com.ec/wp-content/uploads/2025/02/cuanto_cuesta_poner_paneles_solares_en_mexico.webp');"></div>
-        <div class="ad-tint"></div>
-        <div class="ad-top">
-          <div class="ad-brand-wrap">
-            <img class="ad-brand-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A3QO3nwO7etLGVK7/logo-AE0aJay537URRbrZ.png" alt="Energía Simple">
-          </div>
-          <div class="ad-sponsored">Publicidad</div>
-        </div>
-        <div class="ad-content">
-          <div class="ad-h1">¿Cuánto te cuesta<br>instalar <em>paneles solares?</em></div>
-          <div class="ad-sub">Responde 9 preguntas y recibe tu cotización personalizada con ahorro proyectado a 25 años.</div>
-          <div class="ad-cta">Calcular mi ahorro →</div>
-        </div>
+    <!-- ════════ AD 1 — PHOTO HERO ════════ -->
+    <div class="ad-card ad-1">
+      <div class="ad-1-top">
+        <div class="ad-chip"><img src="assets/logo.png" alt="Energía Simple"></div>
+        <div class="ad-spons">Publicidad</div>
       </div>
-      <div class="ad-meta-bar">
-        <div class="ad-meta-l">
-          <div class="ad-meta-url">energiasimple.mx</div>
-          <div class="ad-meta-headline">Diagnóstico solar gratuito</div>
+      <div class="ad-1-photo" style="background-image:url('assets/ad-paneles-casa.webp');"></div>
+      <div class="ad-1-content">
+        <div class="ad-1-tag">// Diagnóstico gratuito</div>
+        <div class="ad-1-h1">¿Cuánto cuesta tu<br><em>sistema solar?</em></div>
+        <div class="ad-1-meta">
+          <span>9 preguntas</span>
+          <span>3 minutos</span>
+          <span>Resultado al instante</span>
         </div>
-        <div class="ad-meta-btn">Más info</div>
+        <div class="ad-1-cta">Calcular mi ahorro →</div>
+      </div>
+      <div class="ad-foot">
+        <div><div class="ad-foot-url">energiasimple.mx</div><div class="ad-foot-h">Cotización personalizada</div></div>
+        <div class="ad-foot-btn">Más info</div>
       </div>
     </div>
 
-    <!-- AD 2 -->
-    <div class="ad-card">
-      <div class="ad-frame">
-        <div class="ad-bg" style="background-image:url('https://cdn.prod.website-files.com/5ff3273633e29c2a7c8b6c80/60e2bc96d03c584784f200fa_blog_paneles-solares.jpg');"></div>
-        <div class="ad-tint"></div>
-        <div class="ad-top">
-          <div class="ad-brand-wrap">
-            <img class="ad-brand-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A3QO3nwO7etLGVK7/logo-AE0aJay537URRbrZ.png" alt="Energía Simple">
-          </div>
-          <div class="ad-sponsored">Publicidad</div>
+    <!-- ════════ AD 2 — NUMERIC HERO ════════ -->
+    <div class="ad-card ad-2">
+      <div class="ad-2-top">
+        <div class="ad-chip"><img src="assets/logo.png" alt="Energía Simple"></div>
+        <div class="ad-spons">Publicidad</div>
+      </div>
+      <div class="ad-2-hero">
+        <div class="ad-2-label">// Tu recibo CFE baja</div>
+        <div class="ad-2-num">−92%</div>
+        <div class="ad-2-numsub">En promedio,<br>con <em>paneles solares</em></div>
+      </div>
+      <div class="ad-2-photo" style="background-image:url('assets/ad-paneles-cielo.jpg');">
+        <span class="ad-2-photo-tag">Instalación en 8 sem.</span>
+      </div>
+      <div class="ad-2-chart">
+        <div class="ad-2-chart-ttl">// Recibo bimestral promedio</div>
+        <div class="ad-2-row">
+          <span class="ad-2-row-lbl">Antes</span>
+          <div class="ad-2-row-bar"><div class="ad-2-row-bar-fill" style="width:100%;"></div></div>
+          <span class="ad-2-row-val">$2,000</span>
         </div>
-        <div class="ad-content">
-          <div class="ad-h1">Reduce tu recibo<br>de luz hasta <em>92%</em></div>
-          <div class="ad-sub">Descubre tu tarifa CFE, cuánto generarías en tu estado y tu retorno de inversión exacto.</div>
-          <div class="ad-cta">Ver mi diagnóstico →</div>
+        <div class="ad-2-row">
+          <span class="ad-2-row-lbl">Después</span>
+          <div class="ad-2-row-bar"><div class="ad-2-row-bar-fill good" style="width:8%;"></div></div>
+          <span class="ad-2-row-val good">$160</span>
         </div>
       </div>
-      <div class="ad-meta-bar">
-        <div class="ad-meta-l">
-          <div class="ad-meta-url">energiasimple.mx</div>
-          <div class="ad-meta-headline">Resultado al instante</div>
-        </div>
-        <div class="ad-meta-btn">Más info</div>
-      </div>
+      <div class="ad-2-cta">Ver mi diagnóstico →</div>
     </div>
 
-    <!-- AD 3 -->
-    <div class="ad-card">
-      <div class="ad-frame">
-        <div class="ad-bg" style="background-image:url('https://energiahoy.com/wp-content/uploads/2020/06/recibo-de-luz.jpg');background-position:center top;"></div>
-        <div class="ad-tint"></div>
-        <div class="ad-top">
-          <div class="ad-brand-wrap">
-            <img class="ad-brand-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A3QO3nwO7etLGVK7/logo-AE0aJay537URRbrZ.png" alt="Energía Simple">
-          </div>
-          <div class="ad-sponsored">Publicidad</div>
+    <!-- ════════ AD 3 — RECEIPT + ANNOTATIONS ════════ -->
+    <div class="ad-card ad-3">
+      <div class="ad-3-head">
+        <div class="ad-3-topbar">
+          <div class="ad-chip"><img src="assets/logo.png" alt="Energía Simple"></div>
+          <div class="ad-spons">Publicidad</div>
         </div>
-        <div class="ad-content">
-          <div class="ad-h1">Tu recibo CFE<br>puede bajar <em>hasta 92%</em></div>
-          <div class="ad-sub">Descubre si estás en tarifa DAC y cuánto ahorrarías con paneles solares. Diagnóstico gratis.</div>
-          <div class="ad-cta">Revisar mi recibo →</div>
+        <div class="ad-3-eyebrow">// Prueba real</div>
+        <div class="ad-3-h1">Tu recibo CFE puede bajar hasta <em>$1,400</em> al bimestre</div>
+      </div>
+      <div class="ad-3-stage">
+        <svg class="ad-3-arrow" viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
+          <path d="M 15 20 Q 45 55 82 78" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5" fill="none"/>
+          <path d="M 75 70 L 82 78 L 74 84" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <div class="ad-3-anno bad">
+          <div class="ad-3-anno-lbl">Sin paneles</div>
+          <div class="ad-3-anno-val">$1,468</div>
+        </div>
+        <div class="ad-3-anno good">
+          <div class="ad-3-anno-lbl">Con paneles</div>
+          <div class="ad-3-anno-val">$41</div>
         </div>
       </div>
-      <div class="ad-meta-bar">
-        <div class="ad-meta-l">
-          <div class="ad-meta-url">energiasimple.mx</div>
-          <div class="ad-meta-headline">Cotización personalizada</div>
-        </div>
-        <div class="ad-meta-btn">Más info</div>
+      <div class="ad-3-cta-wrap">
+        <div class="ad-3-cta">Revisar mi recibo →</div>
+        <div class="ad-3-note">Recibos reales<br><b>· ahorro comprobado</b></div>
       </div>
     </div>
 
