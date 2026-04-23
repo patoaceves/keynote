@@ -876,8 +876,9 @@ tr.qc-g{background:rgba(52,211,153,.025);}
   .ad-1-cta{display:inline-flex;align-items:center;gap:.4em;background:var(--adtext);color:#fff;font-family:var(--FD);font-weight:800;font-size:.72em;padding:.65em 1em;border-radius:.4em;align-self:flex-start;letter-spacing:-.005em;margin-top:.15em;}
 
   /* ════════ AD 2 — NUMERIC HERO + MINI CHART ════════ */
-  .ad-2{background:linear-gradient(170deg,var(--adbg) 0%,var(--adg-bg) 100%);padding:.95em 1.05em 1em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:hidden;}
-  .ad-2::before{content:'';position:absolute;top:-3em;right:-3em;width:10em;height:10em;border-radius:50%;background:radial-gradient(circle,rgba(5,150,105,.08) 0%,transparent 65%);pointer-events:none;}
+  .ad-2{display:flex;flex-direction:column;background:var(--adbg);}
+  .ad-2-body{flex:1;min-height:0;background:linear-gradient(170deg,var(--adbg) 0%,var(--adg-bg) 100%);padding:.95em 1.05em 1em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:hidden;}
+  .ad-2-body::before{content:'';position:absolute;top:-3em;right:-3em;width:10em;height:10em;border-radius:50%;background:radial-gradient(circle,rgba(5,150,105,.08) 0%,transparent 65%);pointer-events:none;}
   .ad-2-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
   .ad-2-label{font-family:var(--admono);font-size:.56em;letter-spacing:.16em;color:var(--adgreen);text-transform:uppercase;margin-top:.05em;font-weight:500;}
   .ad-2-hero{position:relative;z-index:1;display:flex;flex-direction:column;gap:.1em;}
@@ -916,7 +917,7 @@ tr.qc-g{background:rgba(52,211,153,.025);}
   .ad-3-anno.good{bottom:18%;right:7%;border-left:3px solid var(--adgreen);}
   .ad-3-anno.good .ad-3-anno-val{color:var(--adgreen);}
   .ad-3-arrow{position:absolute;z-index:1;top:28%;left:28%;width:44%;height:44%;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25));}
-  .ad-3-cta-wrap{padding:.8em 1em .9em;background:var(--adbg);flex-shrink:0;display:flex;align-items:center;gap:.65em;}
+  .ad-3-cta-wrap{padding:.85em 1em;background:var(--adbg);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
   .ad-3-cta{display:inline-flex;align-items:center;gap:.4em;background:var(--adtext);color:#fff;font-family:var(--FD);font-weight:800;font-size:.72em;padding:.65em 1em;border-radius:.4em;letter-spacing:-.005em;}
   .ad-3-note{font-family:var(--admono);font-size:.52em;color:var(--admute);letter-spacing:.04em;line-height:1.3;}
   .ad-3-note b{color:var(--adgreen);font-weight:500;}
@@ -939,7 +940,7 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <span>3 minutos</span>
           <span>Resultado al instante</span>
         </div>
-        <div class="ad-1-cta">Calcular mi ahorro →</div>
+        <div class="ad-1-cta">Haz tu diagnóstico →</div>
       </div>
       <div class="ad-foot">
         <div><div class="ad-foot-url">energiasimple.mx</div><div class="ad-foot-h">Cotización personalizada</div></div>
@@ -949,32 +950,38 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
     <!-- ════════ AD 2 — NUMERIC HERO ════════ -->
     <div class="ad-card ad-2">
-      <div class="ad-2-top">
-        <div class="ad-chip"><img src="assets/logo.png" alt="Energía Simple"></div>
-        <div class="ad-spons">Publicidad</div>
-      </div>
-      <div class="ad-2-hero">
-        <div class="ad-2-label">Tu recibo CFE baja</div>
-        <div class="ad-2-num">−92%</div>
-        <div class="ad-2-numsub">En promedio,<br>con <em>paneles solares</em></div>
-      </div>
-      <div class="ad-2-photo" style="background-image:url('assets/ad-paneles-cielo.jpg');">
-        <span class="ad-2-photo-tag">Instalación en 8 sem.</span>
-      </div>
-      <div class="ad-2-chart">
-        <div class="ad-2-chart-ttl">Recibo bimestral promedio</div>
-        <div class="ad-2-row">
-          <span class="ad-2-row-lbl">Antes</span>
-          <div class="ad-2-row-bar"><div class="ad-2-row-bar-fill" style="width:100%;"></div></div>
-          <span class="ad-2-row-val">$2,000</span>
+      <div class="ad-2-body">
+        <div class="ad-2-top">
+          <div class="ad-chip"><img src="assets/logo.png" alt="Energía Simple"></div>
+          <div class="ad-spons">Publicidad</div>
         </div>
-        <div class="ad-2-row">
-          <span class="ad-2-row-lbl">Después</span>
-          <div class="ad-2-row-bar"><div class="ad-2-row-bar-fill good" style="width:8%;"></div></div>
-          <span class="ad-2-row-val good">$160</span>
+        <div class="ad-2-hero">
+          <div class="ad-2-label">Tu recibo CFE baja</div>
+          <div class="ad-2-num">−92%</div>
+          <div class="ad-2-numsub">En promedio,<br>con <em>paneles solares</em></div>
         </div>
+        <div class="ad-2-photo" style="background-image:url('assets/ad-paneles-cielo.jpg');">
+          <span class="ad-2-photo-tag">Instalación en 8 sem.</span>
+        </div>
+        <div class="ad-2-chart">
+          <div class="ad-2-chart-ttl">Recibo bimestral promedio</div>
+          <div class="ad-2-row">
+            <span class="ad-2-row-lbl">Antes</span>
+            <div class="ad-2-row-bar"><div class="ad-2-row-bar-fill" style="width:100%;"></div></div>
+            <span class="ad-2-row-val">$2,000</span>
+          </div>
+          <div class="ad-2-row">
+            <span class="ad-2-row-lbl">Después</span>
+            <div class="ad-2-row-bar"><div class="ad-2-row-bar-fill good" style="width:8%;"></div></div>
+            <span class="ad-2-row-val good">$160</span>
+          </div>
+        </div>
+        <div class="ad-2-cta">Haz tu diagnóstico →</div>
       </div>
-      <div class="ad-2-cta">Ver mi diagnóstico →</div>
+      <div class="ad-foot">
+        <div><div class="ad-foot-url">energiasimple.mx</div><div class="ad-foot-h">Resultado al instante</div></div>
+        <div class="ad-foot-btn">Más info</div>
+      </div>
     </div>
 
     <!-- ════════ AD 3 — RECEIPT + ANNOTATIONS ════════ -->
@@ -1006,8 +1013,11 @@ tr.qc-g{background:rgba(52,211,153,.025);}
         </div>
       </div>
       <div class="ad-3-cta-wrap">
-        <div class="ad-3-cta">Revisar mi recibo →</div>
-        <div class="ad-3-note">Recibos reales<br><b>· ahorro comprobado</b></div>
+        <div class="ad-3-cta">Haz tu diagnóstico →</div>
+      </div>
+      <div class="ad-foot">
+        <div><div class="ad-foot-url">energiasimple.mx</div><div class="ad-foot-h">Diagnóstico gratuito</div></div>
+        <div class="ad-foot-btn">Más info</div>
       </div>
     </div>
 
