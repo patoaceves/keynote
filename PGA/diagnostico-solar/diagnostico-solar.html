@@ -64,27 +64,27 @@ body::before{content:'';position:fixed;inset:0;background-image:repeating-linear
 
 /* ══ S2 — PROBLEMA + SOLUCIÓN ══ */
 #s2{padding-bottom:1.5em;}
-.s2-body{display:flex;flex-direction:column;gap:0;flex:1;min-height:0;}
+.s2-body{display:flex;flex-direction:column;gap:.6em;flex:1;min-height:0;justify-content:center;}
 /* Track */
-.track{display:flex;align-items:stretch;gap:0;position:relative;flex:1;}
+.track{display:flex;align-items:stretch;gap:0;position:relative;flex:none;}
 .track-label{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);padding:.6em .5em;flex-shrink:0;border-radius:.5em 0 0 .5em;display:flex;align-items:center;justify-content:center;min-width:2.2em;}
 .track-label.bad{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.18);border-right:none;}
 .track-label.good{background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);border-right:none;}
 .track-steps{display:flex;flex:1;border-radius:0 .5em .5em 0;overflow:hidden;}
 .track.bad .track-steps{border:1px solid rgba(248,113,113,.18);border-left:none;background:rgba(248,113,113,.04);}
 .track.good .track-steps{border:1px solid var(--cring);border-left:none;background:var(--cdim);}
-.step{flex:1;display:flex;flex-direction:column;padding:.82em .92em;border-right:1px solid;}
+.step{flex:1;display:flex;flex-direction:column;padding:1.1em 1.05em;border-right:1px solid;justify-content:flex-start;}
 .track.bad .step{border-color:rgba(248,113,113,.12);}
 .track.good .step{border-color:rgba(0,255,135,.12);}
 .step:last-child{border-right:none;}
-.step-ico{font-family:var(--FD);font-weight:800;font-size:1.05em;line-height:1;margin-bottom:.35em;flex-shrink:0;text-transform:uppercase;}
+.step-ico{font-family:var(--FD);font-weight:800;font-size:1.1em;line-height:1;margin-bottom:.5em;flex-shrink:0;text-transform:uppercase;}
 .step-n{font-family:var(--FM);font-size:.6em;letter-spacing:.1em;margin-bottom:.15em;text-transform:uppercase;}
 .track.bad .step-n{color:rgba(248,113,113,.6);}
 .track.good .step-n{color:rgba(0,255,135,.6);}
-.step-t{font-family:var(--FD);font-weight:700;font-size:.92em;text-transform:none;line-height:1.15;margin-bottom:.25em;}
+.step-t{font-family:var(--FD);font-weight:700;font-size:1.05em;text-transform:none;line-height:1.2;margin-bottom:.3em;}
 .track.bad .step-t{color:rgba(240,255,244,.8);}
 .track.good .step-t{color:var(--text);}
-.step-d{font-size:.76em;line-height:1.45;flex:1;}
+.step-d{font-size:.88em;line-height:1.55;flex:1;}
 .track.bad .step-d{color:rgba(240,255,244,.4);}
 .track.good .step-d{color:var(--t2);}
 .step-outcome{margin-top:.4em;padding:.3em .55em;border-radius:.3em;font-family:var(--FM);font-size:.52em;letter-spacing:.08em;align-self:flex-start;}
@@ -96,18 +96,19 @@ body::before{content:'';position:fixed;inset:0;background-image:repeating-linear
 
 /* ══ S3 — 9 PREGUNTAS TABLA ══ */
 #s3{padding-bottom:1.6em;}
-.q-tbl-wrap{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+.q-tbl-wrap{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;max-width:58em;width:100%;margin:0 auto;background:var(--s1);border:1px solid var(--b2);border-radius:.75em;padding:.5em 1em;box-shadow:0 0 0 1px rgba(0,255,135,.04),0 8px 40px rgba(0,0,0,.35);position:relative;}
 .q-tbl{width:100%;border-collapse:collapse;flex:1;}
+.q-tbl-wrap::before,.q-tbl-wrap::after{content:'';position:absolute;width:.7em;height:.7em;border:1px solid var(--cyan);opacity:.5;}.q-tbl-wrap::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}.q-tbl-wrap::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
 .q-tbl thead tr{border-bottom:1px solid var(--b2);}
-.q-tbl thead th{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding:.5em .75em;text-align:left;font-weight:500;}
+.q-tbl thead th{font-family:var(--FM);font-size:.6em;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);opacity:.75;padding:.8em .85em .6em;text-align:left;font-weight:500;}
 .q-tbl thead th:first-child{width:5.5em;}
-.q-tbl thead th:nth-child(2){width:17em;}
+.q-tbl thead th:nth-child(2){width:13em;}
 .q-tbl thead th:nth-child(3){width:auto;}
-.q-tbl thead th:last-child{width:22em;}
+.q-tbl thead th:last-child{width:auto;}
 .q-tbl tbody tr{border-bottom:1px solid var(--b1);transition:background .15s;}
 .q-tbl tbody tr:last-child{border-bottom:none;}
 .q-tbl tbody tr:hover{background:rgba(0,255,135,.03);}
-.q-tbl td{padding:.48em .7em;vertical-align:middle;}
+.q-tbl td{padding:.6em .85em;vertical-align:middle;}
 .td-num{font-family:var(--FM);font-size:.65em;font-weight:500;color:var(--t3);white-space:nowrap;}
 .td-concept{font-family:var(--FD);font-weight:700;font-size:.85em;text-transform:uppercase;color:var(--text);line-height:1.1;display:flex;flex-direction:column;align-items:flex-start;}
 .td-concept small{display:block;font-family:var(--FM);font-size:.62em;letter-spacing:.07em;color:var(--t3);font-weight:400;text-transform:none;margin-top:.1em;}
@@ -152,11 +153,11 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 .adm-split{display:grid;grid-template-columns:1fr 1.3fr;gap:1.2em;flex:1;min-height:0;align-items:stretch;}
 .adm-desc{display:flex;flex-direction:column;gap:.45em;min-height:0;justify-content:space-between;}
 .adm-hero{background:var(--s1);border:1px solid rgba(0,255,135,.2);border-radius:.8em;padding:1em 1.2em;display:flex;flex-direction:column;gap:.35em;}
-.ah-tag{font-family:var(--FM);font-size:.54em;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);}
-.ah-title{font-family:var(--FD);font-weight:800;font-size:1.3em;color:var(--text);}
+.ah-tag{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:.3em;}
+.ah-title{font-family:var(--FD);font-weight:800;font-size:1.7em;color:var(--text);line-height:1.05;}
 .ah-desc{font-size:.68em;color:var(--t2);line-height:1.5;}
 .feat-list{display:flex;flex-direction:column;gap:.38em;flex:1;justify-content:flex-start;margin-top:.3em;}
-.feat-item{display:flex;align-items:flex-start;gap:.55em;font-size:.8em;color:var(--t2);line-height:1.4;}
+.feat-item{display:flex;align-items:flex-start;gap:.6em;font-size:1em;color:var(--t2);line-height:1.45;}
 .feat-dot{width:.45em;height:.45em;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:.25em;}
 /* Admin UI preview */
 .adm-ui{display:flex;flex-direction:column;gap:.5em;min-height:0;}
@@ -181,12 +182,12 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 .ui-tariff-name{font-family:var(--FM);font-size:.48em;color:var(--t3);}
 .ui-tariff-val{font-family:var(--FM);font-size:.65em;color:var(--cyan);font-weight:500;margin-top:.1em;}
 /* HSP mini table */
-.ui-hsp-list{display:flex;flex-direction:column;gap:.25em;}
-.ui-hsp-row{display:flex;align-items:center;gap:.5em;}
-.ui-hsp-name{font-size:.62em;color:var(--t2);flex:1;}
-.ui-hsp-bar{height:.3em;background:var(--b2);border-radius:100px;flex:1;overflow:hidden;}
+.ui-hsp-list{display:grid;grid-template-columns:1fr 1fr;column-gap:1em;flex:1;align-content:space-between;}
+.ui-hsp-row{display:flex;align-items:center;gap:.45em;min-width:0;}
+.ui-hsp-name{font-size:.56em;color:var(--t2);width:7.5em;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ui-hsp-bar{height:.26em;background:var(--b2);border-radius:100px;flex:1;overflow:hidden;min-width:0;}
 .ui-hsp-fill{height:100%;background:var(--cyan);border-radius:100px;}
-.ui-hsp-val{font-family:var(--FM);font-size:.58em;color:var(--cyan);min-width:2.5em;text-align:right;}
+.ui-hsp-val{font-family:var(--FM);font-size:.54em;color:var(--cyan);min-width:1.8em;text-align:right;flex-shrink:0;}
 .ui-hsp-badge{font-family:var(--FM);font-size:.48em;padding:.15em .4em;border-radius:100px;}
 /* Fin plans */
 .ui-plan-grid{display:flex;flex-direction:column;gap:.3em;}
@@ -196,16 +197,17 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 .ui-plan-input{background:var(--s1);border:1px solid var(--b1);border-radius:.25em;padding:.3em .45em;font-family:var(--FM);font-size:.58em;color:var(--text);}
 
 /* ══ S9 — PLAN 8 SEMANAS ══ */
-#s9 .plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75em;flex:1;min-height:0;align-items:start;}
-.plan-phase{background:var(--s1);border:1px solid var(--b1);border-radius:.75em;padding:.9em 1em;display:flex;flex-direction:column;gap:.38em;position:relative;overflow:hidden;}
+#s9 .plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8em;margin:auto 0;max-width:62em;width:100%;align-self:center;align-items:stretch;}
+.plan-phase{background:var(--s1);border:1px solid var(--b1);border-radius:.75em;padding:1em 1.05em;display:flex;flex-direction:column;gap:.45em;position:relative;overflow:hidden;min-height:0;}
 .plan-phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .pp1::before{background:var(--cyan)}.pp2::before{background:var(--orange)}.pp3::before{background:var(--amber)}.pp4::before{background:var(--violet)}
-.ph-weeks{font-family:var(--FD);font-size:.82em;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.ph-weeks{font-family:var(--FD);font-size:.78em;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
 .pp1 .ph-weeks{color:var(--cyan)}.pp2 .ph-weeks{color:var(--orange)}.pp3 .ph-weeks{color:var(--amber)}.pp4 .ph-weeks{color:var(--violet)}
-.ph-name{font-family:var(--FD);font-weight:800;font-size:1.1em;text-transform:uppercase;color:var(--text);line-height:1.1;}
+.ph-name{font-family:var(--FD);font-weight:800;font-size:1.2em;text-transform:uppercase;color:var(--text);line-height:1.1;margin-bottom:.15em;}
 .ph-desc{font-size:.82em;color:var(--t2);line-height:1.5;}
-.ph-items{display:flex;flex-direction:column;gap:.28em;margin-top:.25em;flex:none;}
-.ph-item{display:flex;align-items:flex-start;gap:.5em;font-size:.79em;color:var(--t2);line-height:1.35;}
+.ph-para{font-size:.95em;color:var(--t2);line-height:1.6;flex:1;margin-top:.3em;display:flex;align-items:center;}
+.ph-items{display:flex;flex-direction:column;gap:.38em;margin-top:.3em;flex:1;}
+.ph-item{display:flex;align-items:flex-start;gap:.55em;font-size:.92em;color:var(--t2);line-height:1.45;}
 .ph-dot{width:.45em;height:.45em;border-radius:50%;flex-shrink:0;margin-top:.28em;}
 .pp1 .ph-dot{background:var(--cyan)}.pp2 .ph-dot{background:var(--orange)}.pp3 .ph-dot{background:var(--amber)}.pp4 .ph-dot{background:var(--violet)}
 .plan-footer{margin-top:.7em;background:var(--s2);border:1px solid var(--b2);border-radius:.5em;padding:.55em .8em;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
@@ -277,7 +279,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S2 — EL PROBLEMA Y LA SOLUCIÓN ══════════════════════════════ -->
 <div class="slide" id="s2">
-  <div class="stag">// 01 · CONTEXTO Y SOLUCIÓN</div>
   <div class="htitle" style="text-transform:none;font-size:2em;">Antes vs Después</div>
   <div class="rule"></div>
   <div class="s2-body">
@@ -304,11 +305,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <div class="step-ico" style="color:rgba(248,113,113,.65);">04 · Vendedor</div>
           <div class="step-t">Llamada de calificación ciega</div>
           <div class="step-d">El vendedor llama sin saber si el lead vale la pena. Tiempo invertido en calificación básica.</div>
-        </div>
-        <div class="step">
-          <div class="step-ico" style="color:rgba(248,113,113,.65);">05 · Resultado</div>
-          <div class="step-t">Conversión baja, costo alto</div>
-          <div class="step-d">Pocas propuestas formales. Alto costo por lead calificado. Ciclo largo sin datos.</div>
         </div>
       </div>
     </div>
@@ -344,11 +340,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <div class="step-t">Lead con perfil completo</div>
           <div class="step-d">"DAC, A/C, Sonora, 24 meses." El vendedor sabe exactamente cómo abrir la conversación.</div>
         </div>
-        <div class="step">
-          <div class="step-ico" style="color:rgba(0,255,135,.65);">05 · Resultado</div>
-          <div class="step-t">Más cierres, menor costo por lead</div>
-          <div class="step-d">El usuario ya vio el ROI. La conversación empieza con el argumento correcto.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -356,7 +347,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S3a — PREGUNTAS 1–5 ═════════════════════════════════════════ -->
 <div class="slide" id="s3">
-  <div class="stag">// 02 · CALIFICACIÓN INTELIGENTE · 1 DE 2</div>
   <div class="htitle"><em>Preguntas 01 a 05</em></div>
   <div class="rule"></div>
   <div class="q-tbl-wrap">
@@ -366,7 +356,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <th style="width:5em;">#</th>
           <th style="width:22em;">Concepto</th>
           <th>Descripción y propósito</th>
-          <th style="width:21em;">Rango / Valores esperados</th>
         </tr>
       </thead>
       <tbody>
@@ -374,31 +363,26 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <td class="td-num">01</td>
           <td><div class="td-concept">Recibo bimestral CFE<span class="td-cat" style="background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);">Consumo económico</span></div></td>
           <td class="td-desc">Variable principal del cálculo. Convierte el monto en kWh consumidos y determina el tamaño mínimo del sistema viable para el hogar.</td>
-          <td class="td-range"><em>$200</em> – <em>$10,000</em> MXN bimestrales.<br>Promedio nacional: ~$800.</td>
         </tr>
         <tr class="qc-o">
           <td class="td-num">02</td>
           <td><div class="td-concept">Estado de la República<span class="td-cat" style="background:var(--odim);color:var(--orange);border:1px solid rgba(251,146,60,.2);">Recurso solar</span></div></td>
           <td class="td-desc">Define las Horas Sol Pico disponibles. Sonora con 6.2 HSP genera un 38% más de energía que Chiapas con 4.5 HSP usando los mismos paneles.</td>
-          <td class="td-range">32 estados. HSP: <em>4.5</em> (Chiapas) a <em>6.4</em> (BCS, Sonora).</td>
         </tr>
         <tr class="qc-n">
           <td class="td-num">03</td>
           <td><div class="td-concept">Tarifa CFE<span class="td-cat" style="background:var(--cdim);color:var(--cyan);border:1px solid var(--cring);">Consumo económico</span></div></td>
           <td class="td-desc">Determina el costo real por kWh consumido. Tarifa DAC cobra 5× más que Tarifa 1 — cambia el ROI y la urgencia de compra radicalmente.</td>
-          <td class="td-range">Tarifa 1: <em>$1.10/kWh</em> · DAC: <em>$5.50/kWh</em><br>Opciones: 1 / DAC / No sé.</td>
         </tr>
         <tr class="qc-y">
           <td class="td-num">04</td>
           <td><div class="td-concept">Personas en el hogar<span class="td-cat" style="background:var(--ydim);color:var(--yellow);border:1px solid rgba(250,204,21,.2);">Perfil del hogar</span></div></td>
           <td class="td-desc">Valida y contextualiza el consumo declarado. Ayuda a detectar inconsistencias — una familia de 8 con recibo de $300 bimestral es una señal de alerta.</td>
-          <td class="td-range">1 a <em>12</em> personas. Promedio hogares MX: 3.7.</td>
         </tr>
         <tr class="qc-y">
           <td class="td-num">05</td>
           <td><div class="td-concept">Aire acondicionado<span class="td-cat" style="background:var(--ydim);color:var(--yellow);border:1px solid rgba(250,204,21,.2);">Perfil del hogar</span></div></td>
           <td class="td-desc">El A/C puede representar hasta el 60% del consumo residencial. Ajusta la curva estacional del diagnóstico y el cálculo del pico de verano.</td>
-          <td class="td-range">Sin A/C · <em>Sí, uno</em> · <em>Sí, varios</em><br>Mayor impacto en estados con clima extremo.</td>
         </tr>
       </tbody>
     </table>
@@ -407,7 +391,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S3b — PREGUNTAS 6–9 ═════════════════════════════════════════ -->
 <div class="slide" id="s3b">
-  <div class="stag">// 02 · CALIFICACIÓN INTELIGENTE · 2 DE 2</div>
   <div class="htitle"><em>Preguntas 06 a 09</em></div>
   <div class="rule"></div>
   <div class="q-tbl-wrap">
@@ -417,7 +400,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <th style="width:5em;">#</th>
           <th style="width:22em;">Concepto</th>
           <th>Descripción y propósito</th>
-          <th style="width:21em;">Rango / Valores esperados</th>
         </tr>
       </thead>
       <tbody>
@@ -425,25 +407,21 @@ tr.qc-g{background:rgba(52,211,153,.025);}
           <td class="td-num">06</td>
           <td><div class="td-concept">Espacio en techo<span class="td-cat" style="background:var(--ydim);color:var(--yellow);border:1px solid rgba(250,204,21,.2);">Perfil del hogar</span></div></td>
           <td class="td-desc">Limita el número máximo de paneles instalables. Un techo de 10m² no puede albergar más de 5 paneles estándar de 550W (~2m² c/u).</td>
-          <td class="td-range">Amplio <em>(+20m²)</em> · Limitado <em>(10–20m²)</em><br>No estoy seguro.</td>
         </tr>
         <tr class="qc-v">
           <td class="td-num">07</td>
           <td><div class="td-concept">Vehículo eléctrico<span class="td-cat" style="background:var(--vdim);color:var(--violet);border:1px solid rgba(167,139,250,.2);">Segmento premium</span></div></td>
           <td class="td-desc">Los EVs suman hasta 200 kWh/mes adicionales al consumo. Identifica prospectos de alto perfil con mayor necesidad de generación y ticket de inversión más alto.</td>
-          <td class="td-range">No · <em>Sí, ya tengo</em> · <em>Lo planeo</em><br>+200 kWh/mes si aplica.</td>
         </tr>
         <tr class="qc-g">
           <td class="td-num">08</td>
           <td><div class="td-concept">Meta principal<span class="td-cat" style="background:var(--gdim);color:var(--green);border:1px solid rgba(52,211,153,.2);">Intención de compra</span></div></td>
           <td class="td-desc">Define el pitch del asesor y cómo presentar el ROI. Ahorro = reducir recibo. Independencia = no depender de CFE. Plusvalía = inversión en la propiedad.</td>
-          <td class="td-range"><em>Ahorrar</em> · <em>Independencia energética</em><br><em>Plusvalía.</em></td>
         </tr>
         <tr class="qc-g">
           <td class="td-num">09</td>
           <td><div class="td-concept">Interés en financiar<span class="td-cat" style="background:var(--gdim);color:var(--green);border:1px solid rgba(52,211,153,.2);">Intención de compra</span></div></td>
           <td class="td-desc">Pre-califica intención y capacidad de compra. Filtra leads de contado vs. financiamiento antes del primer contacto, activando el módulo de planes en el resultado.</td>
-          <td class="td-range"><em>Contado</em> · <em>Sí, financiar</em><br>Ver todas las opciones.</td>
         </tr>
       </tbody>
     </table>
@@ -452,7 +430,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S4 — GRÁFICAS 1–3 ══════════════════════════════════════════ -->
 <div class="slide" id="s4">
-  <div class="stag">// 03 · DIAGNÓSTICO VISUAL · PARTE 1 DE 2</div>
   <div class="htitle">Gráficas que<br><em>convierten prospectos</em></div>
   <div class="rule"></div>
   <div class="ch-grid3">
@@ -490,7 +467,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S5 — GRÁFICAS 4–5 ══════════════════════════════════════════ -->
 <div class="slide" id="s5">
-  <div class="stag">// 03 · DIAGNÓSTICO VISUAL · PARTE 2 DE 2</div>
   <div class="htitle">Las gráficas que<br><em>superan la objeción de precio</em></div>
   <div class="rule"></div>
   <div class="ch-grid2">
@@ -513,7 +489,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S6 — ADMIN: IDENTIDAD VISUAL ════════════════════════════════ -->
 <div class="slide" id="s6">
-  <div class="stag">// 04 · PANEL DE ADMINISTRACIÓN · 1 DE 3</div>
   <div class="htitle">Todo configurable —<br><em>identidad visual</em></div>
   <div class="rule"></div>
   <div class="adm-split">
@@ -521,7 +496,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
       <div class="adm-hero">
         <div class="ah-tag">// Sin tocar código</div>
         <div class="ah-title">Identidad de marca</div>
-        <div class="ah-desc">Cada elemento visual del cotizador — nombre, colores, textos y CTA — se configura desde el panel en segundos. Los cambios se reflejan en tiempo real para todos los usuarios.</div>
       </div>
       <div class="feat-list">
         <div class="feat-item"><div class="feat-dot" style="background:var(--cyan);"></div>Nombre de la empresa (aparece en header y pantalla de bienvenida)</div>
@@ -586,7 +560,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S7 — ADMIN: PARÁMETROS DE CÁLCULO ══════════════════════════ -->
 <div class="slide" id="s7">
-  <div class="stag">// 04 · PANEL DE ADMINISTRACIÓN · 2 DE 3</div>
   <div class="htitle">Todo configurable —<br><em>parámetros de cálculo</em></div>
   <div class="rule"></div>
   <div class="adm-split">
@@ -594,7 +567,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
       <div class="adm-hero">
         <div class="ah-tag" style="color:var(--orange);">// Motor financiero personalizable</div>
         <div class="ah-title">Sistema solar y proyecciones</div>
-        <div class="ah-desc">El administrador puede ajustar cada variable técnica y financiera que alimenta los cálculos. Un cambio en el precio del panel se refleja instantáneamente en todos los diagnósticos nuevos.</div>
       </div>
       <div class="feat-list">
         <div class="feat-item"><div class="feat-dot" style="background:var(--orange);"></div>Potencia por panel (W) y precio unitario (MXN)</div>
@@ -672,7 +644,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
 
 <!-- ══════ S8 — ADMIN: MOTOR DE PRECISIÓN ════════════════════════════ -->
 <div class="slide" id="s8">
-  <div class="stag">// 04 · PANEL DE ADMINISTRACIÓN · 3 DE 3</div>
   <div class="htitle">Todo configurable —<br><em>motor de precisión regional</em></div>
   <div class="rule"></div>
   <div class="adm-split">
@@ -680,7 +651,6 @@ tr.qc-g{background:rgba(52,211,153,.025);}
       <div class="adm-hero">
         <div class="ah-tag" style="color:var(--amber);">// Actualizable en minutos</div>
         <div class="ah-title">Tarifas CFE y HSP por estado</div>
-        <div class="ah-desc">Cuando CFE actualiza sus tarifas o cuando el equipo comercial identifica mejor los valores de HSP locales, el administrador puede actualizarlos desde el panel — sin esperar a un desarrollador.</div>
       </div>
       <div class="feat-list">
         <div class="feat-item"><div class="feat-dot" style="background:var(--amber);"></div>8 tarifas CFE editables: 1, 1A, 1B, 1C, 1D, 1E, 1F y DAC</div>
@@ -707,207 +677,271 @@ tr.qc-g{background:rgba(52,211,153,.025);}
         <div class="ui-panel-title">// HSP por estado — Horas Sol Pico diarias</div>
         <div class="ui-hsp-list">
           <div class="ui-hsp-row"><span class="ui-hsp-name">Baja California Sur</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:100%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.4</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Sonora</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:97%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.2</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Chihuahua</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:87%;"></div></div><span class="ui-hsp-val">6.0</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Zacatecas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:78%;"></div></div><span class="ui-hsp-val">5.8</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Sinaloa</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:78%;"></div></div><span class="ui-hsp-val">5.8</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Coahuila</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:78%;"></div></div><span class="ui-hsp-val">5.8</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Nuevo León</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:68%;"></div></div><span class="ui-hsp-val">5.6</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Jalisco</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:62%;"></div></div><span class="ui-hsp-val">5.3</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Ciudad de México</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:54%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.1</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Oaxaca</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:62%;"></div></div><span class="ui-hsp-val">5.4</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Tabasco</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:40%;background:var(--t3);"></div></div><span class="ui-hsp-val" style="color:var(--t3);">4.8</span></div>
-          <div class="ui-hsp-row"><span class="ui-hsp-name">Chiapas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:26%;background:var(--t3);"></div></div><span class="ui-hsp-val" style="color:var(--t3);">4.5</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Sonora</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:89%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.2</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Baja California</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:84%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.1</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Chihuahua</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:79%;background:var(--orange);"></div></div><span class="ui-hsp-val" style="color:var(--orange);">6.0</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Durango</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:75%;"></div></div><span class="ui-hsp-val" style="">5.9</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Sinaloa</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:69%;"></div></div><span class="ui-hsp-val" style="">5.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Zacatecas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:69%;"></div></div><span class="ui-hsp-val" style="">5.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Coahuila</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:69%;"></div></div><span class="ui-hsp-val" style="">5.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">San Luis Potosí</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:64%;"></div></div><span class="ui-hsp-val" style="">5.7</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Aguascalientes</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:64%;"></div></div><span class="ui-hsp-val" style="">5.7</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Nayarit</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:59%;"></div></div><span class="ui-hsp-val" style="">5.6</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Nuevo León</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:59%;"></div></div><span class="ui-hsp-val" style="">5.6</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Guanajuato</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:54%;"></div></div><span class="ui-hsp-val" style="">5.5</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Querétaro</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:54%;"></div></div><span class="ui-hsp-val" style="">5.5</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Tamaulipas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:54%;"></div></div><span class="ui-hsp-val" style="">5.5</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Oaxaca</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:50%;"></div></div><span class="ui-hsp-val" style="">5.4</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Jalisco</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:44%;"></div></div><span class="ui-hsp-val" style="">5.3</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Michoacán</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:44%;"></div></div><span class="ui-hsp-val" style="">5.3</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Colima</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:44%;"></div></div><span class="ui-hsp-val" style="">5.3</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Quintana Roo</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:44%;"></div></div><span class="ui-hsp-val" style="">5.3</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Hidalgo</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:39%;"></div></div><span class="ui-hsp-val" style="">5.2</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Morelos</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:39%;"></div></div><span class="ui-hsp-val" style="">5.2</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Guerrero</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:39%;"></div></div><span class="ui-hsp-val" style="">5.2</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Yucatán</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:39%;"></div></div><span class="ui-hsp-val" style="">5.2</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">CDMX</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:34%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.1</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Edo. de México</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:34%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.1</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Campeche</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:34%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.1</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Puebla</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:29%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.0</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Tlaxcala</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:29%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.0</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Veracruz</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:29%;background:var(--t2);"></div></div><span class="ui-hsp-val" style="color:var(--t2);">5.0</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Tabasco</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:19%;background:var(--t3);"></div></div><span class="ui-hsp-val" style="color:var(--t3);">4.8</span></div>
+          <div class="ui-hsp-row"><span class="ui-hsp-name">Chiapas</span><div class="ui-hsp-bar"><div class="ui-hsp-fill" style="width:10%;background:var(--t3);"></div></div><span class="ui-hsp-val" style="color:var(--t3);">4.5</span></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════ S8b — ACCESO A MOCKUPS ════════════════════════════════════════ -->
-<div class="slide" id="s8b">
-  <div class="stag">// 04 · HERRAMIENTA EN VIVO</div>
-  <div class="htitle">Míralo en<br><em>acción</em></div>
-  <div class="rule"></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.1em;flex:1;min-height:0;pointer-events:all;">
-
-    <a href="mockup-dashboard.html" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;background:var(--s1);border:1px solid var(--b1);border-radius:.85em;padding:1.4em 1.6em;gap:.7em;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;" onmouseover="this.style.borderColor='rgba(0,255,135,.35)';this.style.boxShadow='0 0 28px rgba(0,255,135,.06)';" onmouseout="this.style.borderColor='var(--b1)';this.style.boxShadow='none';">
-      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--cyan);"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div style="display:flex;align-items:center;gap:.7em;">
-          <div style="width:2.4em;height:2.4em;background:var(--cdim);border-radius:.55em;display:flex;align-items:center;justify-content:center;color:var(--cyan);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          </div>
-          <div style="font-family:var(--FM);font-size:.55em;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);">Dashboard de resultados</div>
-        </div>
-        <div style="font-family:var(--FM);font-size:.55em;color:var(--t3);letter-spacing:.06em;">Abrir →</div>
-      </div>
-      <div style="font-family:var(--FD);font-weight:800;font-size:1.6em;text-transform:uppercase;color:var(--text);line-height:1.05;">Vista del usuario<br>final</div>
-      <div style="font-size:.72em;color:var(--t2);line-height:1.55;flex:1;">KPIs personalizados, 5 gráficas interactivas con insights, opciones de financiamiento y acceso directo a WhatsApp del asesor.</div>
-      <div style="display:flex;gap:.5em;flex-wrap:wrap;">
-        <span class="chip chip-c">KPIs</span>
-        <span class="chip chip-c">5 Gráficas</span>
-        <span class="chip chip-c">Financiamiento</span>
-        <span class="chip chip-c">WhatsApp</span>
-      </div>
-    </a>
-
-    <a href="mockup-admin.html" target="_blank" style="text-decoration:none;display:flex;flex-direction:column;background:var(--s1);border:1px solid var(--b1);border-radius:.85em;padding:1.4em 1.6em;gap:.7em;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;" onmouseover="this.style.borderColor='rgba(30,215,96,.3)';this.style.boxShadow='0 0 28px rgba(30,215,96,.05)';" onmouseout="this.style.borderColor='var(--b1)';this.style.boxShadow='none';">
-      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--amber);"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div style="display:flex;align-items:center;gap:.7em;">
-          <div style="width:2.4em;height:2.4em;background:var(--adim);border-radius:.55em;display:flex;align-items:center;justify-content:center;color:var(--amber);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          </div>
-          <div style="font-family:var(--FM);font-size:.55em;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);">Panel de administración</div>
-        </div>
-        <div style="font-family:var(--FM);font-size:.55em;color:var(--t3);letter-spacing:.06em;">Abrir →</div>
-      </div>
-      <div style="font-family:var(--FD);font-weight:800;font-size:1.6em;text-transform:uppercase;color:var(--text);line-height:1.05;">Configuración<br>sin código</div>
-      <div style="font-size:.72em;color:var(--t2);line-height:1.55;flex:1;">Identidad visual, parámetros de cálculo, tarifas CFE, HSP por estado y planes de financiamiento — todo editable en tiempo real.</div>
-      <div style="display:flex;gap:.5em;flex-wrap:wrap;">
-        <span class="chip chip-a">Branding</span>
-        <span class="chip chip-a">Tarifas CFE</span>
-        <span class="chip chip-a">HSP / Estado</span>
-        <span class="chip chip-a">Financiamiento</span>
-      </div>
-    </a>
-
-  </div>
-</div>
-
 <!-- ══════ S9 — PLAN 8 SEMANAS ════════════════════════════════════════ -->
 <div class="slide" id="s9">
-  <div class="stag">// 05 · IMPLEMENTACIÓN</div>
   <div class="htitle">Plan de implementación —<br><em>8 semanas al lanzamiento</em></div>
   <div class="rule"></div>
   <div class="plan-grid">
     <div class="plan-phase pp1">
       <div class="ph-weeks">Semanas 01 – 02</div>
       <div class="ph-name">Descubrimiento</div>
-      <div class="ph-desc">Entrevistas con el equipo para mapear el proceso actual e identificar funcionalidades y parámetros específicos.</div>
-      <div class="ph-items">
-        <div class="ph-item"><div class="ph-dot"></div>Entrevistas con vendedores y dirección</div>
-        <div class="ph-item"><div class="ph-dot"></div>Revisión de tarifas, precios y portafolio</div>
-        <div class="ph-item"><div class="ph-dot"></div>Mapeo de fuentes de leads actuales</div>
-        <div class="ph-item"><div class="ph-dot"></div>Definición de integraciones requeridas</div>
-      </div>
+      <div class="ph-para">Entrevistas con dirección y equipo de ventas para mapear el proceso actual, revisar tarifas y portafolio, identificar las fuentes de leads existentes y definir las integraciones necesarias.</div>
     </div>
     <div class="plan-phase pp2">
       <div class="ph-weeks">Semanas 03 – 04</div>
       <div class="ph-name">Implementación</div>
-      <div class="ph-desc">Setup técnico completo con parámetros reales. Integración con CRM, webhooks y sistemas del cliente.</div>
-      <div class="ph-items">
-        <div class="ph-item"><div class="ph-dot"></div>Configuración de branding y parámetros</div>
-        <div class="ph-item"><div class="ph-dot"></div>Integración con CRM del cliente</div>
-        <div class="ph-item"><div class="ph-dot"></div>Setup de webhook y automatizaciones</div>
-        <div class="ph-item"><div class="ph-dot"></div>Configuración de WhatsApp Business</div>
-        <div class="ph-item"><div class="ph-dot"></div>Pruebas internas de flujo completo</div>
-      </div>
+      <div class="ph-para">Configuración del branding y parámetros del diagnóstico, integración completa con el CRM del cliente, setup de webhook y automatizaciones, y pruebas internas del flujo end-to-end.</div>
     </div>
     <div class="plan-phase pp3">
       <div class="ph-weeks">Semanas 05 – 06</div>
       <div class="ph-name">Lanzamiento</div>
-      <div class="ph-desc">Publicación, activación de campañas y capacitación del equipo de ventas.</div>
-      <div class="ph-items">
-        <div class="ph-item"><div class="ph-dot"></div>Deploy en dominio del cliente</div>
-        <div class="ph-item"><div class="ph-dot"></div>Activación de campañas Google y Meta</div>
-        <div class="ph-item"><div class="ph-dot"></div>Capacitación al equipo de ventas</div>
-        <div class="ph-item"><div class="ph-dot"></div>Scripts de seguimiento por perfil de lead</div>
-        <div class="ph-item"><div class="ph-dot"></div>Testeo con primeros leads reales</div>
-      </div>
+      <div class="ph-para">Deploy en el dominio del cliente, activación de campañas Meta y capacitación al equipo de ventas.</div>
     </div>
     <div class="plan-phase pp4">
       <div class="ph-weeks">Semanas 07 – 08</div>
       <div class="ph-name">Monitoreo y entrega</div>
-      <div class="ph-desc">Seguimiento activo, ajuste de parámetros y entrega formal con documentación completa.</div>
-      <div class="ph-items">
-        <div class="ph-item"><div class="ph-dot"></div>Revisión de métricas de conversión</div>
-        <div class="ph-item"><div class="ph-dot"></div>Ajuste de parámetros si aplica</div>
-        <div class="ph-item"><div class="ph-dot"></div>Sesión de feedback con equipo</div>
-        <div class="ph-item"><div class="ph-dot"></div>Documentación y manual de admin</div>
-        <div class="ph-item"><div class="ph-dot"></div>Entrega formal y handoff al cliente</div>
-      </div>
+      <div class="ph-para">Revisión de métricas de conversión, ajuste de parámetros según los resultados reales, sesión de feedback con el equipo y entrega formal con handoff al cliente.</div>
     </div>
-  </div>
-  <div class="plan-footer">
-    <span class="pf-t">Duración total</span>
-    <span class="pf-v">8 semanas desde kickoff hasta entrega final</span>
-    <span class="pf-t">Todo personalizable según necesidades del cliente</span>
   </div>
 </div>
 
 <!-- ══════ S10 — PROPUESTA ECONÓMICA ══════════════════════════════════ -->
 <div class="slide" id="s10">
-  <div class="stag">// 06 · PROPUESTA ECONÓMICA</div>
-  <div class="htitle">Dos alternativas de<br><em>implementación</em></div>
+  <div class="htitle" style="font-size:2.2em;">Tres alternativas de<br><em>implementación</em></div>
   <div class="rule"></div>
 
   <style>
-  .prop2-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1em;flex:1;min-height:0;}
-  .prop2-card{background:var(--s1);border:1px solid var(--b1);border-radius:.85em;padding:1em 1.2em;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;}
-  .prop2-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-  .p2-cyan::before{background:var(--cyan)}.p2-amber::before{background:var(--amber)}
-  .prop2-card.featured{border-color:rgba(30,215,96,.25);background:linear-gradient(160deg,rgba(30,215,96,.04),transparent 60%);}
-  .p2-label{font-family:var(--FM);font-size:.58em;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.5em;}
-  .p2-name{font-family:var(--FD);font-weight:900;font-size:1.7em;text-transform:uppercase;color:var(--text);line-height:1;margin-bottom:.2em;}
-  .p2-desc{font-size:.68em;color:var(--t2);line-height:1.5;margin-bottom:.7em;}
-  .p2-total{display:flex;align-items:baseline;gap:.35em;margin-bottom:.7em;padding-bottom:.7em;border-bottom:1px solid var(--b2);}
-  .p2-total-val{font-family:var(--FM);font-size:2em;font-weight:500;color:var(--text);line-height:1;}
-  .p2-total-sub{font-family:var(--FM);font-size:.6em;color:var(--t3);}
-  .p2-items{display:flex;flex-direction:column;gap:0;flex:1;}
-  .p2-row{display:flex;align-items:center;justify-content:space-between;padding:.42em 0;border-bottom:1px solid rgba(255,255,255,.04);gap:.4em;}
-  .p2-row:last-child{border-bottom:none;}
-  .p2-row-lbl{display:flex;align-items:center;gap:.55em;font-size:.7em;color:var(--t2);line-height:1.3;flex:1;}
-  .p2-row-dot{width:.45em;height:.45em;border-radius:50%;flex-shrink:0;}
-  .p2-cyan .p2-row-dot{background:var(--cyan);}.p2-amber .p2-row-dot{background:var(--amber);}
-  .p2-row-new{background:rgba(30,215,96,.1);color:var(--cyan);border:1px solid rgba(0,255,135,.2);font-family:var(--FM);font-size:.48em;letter-spacing:.08em;padding:.1em .45em;border-radius:100px;white-space:nowrap;margin-left:.4em;flex-shrink:0;}
-  .p2-week{font-family:var(--FM);font-size:.6em;color:var(--t4);white-space:nowrap;text-align:center;flex-shrink:0;min-width:4em;letter-spacing:.04em;}
-  .p2-cyan .p2-week{color:var(--t3);}.p2-amber .p2-week{color:var(--t3);}
-  .p2-price{font-family:var(--FM);font-size:.72em;color:var(--t3);white-space:nowrap;text-align:right;flex-shrink:0;min-width:4em;}
-  .p2-amber .p2-price{color:var(--t2);}
-  .p2-divider{height:1px;background:var(--b2);margin:.5em 0;flex-shrink:0;}
-  .p2-section-lbl{font-family:var(--FM);font-size:.52em;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:.35em 0 .2em;flex-shrink:0;}
+  .prop3-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8em;flex:1;min-height:0;}
+  .prop3-card{background:var(--s1);border:1px solid var(--b1);border-radius:.75em;padding:1.1em 1.15em;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;}
+  .prop3-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .p3-cyan::before{background:var(--cyan)}
+  .p3-amber::before{background:var(--amber)}
+  .p3-green::before{background:var(--green)}
+  .p3-green{border-color:rgba(52,211,153,.35);background:linear-gradient(160deg,rgba(52,211,153,.06),transparent 60%);}
+  .p3-label{font-family:var(--FM);font-size:.68em;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:.5em;display:flex;align-items:center;justify-content:space-between;gap:.3em;}
+  .p3-excl{font-family:var(--FM);font-size:.85em;letter-spacing:.1em;background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.35);padding:.2em .6em;border-radius:100px;text-transform:uppercase;white-space:nowrap;}
+  .p3-name{font-family:var(--FD);font-weight:900;font-size:1.7em;text-transform:uppercase;color:var(--text);line-height:1;margin-bottom:.4em;}
+  .p3-desc{font-size:.78em;color:var(--t2);line-height:1.5;margin-bottom:.7em;}
+  .p3-total{display:flex;align-items:baseline;gap:.3em;margin-bottom:.55em;padding-bottom:.55em;border-bottom:1px solid var(--b2);}
+  .p3-total-val{font-family:var(--FM);font-size:2em;font-weight:500;line-height:1;}
+  .p3-cyan .p3-total-val{color:var(--text);}
+  .p3-amber .p3-total-val{color:var(--amber);}
+  .p3-green .p3-total-val{color:var(--green);}
+  .p3-total-sub{font-family:var(--FM);font-size:.65em;color:var(--t3);}
+  .p3-items{display:flex;flex-direction:column;gap:0;flex:1;justify-content:space-between;}
+  .p3-row{display:flex;align-items:flex-start;padding:.55em 0;border-bottom:1px solid rgba(255,255,255,.04);gap:.55em;line-height:1.4;}
+  .p3-row:last-child{border-bottom:none;}
+  .p3-row-dot{width:.45em;height:.45em;border-radius:50%;flex-shrink:0;margin-top:.55em;}
+  .p3-cyan .p3-row-dot{background:var(--cyan);}
+  .p3-amber .p3-row-dot{background:var(--amber);}
+  .p3-green .p3-row-dot{background:var(--green);}
+  .p3-row-lbl{font-size:.8em;color:var(--t2);flex:1;}
+  .p3-row-lbl b{color:var(--text);font-weight:600;}
+  .p3-section-lbl{font-family:var(--FM);font-size:.6em;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:.4em 0 .25em;}
+  .p3-highlight{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:.4em;padding:.65em .75em;margin-top:.5em;display:flex;gap:.55em;align-items:flex-start;}
+  .p3-highlight-ico{color:var(--green);font-size:1em;flex-shrink:0;line-height:1;margin-top:.05em;}
+  .p3-highlight-txt{font-size:.78em;color:var(--text);line-height:1.45;font-weight:500;}
+  .p3-highlight-txt b{color:var(--green);}
   </style>
 
-  <div class="prop2-grid">
+  <div class="prop3-grid">
 
-    <!-- OPCIÓN 1 — READY TO MARKET -->
-    <div class="prop2-card p2-cyan">
-      <div class="p2-label">// Opción 01</div>
-      <div class="p2-name">Ready to<br>Market</div>
-      <div class="p2-desc">Implementación completa con integración a sistemas existentes y activación en 8 semanas.</div>
-      <div class="p2-items p2-cyan" style="flex:1;">
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Diagnóstico solar configurado e implementado</div><div class="p2-week">Sem. 1–4</div><div class="p2-price">$14,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Integración con CRM del cliente</div><div class="p2-week">Sem. 3–4</div><div class="p2-price">$7,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Configuración de campañas Google y Meta</div><div class="p2-week">Sem. 5–6</div><div class="p2-price">$5,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Capacitación equipo de ventas</div><div class="p2-week">Sem. 6</div><div class="p2-price">$4,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Soporte y ajustes 15 días post-lanzamiento</div><div class="p2-week">Sem. 7–8</div><div class="p2-price">$4,000</div></div>
+    <!-- OPCIÓN 01 — BASE -->
+    <div class="prop3-card p3-cyan">
+      <div class="p3-label"><span>// Opción 01</span></div>
+      <div class="p3-name">Base</div>
+      <div class="p3-total">
+        <div class="p3-total-val">$22,000</div>
+        <div class="p3-total-sub">MXN + IVA</div>
       </div>
-      <div class="p2-total" style="margin-top:.65em;margin-bottom:0;padding-bottom:0;border-bottom:none;border-top:1px solid var(--cring);padding-top:.65em;">
-        <div class="p2-total-val">$34,000</div>
-        <div class="p2-total-sub">MXN + IVA · Inversión total</div>
+      <div class="p3-items">
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Diagnóstico solar</b> configurado con branding, parámetros y tarifas de Energía Simple</div></div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>URL pública</b> lista para compartir y difundir</div></div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Webhook URL</b> para recepción de leads en el CRM del cliente</div></div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Capacitación</b> y documentación de uso</div></div>
       </div>
     </div>
 
-    <!-- OPCIÓN 2 — FULL LAUNCH -->
-    <div class="prop2-card p2-amber featured">
-      <div class="p2-label">// Opción 02</div>
-      <div class="p2-name">Full<br>Launch</div>
-      <div class="p2-desc">Todo lo anterior más módulos de automatización, analytics y desarrollo adicional para escalar la operación.</div>
-      <div class="p2-items p2-amber" style="flex:1;">
-        <div class="p2-section-lbl">Incluye todo en Ready to Market</div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Diagnóstico + CRM + campañas + capacitación + soporte</div><div class="p2-week">Sem. 1–8</div><div class="p2-price" style="color:var(--t3);">$34,000</div></div>
-        <div class="p2-divider"></div>
-        <div class="p2-section-lbl">Módulos adicionales</div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Dashboard de analytics y gestión de leads<span class="p2-row-new">+</span></div><div class="p2-week">Sem. 5–8</div><div class="p2-price">$8,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Automatización de seguimiento vía WhatsApp<span class="p2-row-new">+</span></div><div class="p2-week">Sem. 7–10</div><div class="p2-price">$7,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Landing page dedicada con diagnóstico integrado<span class="p2-row-new">+</span></div><div class="p2-week">Sem. 9–10</div><div class="p2-price">$4,000</div></div>
-        <div class="p2-row"><div class="p2-row-lbl"><div class="p2-row-dot"></div>Integración con sitio web y modificaciones adicionales del cliente<span class="p2-row-new">+</span></div><div class="p2-week">Sem. 11–12</div><div class="p2-price">$3,000</div></div>
+    <!-- OPCIÓN 02 — INTEGRACIÓN -->
+    <div class="prop3-card p3-amber">
+      <div class="p3-label"><span>// Opción 02</span></div>
+      <div class="p3-name">Integración</div>
+      <div class="p3-total">
+        <div class="p3-total-val">$28,000</div>
+        <div class="p3-total-sub">MXN + IVA</div>
       </div>
-      <div class="p2-total" style="margin-top:.65em;margin-bottom:0;padding-bottom:0;border-bottom:none;border-top:1px solid rgba(30,215,96,.25);padding-top:.65em;">
-        <div class="p2-total-val" style="color:var(--amber);">$56,000</div>
-        <div class="p2-total-sub">MXN + IVA · Inversión total</div>
+      <div class="p3-items">
+        <div class="p3-section-lbl">Todo lo de la Opción 01 +</div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Integración completa</b> con el CRM de Energía Simple</div></div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Email automático al cliente</b> con su diagnóstico solar personalizado</div></div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Notificación interna al vendedor</b> con la información completa del lead</div></div>
+      </div>
+    </div>
+
+    <!-- OPCIÓN 03 — LAUNCH + EXCLUSIVIDAD -->
+    <div class="prop3-card p3-green">
+      <div class="p3-label"><span>// Opción 03</span><span class="p3-excl">★ Exclusividad</span></div>
+      <div class="p3-name">Launch</div>
+      <div class="p3-total">
+        <div class="p3-total-val">$32,000</div>
+        <div class="p3-total-sub">MXN + IVA</div>
+      </div>
+      <div class="p3-items">
+        <div class="p3-section-lbl">Todo lo de la Opción 02 +</div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl"><b>Campaña Meta</b> para promoción de la herramienta</div></div>
+        <div class="p3-row"><div class="p3-row-dot"></div><div class="p3-row-lbl">Diseño de artes, segmentación de audiencias, configuración del Meta Pixel y lanzamiento</div></div>
+        <div class="p3-highlight">
+          <div class="p3-highlight-ico">★</div>
+          <div class="p3-highlight-txt"><b>Exclusividad garantizada</b> — la herramienta se mantiene solo para Energía Simple y no se comparte con competencia</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ S11 — ADS CONCEPT ════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="htitle" style="font-size:2.2em;">Conceptos de <em>campaña</em> —<br>anuncios Meta</div>
+  <div class="rule"></div>
+
+  <style>
+  .ads-grid{display:flex;justify-content:center;align-items:center;gap:1.1em;flex:1;min-height:0;padding:.3em 0;}
+  .ad-card{position:relative;aspect-ratio:4/5;height:100%;max-height:100%;border-radius:.9em;overflow:hidden;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);display:flex;flex-direction:column;}
+  .ad-frame{position:relative;flex:1;min-height:0;overflow:hidden;}
+  .ad-bg{position:absolute;inset:0;background-size:cover;background-position:center;}
+  .ad-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,0) 35%,rgba(14,52,34,.35) 70%,rgba(14,52,34,.88) 100%);}
+  .ad-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:.95em 1.1em;}
+  .ad-brand-wrap{display:flex;align-items:center;gap:.55em;background:rgba(255,255,255,.92);padding:.38em .65em .38em .5em;border-radius:100px;backdrop-filter:blur(8px);box-shadow:0 4px 14px rgba(0,0,0,.15);}
+  .ad-brand-logo{height:1.35em;width:auto;display:block;}
+  .ad-brand-name{font-family:var(--FD);font-weight:800;font-size:.65em;color:#0C1A11;letter-spacing:-.01em;line-height:1;}
+  .ad-sponsored{font-family:var(--FM);font-size:.52em;letter-spacing:.14em;color:rgba(255,255,255,.85);text-transform:uppercase;background:rgba(0,0,0,.35);padding:.35em .65em;border-radius:100px;backdrop-filter:blur(8px);}
+  .ad-content{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:1.1em 1.1em 1em;display:flex;flex-direction:column;gap:.6em;}
+  .ad-h1{font-family:var(--FD);font-weight:900;font-size:1.35em;line-height:1;color:#fff;margin-bottom:.1em;letter-spacing:-.015em;text-shadow:0 2px 14px rgba(0,0,0,.4);}
+  .ad-h1 em{color:#A6F5C5;font-style:normal;}
+  .ad-sub{font-family:var(--FB);font-size:.68em;color:rgba(255,255,255,.9);line-height:1.45;text-shadow:0 1px 6px rgba(0,0,0,.35);max-width:20em;}
+  .ad-cta{display:inline-flex;align-items:center;gap:.45em;background:#fff;color:#0C3422;font-family:var(--FD);font-weight:800;font-size:.72em;padding:.7em 1.15em;border-radius:.45em;text-transform:uppercase;letter-spacing:.02em;align-self:flex-start;box-shadow:0 4px 14px rgba(0,0,0,.2);}
+  .ad-meta-bar{background:#fff;padding:.55em .85em;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(0,0,0,.06);flex-shrink:0;}
+  .ad-meta-l{display:flex;flex-direction:column;gap:.1em;}
+  .ad-meta-url{font-family:var(--FM);font-size:.52em;color:#888;letter-spacing:.04em;text-transform:uppercase;}
+  .ad-meta-headline{font-family:var(--FD);font-weight:700;font-size:.66em;color:#0C1A11;line-height:1;}
+  .ad-meta-btn{background:#0C3422;color:#fff;font-family:var(--FD);font-weight:700;font-size:.58em;padding:.55em .9em;border-radius:.3em;text-transform:uppercase;letter-spacing:.04em;}
+  </style>
+
+  <div class="ads-grid">
+
+    <!-- AD 1 -->
+    <div class="ad-card">
+      <div class="ad-frame">
+        <div class="ad-bg" style="background-image:url('https://procoma.com.ec/wp-content/uploads/2025/02/cuanto_cuesta_poner_paneles_solares_en_mexico.webp');"></div>
+        <div class="ad-tint"></div>
+        <div class="ad-top">
+          <div class="ad-brand-wrap">
+            <img class="ad-brand-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A3QO3nwO7etLGVK7/logo-AE0aJay537URRbrZ.png" alt="Energía Simple">
+          </div>
+          <div class="ad-sponsored">Publicidad</div>
+        </div>
+        <div class="ad-content">
+          <div class="ad-h1">¿Cuánto te cuesta<br>instalar <em>paneles solares?</em></div>
+          <div class="ad-sub">Responde 9 preguntas y recibe tu cotización personalizada con ahorro proyectado a 25 años.</div>
+          <div class="ad-cta">Calcular mi ahorro →</div>
+        </div>
+      </div>
+      <div class="ad-meta-bar">
+        <div class="ad-meta-l">
+          <div class="ad-meta-url">energiasimple.mx</div>
+          <div class="ad-meta-headline">Diagnóstico solar gratuito</div>
+        </div>
+        <div class="ad-meta-btn">Más info</div>
+      </div>
+    </div>
+
+    <!-- AD 2 -->
+    <div class="ad-card">
+      <div class="ad-frame">
+        <div class="ad-bg" style="background-image:url('https://cdn.prod.website-files.com/5ff3273633e29c2a7c8b6c80/60e2bc96d03c584784f200fa_blog_paneles-solares.jpg');"></div>
+        <div class="ad-tint"></div>
+        <div class="ad-top">
+          <div class="ad-brand-wrap">
+            <img class="ad-brand-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A3QO3nwO7etLGVK7/logo-AE0aJay537URRbrZ.png" alt="Energía Simple">
+          </div>
+          <div class="ad-sponsored">Publicidad</div>
+        </div>
+        <div class="ad-content">
+          <div class="ad-h1">Reduce tu recibo<br>de luz hasta <em>92%</em></div>
+          <div class="ad-sub">Descubre tu tarifa CFE, cuánto generarías en tu estado y tu retorno de inversión exacto.</div>
+          <div class="ad-cta">Ver mi diagnóstico →</div>
+        </div>
+      </div>
+      <div class="ad-meta-bar">
+        <div class="ad-meta-l">
+          <div class="ad-meta-url">energiasimple.mx</div>
+          <div class="ad-meta-headline">Resultado al instante</div>
+        </div>
+        <div class="ad-meta-btn">Más info</div>
+      </div>
+    </div>
+
+    <!-- AD 3 -->
+    <div class="ad-card">
+      <div class="ad-frame">
+        <div class="ad-bg" style="background-image:url('https://energiahoy.com/wp-content/uploads/2020/06/recibo-de-luz.jpg');background-position:center top;"></div>
+        <div class="ad-tint"></div>
+        <div class="ad-top">
+          <div class="ad-brand-wrap">
+            <img class="ad-brand-logo" src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A3QO3nwO7etLGVK7/logo-AE0aJay537URRbrZ.png" alt="Energía Simple">
+          </div>
+          <div class="ad-sponsored">Publicidad</div>
+        </div>
+        <div class="ad-content">
+          <div class="ad-h1">Tu recibo CFE<br>puede bajar <em>hasta 92%</em></div>
+          <div class="ad-sub">Descubre si estás en tarifa DAC y cuánto ahorrarías con paneles solares. Diagnóstico gratis.</div>
+          <div class="ad-cta">Revisar mi recibo →</div>
+        </div>
+      </div>
+      <div class="ad-meta-bar">
+        <div class="ad-meta-l">
+          <div class="ad-meta-url">energiasimple.mx</div>
+          <div class="ad-meta-headline">Cotización personalizada</div>
+        </div>
+        <div class="ad-meta-btn">Más info</div>
       </div>
     </div>
 
