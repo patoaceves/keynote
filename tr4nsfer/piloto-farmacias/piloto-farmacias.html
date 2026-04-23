@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tr4nsfer.me — Propuesta de piloto hiperlocal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#000;--s1:#0a0a0a;--s2:#111;--s3:#171717;--s4:#1c1c1c;
+  --b1:#1f1f1f;--b2:#272727;--b3:#333;
+  --teal:#00c896;--teal2:#00daa6;--teal-dark:#00a87a;
+  --tdim:rgba(0,200,150,.10);--tring:rgba(0,200,150,.22);--tdim2:rgba(0,200,150,.16);
+  --amber:#f59e0b;--adim:rgba(245,158,11,.10);--aring:rgba(245,158,11,.22);
+  --violet:#a78bfa;--vdim:rgba(167,139,250,.10);--vring:rgba(167,139,250,.22);
+  --blue:#60a5fa;--bdim:rgba(96,165,250,.10);--bring:rgba(96,165,250,.22);
+  --rose:#fb7185;--rdim:rgba(251,113,133,.10);--rring:rgba(251,113,133,.22);
+  --text:#f0f0f0;--t2:#b8b8b8;--t3:#7a7a7a;--t4:#444;--t5:#2a2a2a;
+  --FD:'Inter',sans-serif;--FM:'IBM Plex Mono',monospace;--FB:'Inter',sans-serif;
+}
+html,body{width:100%;height:100%;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-family:var(--FB);color:var(--text);}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,200,150,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,150,.014) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+#viewer{position:relative;z-index:1;flex-shrink:0;box-shadow:0 24px 80px rgba(0,0,0,.7),0 0 0 1px rgba(0,200,150,.08);border-radius:10px 10px 0 0;overflow:hidden;background:var(--bg);}
+#deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(28px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:2em 2.8em 1.8em;background:var(--bg);overflow:hidden;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit{opacity:0;transform:translateX(-28px);}
+
+.htitle{font-family:var(--FD);font-weight:800;font-size:2.5em;line-height:1.0;color:var(--text);letter-spacing:-.02em;}
+.htitle em{color:var(--teal);font-style:normal;}
+.rule{height:1px;flex-shrink:0;margin:.6em 0 1em;background:linear-gradient(90deg,rgba(0,200,150,.45),transparent 70%);}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(0,200,150,.06);pointer-events:none;}
+.gd{position:absolute;width:.45em;height:.45em;background:var(--teal);border-radius:50%;box-shadow:0 0 1.5em .4em rgba(0,200,150,.35);animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(1.8)}}
+
+.brand{display:inline-flex;align-items:center;gap:.55em;font-family:var(--FD);font-weight:700;font-size:.82em;letter-spacing:-.01em;color:var(--text);}
+.brand-mark{width:1.35em;height:1.35em;flex-shrink:0;}
+.brand-text{display:inline-flex;align-items:baseline;}
+.brand-text b{font-weight:800;color:var(--text);}
+.brand-text span{color:var(--teal);font-weight:800;}
+.brand-text i{font-style:normal;color:var(--text);font-weight:800;}
+
+/* S1 COVER */
+#s1{background:var(--bg);}
+#s1::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 60% 40%,rgba(0,200,150,.14) 0%,transparent 65%);pointer-events:none;}
+.cover-wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.cover-label{font-family:var(--FM);font-size:.78em;letter-spacing:.18em;color:rgba(240,240,240,.38);text-transform:uppercase;}
+.cover-mid{display:flex;flex-direction:column;}
+.cover-eyebrow{font-family:var(--FM);font-size:.8em;letter-spacing:.18em;color:rgba(240,240,240,.4);margin-bottom:1em;text-transform:uppercase;display:flex;align-items:center;gap:.9em;}
+.cover-eyebrow .sep{width:1em;height:1px;background:rgba(240,240,240,.2);}
+.cover-h1{font-family:var(--FD);font-weight:900;font-size:4.8em;line-height:.92;color:var(--text);margin-bottom:.55em;letter-spacing:-.035em;}
+.cover-h1 em{color:var(--teal);font-style:normal;display:block;}
+.cover-sub{font-family:var(--FM);font-size:.8em;letter-spacing:.14em;color:rgba(240,240,240,.42);max-width:42em;line-height:1.7;text-transform:uppercase;}
+.cover-bottom{display:flex;align-items:center;gap:1.4em;}
+.cover-rule{width:2.4em;height:2px;background:linear-gradient(90deg,var(--teal),var(--teal-dark));flex-shrink:0;}
+.cover-name{font-family:var(--FD);font-weight:800;font-size:1.35em;color:var(--text);letter-spacing:-.01em;}
+.cover-role{font-family:var(--FM);font-size:.76em;letter-spacing:.12em;color:rgba(240,240,240,.52);margin-top:.3em;text-transform:uppercase;}
+.cover-contact-line{font-family:var(--FM);font-size:.72em;letter-spacing:.06em;color:rgba(240,240,240,.4);margin-top:.2em;}
+
+/* S2 FLOW */
+.flow-wrap{flex:1;display:flex;flex-direction:column;min-height:0;gap:1em;}
+.flow-lead{font-family:var(--FD);font-size:1.1em;color:var(--t2);line-height:1.5;max-width:52em;flex-shrink:0;}
+.flow-lead b{color:var(--text);font-weight:600;}
+.flow-track{display:flex;gap:.9em;flex:1;min-height:0;align-items:stretch;}
+.flow-step{flex:1;background:var(--s1);border:1px solid var(--tring);border-radius:.8em;padding:1.3em 1.3em 1.3em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:visible;}
+.flow-step::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);border-radius:.8em .8em 0 0;}
+.flow-step-n{font-family:var(--FM);font-size:.62em;letter-spacing:.16em;color:var(--teal);text-transform:uppercase;font-weight:600;}
+.flow-step-ico{width:2.5em;height:2.5em;border-radius:.55em;background:var(--tdim);border:1px solid var(--tring);display:flex;align-items:center;justify-content:center;margin:.1em 0 .2em;}
+.flow-step-ico svg{width:1.35em;height:1.35em;stroke:var(--teal);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.flow-step-t{font-family:var(--FD);font-weight:700;font-size:1.1em;color:var(--text);letter-spacing:-.015em;line-height:1.2;}
+.flow-step-d{font-size:.82em;color:var(--t2);line-height:1.55;flex:1;}
+.flow-step-d em{color:var(--text);font-weight:500;font-style:normal;}
+.flow-arrow{position:absolute;right:-1.15em;top:50%;transform:translateY(-50%);width:1.8em;height:1.8em;background:var(--bg);border:1px solid var(--tring);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;color:var(--teal);font-size:.82em;font-weight:600;}
+.flow-step:last-child .flow-arrow{display:none;}
+
+/* S3 PRODUCT */
+.prod-split{display:grid;grid-template-columns:1.1fr 1fr;gap:1.8em;flex:1;min-height:0;align-items:center;}
+.prod-desc{display:flex;flex-direction:column;gap:1.1em;}
+.prod-lead{font-family:var(--FD);font-size:1.25em;line-height:1.35;color:var(--t2);font-weight:400;letter-spacing:-.01em;}
+.prod-lead b{color:var(--text);font-weight:600;}
+.prod-pillars{display:flex;flex-direction:column;gap:.7em;margin-top:.3em;}
+.pillar{display:flex;gap:.9em;padding:.85em 1em;background:var(--s1);border:1px solid var(--b1);border-radius:.7em;border-left:3px solid var(--teal);}
+.pillar-ico{font-family:var(--FM);font-weight:600;font-size:.9em;color:var(--teal);width:1.6em;flex-shrink:0;}
+.pillar-content{display:flex;flex-direction:column;gap:.18em;}
+.pillar-t{font-family:var(--FD);font-weight:700;font-size:.95em;color:var(--text);letter-spacing:-.01em;}
+.pillar-d{font-size:.78em;color:var(--t2);line-height:1.45;}
+.prod-mockup{display:flex;align-items:center;justify-content:center;position:relative;}
+.phone{width:16em;background:#000;border:8px solid #1a1a1a;border-radius:2.2em;padding:.4em;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);}
+.phone::before{content:'';position:absolute;top:.5em;left:50%;transform:translateX(-50%);width:4em;height:.9em;background:#000;border-radius:0 0 .8em .8em;z-index:2;}
+.phone-card{background:linear-gradient(160deg,#00a87a 0%,#006b4d 100%);border-radius:1.6em;aspect-ratio:1/1.2;padding:1.1em 1.15em 1.3em;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+.phone-card::after{content:'';position:absolute;top:-40%;right:-30%;width:160%;height:160%;background:radial-gradient(circle,rgba(255,255,255,.14) 0%,transparent 50%);pointer-events:none;}
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;}
+.pc-logo{width:3em;height:3em;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:.5em;display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-weight:900;font-size:.85em;color:#fff;letter-spacing:-.04em;}
+.pc-brand-mini{font-family:var(--FD);font-weight:700;font-size:.55em;color:rgba(255,255,255,.7);letter-spacing:-.01em;}
+.pc-mid{display:flex;flex-direction:column;gap:.55em;position:relative;z-index:1;}
+.pc-bank{display:inline-flex;align-items:center;gap:.45em;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);border-radius:100px;padding:.28em .8em;align-self:flex-start;font-family:var(--FD);font-size:.65em;font-weight:600;color:#fff;}
+.pc-bank::before{content:'';width:.9em;height:.9em;background:#fff;border-radius:.2em;}
+.pc-label{font-family:var(--FD);font-size:.5em;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:600;}
+.pc-clabe{font-family:var(--FD);font-size:.82em;font-weight:600;color:#fff;letter-spacing:.04em;}
+.pc-name{font-family:var(--FD);font-size:.72em;font-weight:700;color:#fff;letter-spacing:.03em;text-transform:uppercase;margin-top:.25em;}
+.pc-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:1;}
+.pc-alias{font-family:var(--FD);font-size:.52em;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.55);text-transform:uppercase;}
+.pc-qr{width:1.5em;height:1.5em;background:#fff;border-radius:.2em;opacity:.8;}
+
+/* S4 HYPERLOCAL - cards con altura segun contenido */
+.hyp-wrap{flex:1;display:flex;align-items:center;min-height:0;}
+.hyp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1em;width:100%;align-items:start;}
+.hyp-card{background:var(--s1);border:1px solid var(--b1);border-radius:.85em;padding:1.4em 1.45em 1.3em;display:flex;flex-direction:column;gap:.5em;position:relative;overflow:hidden;}
+.hyp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.hyp-1::before{background:var(--teal);}
+.hyp-2::before{background:var(--amber);}
+.hyp-3::before{background:var(--violet);}
+.hyp-num{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;font-weight:500;}
+.hyp-title{font-family:var(--FD);font-weight:900;font-size:1.6em;letter-spacing:-.02em;color:var(--text);line-height:1;margin-top:.1em;}
+.hyp-1 .hyp-title em{color:var(--teal);font-style:normal;}
+.hyp-2 .hyp-title em{color:var(--amber);font-style:normal;}
+.hyp-3 .hyp-title em{color:var(--violet);font-style:normal;}
+.hyp-desc{font-size:.85em;color:var(--t2);line-height:1.55;margin-top:.2em;}
+.hyp-quote{background:var(--s2);border:1px solid var(--b1);border-radius:.5em;padding:.75em .9em .75em 1.7em;margin-top:.4em;font-family:var(--FD);font-style:italic;font-size:.8em;color:var(--t2);line-height:1.45;position:relative;}
+.hyp-quote::before{content:'"';position:absolute;top:-.05em;left:.4em;font-size:1.8em;font-style:normal;font-weight:700;color:var(--t4);line-height:1;}
+
+/* S5 CUSTOMER EXPERIENCE */
+.xp-split{display:grid;grid-template-columns:1.3fr 1fr;gap:1.3em;flex:1;min-height:0;}
+.xp-steps{display:flex;flex-direction:column;gap:.55em;min-height:0;}
+.xp-step{display:flex;gap:1em;align-items:flex-start;padding:.72em .95em;background:var(--s1);border:1px solid var(--b1);border-radius:.6em;position:relative;}
+.xp-step::before{content:'';position:absolute;left:2.15em;top:2.4em;bottom:-.7em;width:1px;background:linear-gradient(180deg,var(--tring),transparent);z-index:0;}
+.xp-step:last-child::before{display:none;}
+.xp-step-n{width:1.85em;height:1.85em;border-radius:50%;background:var(--tdim);border:1px solid var(--tring);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-weight:700;font-size:.75em;color:var(--teal);flex-shrink:0;position:relative;z-index:1;}
+.xp-step-content{flex:1;}
+.xp-step-t{font-family:var(--FD);font-weight:700;font-size:.92em;color:var(--text);letter-spacing:-.01em;line-height:1.25;margin-bottom:.18em;}
+.xp-step-d{font-size:.78em;color:var(--t2);line-height:1.5;}
+.xp-step-d em{color:var(--teal);font-style:normal;font-weight:500;}
+.xp-mockup{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8em;}
+.xp-mockup .phone{width:14em;}
+.xp-caption{font-family:var(--FM);font-size:.58em;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;text-align:center;font-weight:500;}
+
+/* S6 ONBOARDING */
+#s6 .rule{background:linear-gradient(90deg,rgba(245,158,11,.45),transparent 70%);}
+.onb-lead{background:var(--s1);border:1px solid var(--b1);border-left:3px solid var(--amber);border-radius:.6em;padding:.95em 1.2em;margin-bottom:1em;display:flex;align-items:center;gap:1em;flex-shrink:0;}
+.onb-lead-ico{font-family:var(--FM);font-size:.62em;color:var(--amber);letter-spacing:.14em;text-transform:uppercase;font-weight:600;white-space:nowrap;}
+.onb-lead-txt{font-size:.9em;color:var(--t2);line-height:1.55;}
+.onb-lead-txt b{color:var(--text);font-weight:600;}
+.onb-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:.75em;flex:1;min-height:0;}
+.onb-node{background:var(--s1);border:1px solid var(--b1);border-radius:.7em;padding:1.1em 1.1em 1.15em;display:flex;flex-direction:column;gap:.4em;position:relative;}
+.onb-node-n{font-family:var(--FM);font-size:.56em;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;font-weight:600;}
+.onb-node-ico{width:2.4em;height:2.4em;border-radius:.5em;background:var(--adim);border:1px solid var(--aring);display:flex;align-items:center;justify-content:center;margin:.2em 0 .3em;}
+.onb-node-ico svg{width:1.25em;height:1.25em;stroke:var(--amber);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.onb-node-t{font-family:var(--FD);font-weight:700;font-size:.95em;color:var(--text);letter-spacing:-.01em;line-height:1.2;}
+.onb-node-d{font-size:.78em;color:var(--t2);line-height:1.5;flex:1;}
+.onb-node-d em{color:var(--text);font-style:normal;font-weight:500;}
+.onb-node::after{content:'→';position:absolute;right:-.7em;top:2.35em;color:var(--t3);font-size:1em;z-index:2;background:var(--bg);padding:0 .15em;}
+.onb-node:last-child::after{display:none;}
+
+/* S7 KIT + CAJERO */
+.kit-split{display:grid;grid-template-columns:1fr 1fr;gap:1.1em;flex:1;min-height:0;}
+.kit-col{display:flex;flex-direction:column;gap:.55em;min-height:0;}
+.kit-col-tag{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;color:var(--teal);text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:.55em;}
+.kit-col-tag::before{content:'';width:.6em;height:.6em;background:var(--teal);border-radius:50%;}
+.kit-col.cashier .kit-col-tag{color:var(--violet);}
+.kit-col.cashier .kit-col-tag::before{background:var(--violet);}
+.kit-col-head{font-family:var(--FD);font-weight:800;font-size:1.22em;color:var(--text);line-height:1.1;margin-top:-.1em;letter-spacing:-.015em;margin-bottom:.1em;}
+.kit-items{display:flex;flex-direction:column;gap:.38em;flex:1;}
+.kit-item{background:var(--s1);border:1px solid var(--b1);border-radius:.5em;padding:.55em .75em;display:flex;gap:.65em;align-items:flex-start;}
+.kit-item-ico{width:1.7em;height:1.7em;border-radius:.35em;background:var(--tdim);border:1px solid var(--tring);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.kit-item-ico svg{width:.9em;height:.9em;stroke:var(--teal);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.kit-col.cashier .kit-item-ico{background:var(--vdim);border-color:var(--vring);}
+.kit-col.cashier .kit-item-ico svg{stroke:var(--violet);}
+.kit-item-content{flex:1;}
+.kit-item-t{font-family:var(--FD);font-weight:600;font-size:.82em;color:var(--text);letter-spacing:-.005em;line-height:1.25;margin-bottom:.1em;}
+.kit-item-d{font-size:.7em;color:var(--t2);line-height:1.4;}
+.kit-item-d em{font-style:normal;color:var(--text);font-weight:500;}
+
+/* S8 ROLLOUT */
+.roll-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75em;flex:1;min-height:0;align-items:stretch;}
+.roll-col{display:flex;flex-direction:column;gap:.55em;min-height:0;}
+.roll-phase{background:var(--s1);border:1px solid var(--b1);border-radius:.7em;padding:.95em 1.05em 1em;display:flex;flex-direction:column;gap:.35em;position:relative;overflow:hidden;flex:1;}
+.roll-phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.rp1::before{background:var(--blue);}
+.rp2::before{background:var(--teal);}
+.rp3::before{background:var(--amber);}
+.rp4::before{background:var(--violet);}
+.rp-weeks{font-family:var(--FM);font-size:.62em;font-weight:600;letter-spacing:.12em;text-transform:uppercase;}
+.rp1 .rp-weeks{color:var(--blue);}
+.rp2 .rp-weeks{color:var(--teal);}
+.rp3 .rp-weeks{color:var(--amber);}
+.rp4 .rp-weeks{color:var(--violet);}
+.rp-name{font-family:var(--FD);font-weight:800;font-size:1.1em;color:var(--text);line-height:1.1;letter-spacing:-.015em;}
+.rp-desc{font-size:.78em;color:var(--t2);line-height:1.45;}
+.rp-items{display:flex;flex-direction:column;gap:.3em;margin-top:.3em;flex:1;}
+.rp-item{display:flex;align-items:flex-start;gap:.55em;font-size:.78em;color:var(--t2);line-height:1.4;}
+.rp-dot{width:.4em;height:.4em;border-radius:50%;flex-shrink:0;margin-top:.42em;}
+.rp1 .rp-dot{background:var(--blue);}
+.rp2 .rp-dot{background:var(--teal);}
+.rp3 .rp-dot{background:var(--amber);}
+.rp4 .rp-dot{background:var(--violet);}
+.roll-milestone{background:var(--s2);border:1px solid var(--b2);border-radius:.55em;padding:.7em .95em;display:flex;flex-direction:column;gap:.15em;flex-shrink:0;border-top:2px solid;}
+.rc1 .roll-milestone{border-top-color:var(--blue);}
+.rc2 .roll-milestone{border-top-color:var(--teal);}
+.rc3 .roll-milestone{border-top-color:var(--amber);}
+.rc4 .roll-milestone{border-top-color:var(--violet);}
+.rm-l{font-family:var(--FM);font-size:.55em;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;font-weight:600;}
+.rm-v{font-family:var(--FD);font-weight:700;font-size:.88em;letter-spacing:-.005em;line-height:1.2;margin-top:.1em;}
+.rc1 .rm-v{color:var(--blue);}
+.rc2 .rm-v{color:var(--teal);}
+.rc3 .rm-v{color:var(--amber);}
+.rc4 .rm-v{color:var(--violet);}
+
+/* S9 APORTA */
+.ap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em;flex:1;min-height:0;grid-auto-rows:1fr;}
+.ap-card{background:var(--s1);border:1px solid var(--b1);border-radius:.6em;padding:1em 1.15em 1.05em;display:flex;flex-direction:column;gap:.4em;}
+.ap-card-ico{width:2.1em;height:2.1em;border-radius:.4em;background:var(--tdim);border:1px solid var(--tring);display:flex;align-items:center;justify-content:center;margin-bottom:.2em;}
+.ap-card-ico svg{width:1.1em;height:1.1em;stroke:var(--teal);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.ap-card-t{font-family:var(--FD);font-weight:700;font-size:.95em;color:var(--text);letter-spacing:-.01em;line-height:1.2;}
+.ap-card-d{font-size:.78em;color:var(--t2);line-height:1.5;flex:1;}
+
+/* S10 NEED */
+.need-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:.8em;flex:1;min-height:0;}
+.need-card{background:var(--s1);border:1px solid var(--b1);border-radius:.75em;padding:1em 1.15em;display:flex;flex-direction:column;gap:.4em;position:relative;overflow:hidden;}
+.need-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;}
+.need-1::before{background:var(--teal);}
+.need-2::before{background:var(--amber);}
+.need-3::before{background:var(--violet);}
+.need-4::before{background:var(--blue);}
+.need-num{font-family:var(--FM);font-size:.58em;letter-spacing:.14em;font-weight:600;text-transform:uppercase;}
+.need-1 .need-num{color:var(--teal);}
+.need-2 .need-num{color:var(--amber);}
+.need-3 .need-num{color:var(--violet);}
+.need-4 .need-num{color:var(--blue);}
+.need-title{font-family:var(--FD);font-weight:800;font-size:1.1em;color:var(--text);letter-spacing:-.015em;line-height:1.1;margin-top:.05em;}
+.need-list{display:flex;flex-direction:column;gap:.3em;flex:1;margin-top:.25em;}
+.need-list-item{display:flex;align-items:flex-start;gap:.6em;font-size:.78em;color:var(--t2);line-height:1.45;}
+.need-list-item::before{content:'';width:.35em;height:.35em;border-radius:50%;flex-shrink:0;margin-top:.52em;}
+.need-1 .need-list-item::before{background:var(--teal);}
+.need-2 .need-list-item::before{background:var(--amber);}
+.need-3 .need-list-item::before{background:var(--violet);}
+.need-4 .need-list-item::before{background:var(--blue);}
+.need-list-item em{color:var(--text);font-weight:500;font-style:normal;}
+
+/* S11 METRICS - redistribuido */
+.met-wrap{flex:1;display:flex;flex-direction:column;gap:1em;min-height:0;}
+.met-top{display:grid;grid-template-columns:repeat(5,1fr);gap:.6em;flex-shrink:0;}
+.met-card{background:var(--s1);border:1px solid var(--b1);border-radius:.5em;padding:.7em .9em;display:flex;flex-direction:column;gap:.18em;border-top:2px solid;}
+.met-1{border-top-color:var(--blue);}
+.met-2{border-top-color:var(--teal);}
+.met-3{border-top-color:var(--amber);}
+.met-4{border-top-color:var(--violet);}
+.met-5{border-top-color:var(--rose);}
+.met-cat{font-family:var(--FM);font-size:.5em;letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
+.met-1 .met-cat{color:var(--blue);}
+.met-2 .met-cat{color:var(--teal);}
+.met-3 .met-cat{color:var(--amber);}
+.met-4 .met-cat{color:var(--violet);}
+.met-5 .met-cat{color:var(--rose);}
+.met-name{font-family:var(--FD);font-weight:700;font-size:.82em;color:var(--text);letter-spacing:-.005em;line-height:1.15;}
+.met-d{font-size:.67em;color:var(--t2);line-height:1.4;margin-top:.08em;}
+.met-split{display:grid;grid-template-columns:1fr 1fr;gap:.9em;flex:1;min-height:0;}
+.met-block{background:var(--s1);border:1px solid var(--b1);border-radius:.75em;padding:1.35em 1.55em 1.4em;display:flex;flex-direction:column;gap:.4em;}
+.met-block-tag{font-family:var(--FM);font-size:.6em;letter-spacing:.14em;color:var(--teal);text-transform:uppercase;font-weight:600;}
+.met-block-t{font-family:var(--FD);font-weight:800;font-size:1.2em;color:var(--text);letter-spacing:-.015em;line-height:1.2;margin-bottom:.4em;}
+.met-cadence{display:flex;flex-direction:column;gap:0;flex:1;}
+.met-cadence-row{display:flex;align-items:flex-start;gap:1.1em;padding:.8em 0;border-bottom:1px solid var(--b1);}
+.met-cadence-row:first-child{padding-top:.2em;}
+.met-cadence-row:last-child{border-bottom:none;padding-bottom:.2em;}
+.met-cadence-when{font-family:var(--FM);font-size:.7em;color:var(--teal);font-weight:600;letter-spacing:.08em;min-width:8em;padding-top:.18em;text-transform:uppercase;}
+.met-cadence-what{font-size:.88em;color:var(--t2);line-height:1.55;flex:1;}
+.met-cadence-what b{color:var(--text);font-weight:500;}
+.met-criteria{display:flex;flex-direction:column;gap:.55em;flex:1;justify-content:flex-start;}
+.met-criterion{display:flex;align-items:center;gap:1em;padding:.8em 1em;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;}
+.met-criterion-val{font-family:var(--FD);font-weight:800;font-size:1.45em;color:var(--teal);letter-spacing:-.02em;min-width:3em;line-height:1;}
+.met-criterion-d{font-size:.85em;color:var(--t2);line-height:1.45;flex:1;}
+.met-criterion-d b{color:var(--text);font-weight:500;}
+
+/* S12 GRACIAS */
+#s12{background:var(--bg);}
+#s12::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 50% 45%,rgba(0,200,150,.16) 0%,transparent 65%);pointer-events:none;}
+.thx-wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:0;}
+.thx-brand{margin-bottom:2em;opacity:.9;}
+.thx-brand .brand{font-size:1.05em;}
+.thx-h1{font-family:var(--FD);font-weight:900;font-size:8em;line-height:.9;color:var(--text);letter-spacing:-.045em;}
+.thx-h1 em{color:var(--teal);font-style:normal;}
+.thx-sub{font-family:var(--FM);font-size:.78em;letter-spacing:.18em;color:rgba(240,240,240,.4);text-transform:uppercase;margin-top:.8em;margin-bottom:2.6em;}
+.thx-rule{width:3em;height:2px;background:linear-gradient(90deg,var(--teal),var(--teal-dark));margin:0 auto 1.3em;}
+.thx-name{font-family:var(--FD);font-weight:800;font-size:1.5em;color:var(--text);letter-spacing:-.01em;margin-bottom:.2em;}
+.thx-role{font-family:var(--FM);font-size:.72em;letter-spacing:.12em;color:rgba(240,240,240,.5);text-transform:uppercase;margin-bottom:.55em;}
+.thx-contact{font-family:var(--FM);font-size:.76em;letter-spacing:.05em;color:rgba(240,240,240,.6);}
+
+/* NAV */
+#nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:16px;flex-shrink:0;}
+#nc{font-family:var(--FM);font-size:11px;letter-spacing:.12em;color:rgba(240,240,240,.32);font-weight:500;}
+#pb{flex:1;max-width:200px;height:3px;background:rgba(0,200,150,.1);border-radius:100px;overflow:hidden;}
+#pf{height:100%;background:var(--teal);border-radius:100px;transition:width .35s ease;}
+#ndots{display:flex;gap:6px;align-items:center;}
+.ndot{width:7px;height:7px;border-radius:50%;background:rgba(0,200,150,.18);cursor:pointer;transition:all .2s;}
+.ndot.active{background:var(--teal);transform:scale(1.3);}
+#nbtns{display:flex;gap:8px;}
+.nb{padding:7px 18px;border-radius:6px;background:rgba(0,200,150,.06);border:1px solid rgba(0,200,150,.16);color:rgba(240,240,240,.55);font-family:var(--FM);font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s;font-weight:500;}
+.nb:hover{background:rgba(0,200,150,.16);color:var(--text);}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <symbol id="tr-mark" viewBox="0 0 40 40">
+      <rect x="19" y="6" width="15" height="5" rx="2.5" fill="#00c896"/>
+      <rect x="29" y="6" width="5" height="17" rx="2.5" fill="#00a87a"/>
+      <g transform="rotate(-45 20 21)">
+        <rect x="-1" y="18" width="30" height="5" rx="2.5" fill="#00c896"/>
+      </g>
+      <circle cx="31.5" cy="31.5" r="3.5" fill="#00c896"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="viewer">
+<div id="deck">
+
+<!-- S1 COVER -->
+<div class="slide active" id="s1">
+  <div class="ring" style="width:20em;height:20em;right:-3em;bottom:-3em;"></div>
+  <div class="ring" style="width:34em;height:34em;right:-10em;bottom:-10em;"></div>
+  <div class="gd" style="right:13em;bottom:14em;"></div>
+  <div class="cover-wrap">
+    <div class="cover-top">
+      <div class="brand">
+        <svg class="brand-mark"><use href="#tr-mark"/></svg>
+        <span class="brand-text"><b>tr</b><span>4</span><i>nsfer.me</i></span>
+      </div>
+      <div class="cover-label">Abril 2026</div>
+    </div>
+    <div class="cover-mid">
+      <div class="cover-eyebrow">
+        <span>Propuesta de piloto</span>
+        <span class="sep"></span>
+        <span>Cadena de farmacias</span>
+      </div>
+      <div class="cover-h1">Lanzamiento<em>hiperlocal.</em></div>
+      <div class="cover-sub">QR por sucursal · Onboarding self-serve para dueños · Piloto de 3 meses en una sola zona</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-rule"></div>
+      <div class="cover-contact">
+        <div class="cover-name">Patricio González Aceves</div>
+        <div class="cover-role">Founder · tr4nsfer.me</div>
+        <div class="cover-contact-line">pgzzaceves@gmail.com · +52 81 2622 4761</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S2 FLOW -->
+<div class="slide" id="s2">
+  <div class="htitle">Así funciona <em>en caja</em> con tr4nsfer.me</div>
+  <div class="rule"></div>
+  <div class="flow-wrap">
+    <div class="flow-lead">Cinco pasos. <b>Sin app del cliente, sin terminal, sin comisión.</b> Desde que el cliente se acerca al mostrador hasta que el dueño ve el depósito en su cuenta.</div>
+    <div class="flow-track">
+      <div class="flow-step">
+        <div class="flow-step-n">01 · Caja</div>
+        <div class="flow-step-ico"><svg viewBox="0 0 24 24"><path d="M5 3h14l-1 10H6L5 3z"/><circle cx="8" cy="20" r="2"/><circle cx="18" cy="20" r="2"/></svg></div>
+        <div class="flow-step-t">El cliente llega a cobrar</div>
+        <div class="flow-step-d">Flujo normal de la tienda. A la altura de sus ojos ve el acrílico con el QR en el mostrador.</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-n">02 · Escaneo</div>
+        <div class="flow-step-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M14 20h3M20 14v7"/></svg></div>
+        <div class="flow-step-t">Escanea con su cámara</div>
+        <div class="flow-step-d">Cualquier celular moderno. <em>Sin descargar nada.</em> Sin registros. Se abre la página de la sucursal.</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-n">03 · Página</div>
+        <div class="flow-step-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 14h6M7 17h4"/></svg></div>
+        <div class="flow-step-t">Ve los datos de la farmacia</div>
+        <div class="flow-step-d">Logo, colores y nombre de su farmacia de barrio. <em>CLABE y banco visibles.</em> Un tap para copiar.</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-n">04 · Pago</div>
+        <div class="flow-step-ico"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></div>
+        <div class="flow-step-t">Paga por SPEI desde su banco</div>
+        <div class="flow-step-d">Abre la app de su banco, pega la CLABE, confirma. <em>0% comisión.</em> Directo a la cuenta del dueño.</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-n">05 · Confirmación</div>
+        <div class="flow-step-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 6-6"/></svg></div>
+        <div class="flow-step-t">Depósito instantáneo y trazable</div>
+        <div class="flow-step-d">SPEI llega en segundos. Cada transferencia queda <em>etiquetada por sucursal.</em> Conciliación automática.</div>
+        <div class="flow-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 PRODUCT -->
+<div class="slide" id="s3">
+  <div class="htitle"><em>tr4nsfer.me</em> — un link, un QR, tu CLABE</div>
+  <div class="rule"></div>
+  <div class="prod-split">
+    <div class="prod-desc">
+      <div class="prod-lead">Cada sucursal tiene su propio <b>link personalizado</b> y su propio <b>QR</b>. Cuando el cliente lo escanea, ve la página del negocio con su logo, su CLABE y un botón para copiarla y pagar. <b>Sin apps, sin registros, sin fricción.</b></div>
+      <div class="prod-pillars">
+        <div class="pillar">
+          <div class="pillar-ico">01</div>
+          <div class="pillar-content">
+            <div class="pillar-t">Sin app. Sin registro del cliente.</div>
+            <div class="pillar-d">Funciona directo en el navegador. Quien paga no se registra en nada.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-ico">02</div>
+          <div class="pillar-content">
+            <div class="pillar-t">Marca y confianza.</div>
+            <div class="pillar-d">Logo, colores, nombre del negocio y datos fiscales visibles. El cliente sabe a quién le paga.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-ico">03</div>
+          <div class="pillar-content">
+            <div class="pillar-t">Instantáneo · 0% comisión.</div>
+            <div class="pillar-d">SPEI directo a la cuenta del dueño. Sin intermediarios ni settlement.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prod-mockup">
+      <div class="phone">
+        <div class="phone-card">
+          <div class="pc-top">
+            <div class="pc-logo">Rx</div>
+            <div class="pc-brand-mini">tr<span style="color:#00c896;">4</span>nsfer.me</div>
+          </div>
+          <div class="pc-mid">
+            <div class="pc-bank">Banorte</div>
+            <div><div class="pc-label">CLABE</div><div class="pc-clabe">072 580 01234 567890</div></div>
+            <div><div class="pc-label">Titular</div><div class="pc-name">Farmacia Centro SA</div></div>
+          </div>
+          <div class="pc-bottom">
+            <div class="pc-alias">@farmacia-centro</div>
+            <div class="pc-qr"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4 HYPERLOCAL -->
+<div class="slide" id="s4">
+  <div class="htitle">Por qué concentrar el piloto en <em>una sola zona</em></div>
+  <div class="rule"></div>
+  <div class="hyp-wrap">
+    <div class="hyp-grid">
+      <div class="hyp-card hyp-1">
+        <div class="hyp-num">01 · Efecto densidad</div>
+        <div class="hyp-title"><em>Repetición</em> acelera el hábito</div>
+        <div class="hyp-desc">Cuando varias farmacias de la misma zona lo usan al mismo tiempo, el cliente lo ve dos o tres veces en una semana. Eso convierte "cosa nueva" en "así se paga aquí" más rápido que cualquier campaña.</div>
+        <div class="hyp-quote">La primera exposición es curiosidad. La tercera ya es hábito.</div>
+      </div>
+      <div class="hyp-card hyp-2">
+        <div class="hyp-num">02 · Efecto confianza</div>
+        <div class="hyp-title"><em>Proximidad</em> construye seguridad</div>
+        <div class="hyp-desc">"La farmacia de mi colonia", "la farmacia junto a mi casa". Cuando el cliente ve que las farmacias de su barrio lo usan, deja de sentirlo como algo extraño. La densidad se traduce en permiso social.</div>
+        <div class="hyp-quote">Si las de por aquí lo usan, entonces está bien.</div>
+      </div>
+      <div class="hyp-card hyp-3">
+        <div class="hyp-num">03 · Costo operativo</div>
+        <div class="hyp-title"><em>Radio corto</em>, control total</div>
+        <div class="hyp-desc">Distribución del kit, capacitación y soporte contenidos en un solo radio geográfico. Las fallas se detectan y corrigen en días — no semanas. Menos costo, más aprendizaje por cada peso invertido.</div>
+        <div class="hyp-quote">Un problema resuelto en 48 horas en una zona equivale a un mes en un rollout disperso.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 CUSTOMER EXPERIENCE -->
+<div class="slide" id="s5">
+  <div class="htitle">Lo que ve <em>el cliente</em> en sucursal</div>
+  <div class="rule"></div>
+  <div class="xp-split">
+    <div class="xp-steps">
+      <div class="xp-step"><div class="xp-step-n">1</div><div class="xp-step-content"><div class="xp-step-t">Llega a caja con sus productos</div><div class="xp-step-d">Momento natural del cobro, sin alterar el flujo que ya conoce.</div></div></div>
+      <div class="xp-step"><div class="xp-step-n">2</div><div class="xp-step-content"><div class="xp-step-t">Ve el acrílico con QR en mostrador</div><div class="xp-step-d">A la altura de sus ojos. Mensaje claro: <em>"Paga por transferencia — escanea aquí."</em></div></div></div>
+      <div class="xp-step"><div class="xp-step-n">3</div><div class="xp-step-content"><div class="xp-step-t">Escanea con su cámara</div><div class="xp-step-d">Sin descargas, sin registros. Cualquier celular moderno abre el link al apuntar la cámara.</div></div></div>
+      <div class="xp-step"><div class="xp-step-n">4</div><div class="xp-step-content"><div class="xp-step-t">Ve la página de la farmacia</div><div class="xp-step-d">Logo, colores y nombre del negocio. CLABE y banco visibles. Botón de <em>copiar</em> listo.</div></div></div>
+      <div class="xp-step"><div class="xp-step-n">5</div><div class="xp-step-content"><div class="xp-step-t">Copia, abre su app del banco, paga</div><div class="xp-step-d">SPEI llega en segundos. El cajero confirma y entrega sus productos. <em>Cero intermediarios.</em></div></div></div>
+    </div>
+    <div class="xp-mockup">
+      <div class="phone">
+        <div class="phone-card">
+          <div class="pc-top">
+            <div class="pc-logo">Rx</div>
+            <div class="pc-brand-mini">tr<span style="color:#00c896;">4</span>nsfer.me</div>
+          </div>
+          <div class="pc-mid">
+            <div class="pc-bank">Banorte</div>
+            <div><div class="pc-label">CLABE</div><div class="pc-clabe">072 580 01234 567890</div></div>
+            <div><div class="pc-label">Titular</div><div class="pc-name">Farmacia Centro</div></div>
+          </div>
+          <div class="pc-bottom">
+            <div class="pc-alias">@farmacia-centro</div>
+            <div class="pc-qr"></div>
+          </div>
+        </div>
+      </div>
+      <div class="xp-caption">Vista del cliente al escanear</div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 ONBOARDING -->
+<div class="slide" id="s6">
+  <div class="htitle">Cómo se da de alta <em>cada dueño</em> de farmacia</div>
+  <div class="rule"></div>
+  <div class="onb-lead">
+    <div class="onb-lead-ico">// Punto crítico</div>
+    <div class="onb-lead-txt">Las CLABEs las tiene cada dueño, no el corporativo. Diseñamos un <b>flujo self-serve</b> acompañado de un <b>kit de bienvenida físico con la marca tr4nsfer</b> — folder branded, folleto de bienvenida y flyer con instrucciones paso a paso — para que cada franquiciatario se dé de alta en minutos.</div>
+  </div>
+  <div class="onb-flow">
+    <div class="onb-node">
+      <div class="onb-node-n">01 · Invitación</div>
+      <div class="onb-node-ico"><svg viewBox="0 0 24 24"><path d="M3 7l9 6 9-6M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7l2-2h14l2 2"/></svg></div>
+      <div class="onb-node-t">Recibe email del corporativo</div>
+      <div class="onb-node-d">Con link personalizado para su sucursal. <em>Datos precargados</em>: nombre, dirección y colonia ya están ahí.</div>
+    </div>
+    <div class="onb-node">
+      <div class="onb-node-n">02 · Kit de bienvenida</div>
+      <div class="onb-node-ico"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v11a1 1 0 01-1 1H3V7z"/><path d="M3 7V5a1 1 0 011-1h5l2 2"/></svg></div>
+      <div class="onb-node-t">Recibe su kit físico en mano</div>
+      <div class="onb-node-d">Folder con marca <em>tr4nsfer.me</em>, folleto de bienvenida y flyer con instrucciones detalladas paso a paso.</div>
+    </div>
+    <div class="onb-node">
+      <div class="onb-node-n">03 · Captura CLABE</div>
+      <div class="onb-node-ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+      <div class="onb-node-t">Teclea su CLABE</div>
+      <div class="onb-node-d">Detectamos el banco por los 3 primeros dígitos. <em>Alertamos si hay error</em> de captura antes de guardar.</div>
+    </div>
+    <div class="onb-node">
+      <div class="onb-node-n">04 · Datos fiscales</div>
+      <div class="onb-node-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg></div>
+      <div class="onb-node-t">RFC y titular de cuenta</div>
+      <div class="onb-node-d">Razón social y titular. Necesario para <em>emitir comprobante digital</em> al cliente si lo solicita.</div>
+    </div>
+    <div class="onb-node">
+      <div class="onb-node-n">05 · Personaliza</div>
+      <div class="onb-node-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+      <div class="onb-node-t">Logo, color y listo</div>
+      <div class="onb-node-d">Sube su logo o usa el corporativo. Elige color de su tarjeta. <em>Preview en vivo</em> de cómo se ve al cliente.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- S7 KIT + CAJERO -->
+<div class="slide" id="s7">
+  <div class="htitle">Lo que llega a la <em>sucursal</em></div>
+  <div class="rule"></div>
+  <div class="kit-split">
+    <div class="kit-col">
+      <div class="kit-col-tag">// El kit físico</div>
+      <div class="kit-col-head">Material en tienda — listo para instalar</div>
+      <div class="kit-items">
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v11a1 1 0 01-1 1H3V7z"/><path d="M3 7V5a1 1 0 011-1h5l2 2"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Folder con marca tr4nsfer</div>
+            <div class="kit-item-d">Contenedor de todos los materiales. <em>Identidad visible y permanente</em> en la tienda.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Folleto informativo</div>
+            <div class="kit-item-d">Explicación clara del producto para el encargado y dueño. Qué es, cómo funciona, dónde consultar.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><path d="M20 12h-8V4"/><path d="M20 12A8 8 0 114 12a8 8 0 0116 0z"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Sticker para caja registradora</div>
+            <div class="kit-item-d">Versión compacta con QR. Para cuando el cliente ya está pagando y otros materiales no son visibles.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 10h10M7 14h5"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Tarjeta de bolsillo del cajero</div>
+            <div class="kit-item-d">Script de 3 segundos + <em>QR de soporte</em> para problemas. Para dudas del cliente en caja.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><path d="M6 3v18M6 3h12l-3 6 3 6H6"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Cartel de "Nuevo: paga por transferencia"</div>
+            <div class="kit-item-d">Para vitrina o entrada. Comunica el cambio antes de que el cliente llegue a caja.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kit-col cashier">
+      <div class="kit-col-tag">// El cajero</div>
+      <div class="kit-col-head">Capacitación mínima, máximo impacto</div>
+      <div class="kit-items">
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><polygon points="10,8 16,12 10,16 10,8"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Video tutorial de 2 minutos</div>
+            <div class="kit-item-d">Qué es, cómo funciona, qué decir al cliente. Se ve en cualquier celular.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Script de 3 segundos</div>
+            <div class="kit-item-d"><em>"Si quieres, paga por transferencia — escanea el QR."</em> Memorizable en una leída.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">Canal WhatsApp de soporte directo</div>
+            <div class="kit-item-d">Cajero o encargado escribe a tr4nsfer en cualquier momento. Respuesta en minutos.</div>
+          </div>
+        </div>
+        <div class="kit-item">
+          <div class="kit-item-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div class="kit-item-content">
+            <div class="kit-item-t">QR autoexplicativo</div>
+            <div class="kit-item-d">El flujo está diseñado para que el cliente no necesite al cajero. <em>El cajero es backup, no bottleneck.</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 ROLLOUT -->
+<div class="slide" id="s8">
+  <div class="htitle">Rollout en <em>4 fases · 12 semanas</em></div>
+  <div class="rule"></div>
+  <div class="roll-grid">
+    <div class="roll-col rc1">
+      <div class="roll-phase rp1">
+        <div class="rp-weeks">Sem −2 a 0</div>
+        <div class="rp-name">Preparación</div>
+        <div class="rp-desc">Lo que pasa antes de tocar la primera sucursal. El 40% del éxito se define aquí.</div>
+        <div class="rp-items">
+          <div class="rp-item"><div class="rp-dot"></div>Firma del acuerdo con corporativo</div>
+          <div class="rp-item"><div class="rp-dot"></div>Comunicado interno a dueños</div>
+          <div class="rp-item"><div class="rp-dot"></div>Envío de invitaciones y kits de bienvenida</div>
+          <div class="rp-item"><div class="rp-dot"></div>Producción del kit físico por sucursal</div>
+        </div>
+      </div>
+      <div class="roll-milestone">
+        <div class="rm-l">Hito</div>
+        <div class="rm-v">Sucursales dadas de alta</div>
+      </div>
+    </div>
+    <div class="roll-col rc2">
+      <div class="roll-phase rp2">
+        <div class="rp-weeks">Sem 1 a 2</div>
+        <div class="rp-name">Piloto reducido</div>
+        <div class="rp-desc">Arrancamos con 5 sucursales estratégicas antes de escalar. Aprendemos sin costo grande.</div>
+        <div class="rp-items">
+          <div class="rp-item"><div class="rp-dot"></div>Instalación presencial del kit</div>
+          <div class="rp-item"><div class="rp-dot"></div>Acompañamiento a capacitación del cajero</div>
+          <div class="rp-item"><div class="rp-dot"></div>Observación intensiva de transacciones</div>
+          <div class="rp-item"><div class="rp-dot"></div>Ajustes a materiales y scripts</div>
+        </div>
+      </div>
+      <div class="roll-milestone">
+        <div class="rm-l">Hito</div>
+        <div class="rm-v">Primeras transferencias reales</div>
+      </div>
+    </div>
+    <div class="roll-col rc3">
+      <div class="roll-phase rp3">
+        <div class="rp-weeks">Sem 3 a 6</div>
+        <div class="rp-name">Rollout completo</div>
+        <div class="rp-desc">Despliegue a las sucursales restantes. Tandas controladas por zona.</div>
+        <div class="rp-items">
+          <div class="rp-item"><div class="rp-dot"></div>Tandas de 10–15 sucursales por semana</div>
+          <div class="rp-item"><div class="rp-dot"></div>Materiales de capacitación listos</div>
+          <div class="rp-item"><div class="rp-dot"></div>Soporte WhatsApp dedicado por tanda</div>
+          <div class="rp-item"><div class="rp-dot"></div>Auditoría ligera vía fotos del encargado</div>
+        </div>
+      </div>
+      <div class="roll-milestone">
+        <div class="rm-l">Hito</div>
+        <div class="rm-v">100% sucursales activas</div>
+      </div>
+    </div>
+    <div class="roll-col rc4">
+      <div class="roll-phase rp4">
+        <div class="rp-weeks">Sem 7 a 12</div>
+        <div class="rp-name">Estabilización</div>
+        <div class="rp-desc">Medición, aprendizaje y preparación de la propuesta de escalamiento post-piloto.</div>
+        <div class="rp-items">
+          <div class="rp-item"><div class="rp-dot"></div>Monitoreo continuo de métricas</div>
+          <div class="rp-item"><div class="rp-dot"></div>Reporte mensual al corporativo</div>
+          <div class="rp-item"><div class="rp-dot"></div>Iteración de materiales según feedback</div>
+          <div class="rp-item"><div class="rp-dot"></div>Informe de cierre + propuesta post-piloto</div>
+        </div>
+      </div>
+      <div class="roll-milestone">
+        <div class="rm-l">Hito</div>
+        <div class="rm-v">Decisión de escalamiento</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 APORTA -->
+<div class="slide" id="s9">
+  <div class="htitle">Lo que <em>tr4nsfer.me</em> trae al piloto</div>
+  <div class="rule"></div>
+  <div class="ap-grid">
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+      <div class="ap-card-t">Plataforma completa</div>
+      <div class="ap-card-d">Link, QR, página personalizada y dashboard del dueño para cada sucursal.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="ap-card-t">Onboarding self-serve</div>
+      <div class="ap-card-d">Flujo de minutos por dueño. Validación automática de CLABE y banco.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v11a1 1 0 01-1 1H3V7z"/><path d="M3 7V5a1 1 0 011-1h5l2 2"/></svg></div>
+      <div class="ap-card-t">Kit de bienvenida impreso</div>
+      <div class="ap-card-d">Folder con marca tr4nsfer, folleto de bienvenida y flyer de instrucciones — enviado al dueño.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><path d="M16 16l-4 4-4-4M12 20V6"/><path d="M4 10V4h16v6"/></svg></div>
+      <div class="ap-card-t">Kit físico en tienda</div>
+      <div class="ap-card-d">Folder, sticker, tarjeta de cajero, cartel y folleto informativo — ya etiquetados por sucursal.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><polygon points="10,8 16,12 10,16 10,8"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
+      <div class="ap-card-t">Material de capacitación</div>
+      <div class="ap-card-d">Video tutorial, script y guías visuales para que su equipo capacite a cajeros rápidamente.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="ap-card-t">Soporte WhatsApp dedicado</div>
+      <div class="ap-card-d">Canal directo para cajeros, encargados y dueños. Respuesta en minutos.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="13" y="8" width="3" height="10"/></svg></div>
+      <div class="ap-card-t">Reportes mensuales</div>
+      <div class="ap-card-d">Dashboard del corporativo con transacciones, volumen y uso por sucursal.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg></div>
+      <div class="ap-card-t">Validación de CLABEs</div>
+      <div class="ap-card-d">Detección automática de banco y errores de captura antes de emitir el QR.</div>
+    </div>
+    <div class="ap-card">
+      <div class="ap-card-ico"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+      <div class="ap-card-t">Soporte al cliente final</div>
+      <div class="ap-card-d">Si un cliente tiene duda escaneando, tiene canal directo con nosotros, no con la farmacia.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 NEED -->
+<div class="slide" id="s10">
+  <div class="htitle">Lo que pedimos <em>del corporativo</em> para arrancar</div>
+  <div class="rule"></div>
+  <div class="need-grid">
+    <div class="need-card need-1">
+      <div class="need-num">01 · Datos y contacto</div>
+      <div class="need-title">La info base de sucursales</div>
+      <div class="need-list">
+        <div class="need-list-item"><em>Listado maestro</em> de sucursales en la zona del piloto (nombre comercial, dirección, colonia, encargado)</div>
+        <div class="need-list-item"><em>Contacto directo</em> del dueño/franquiciatario de cada sucursal (email y teléfono)</div>
+        <div class="need-list-item"><em>Logo corporativo</em> en alta resolución (para co-branding opcional)</div>
+      </div>
+    </div>
+    <div class="need-card need-2">
+      <div class="need-num">02 · Comunicación interna</div>
+      <div class="need-title">El músculo que solo él tiene</div>
+      <div class="need-list">
+        <div class="need-list-item"><em>Anuncio oficial</em> del corporativo a los dueños antes de que lleguen nuestras invitaciones</div>
+        <div class="need-list-item"><em>Respaldo explícito</em> al piloto — "probamos esto juntos, queremos su participación"</div>
+        <div class="need-list-item"><em>Champion asignado</em> de su lado como contraparte del proyecto durante los 3 meses</div>
+      </div>
+    </div>
+    <div class="need-card need-3">
+      <div class="need-num">03 · Operación en tienda</div>
+      <div class="need-title">Despliegue y capacitación</div>
+      <div class="need-list">
+        <div class="need-list-item"><em>Espacio confirmado</em> en mostrador para el acrílico y material (visible al cliente)</div>
+        <div class="need-list-item"><em>Su equipo capacita a los cajeros</em> sobre la nueva herramienta, apoyándose en nuestros materiales</div>
+        <div class="need-list-item"><em>Apertura</em> a recibir el kit y aplicar los materiales según instrucciones</div>
+      </div>
+    </div>
+    <div class="need-card need-4">
+      <div class="need-num">04 · Información para medir</div>
+      <div class="need-title">Cerrar el loop del piloto</div>
+      <div class="need-list">
+        <div class="need-list-item"><em>Volumen total</em> de transacciones por sucursal (mensual) para calcular migración</div>
+        <div class="need-list-item"><em>Feedback cualitativo</em> de cajeros y encargados vía encuesta corta mensual</div>
+        <div class="need-list-item"><em>Acceso</em> a realizar entrevistas breves con 3–5 dueños durante el piloto</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 METRICS -->
+<div class="slide" id="s11">
+  <div class="htitle">Cómo medimos <em>el éxito del piloto</em></div>
+  <div class="rule"></div>
+  <div class="met-wrap">
+    <div class="met-top">
+      <div class="met-card met-1">
+        <div class="met-cat">01 · Adopción</div>
+        <div class="met-name">Sucursales activas</div>
+        <div class="met-d">% dadas de alta y con kit instalado.</div>
+      </div>
+      <div class="met-card met-2">
+        <div class="met-cat">02 · Uso</div>
+        <div class="met-name">Escaneos y completado</div>
+        <div class="met-d">Escaneos y % que cierran en transferencia.</div>
+      </div>
+      <div class="met-card met-3">
+        <div class="met-cat">03 · Volumen</div>
+        <div class="met-name">Transacciones y ticket</div>
+        <div class="met-d">Transferencias/mes y monto promedio.</div>
+      </div>
+      <div class="met-card met-4">
+        <div class="met-cat">04 · Migración</div>
+        <div class="met-name">% cambio de método</div>
+        <div class="met-d">% cobros migrados a tr4nsfer.</div>
+      </div>
+      <div class="met-card met-5">
+        <div class="met-cat">05 · Cualitativo</div>
+        <div class="met-name">Satisfacción</div>
+        <div class="met-d">Encuesta mensual + entrevistas.</div>
+      </div>
+    </div>
+    <div class="met-split">
+      <div class="met-block">
+        <div class="met-block-tag">// Cadencia de reporte</div>
+        <div class="met-block-t">Cómo y cuándo entregamos lo que aprendemos</div>
+        <div class="met-cadence">
+          <div class="met-cadence-row">
+            <div class="met-cadence-when">Semanal</div>
+            <div class="met-cadence-what">Dashboard en vivo con <b>número de transacciones y volumen</b> por sucursal activa.</div>
+          </div>
+          <div class="met-cadence-row">
+            <div class="met-cadence-when">Mensual</div>
+            <div class="met-cadence-what">Reporte ejecutivo con <b>métricas agregadas y aprendizajes</b> del mes al corporativo.</div>
+          </div>
+          <div class="met-cadence-row">
+            <div class="met-cadence-when">Mes 3 · cierre</div>
+            <div class="met-cadence-what">Informe completo del piloto + <b>propuesta de escalamiento</b> con modelo comercial para fase siguiente.</div>
+          </div>
+        </div>
+      </div>
+      <div class="met-block">
+        <div class="met-block-tag">// Criterios de escalamiento · propuesta</div>
+        <div class="met-block-t">Qué nos dice "sí, vamos a más sucursales"</div>
+        <div class="met-criteria">
+          <div class="met-criterion">
+            <div class="met-criterion-val">≥80%</div>
+            <div class="met-criterion-d"><b>Sucursales activas</b> con al menos 1 transacción/semana al mes 2</div>
+          </div>
+          <div class="met-criterion">
+            <div class="met-criterion-val">≥5%</div>
+            <div class="met-criterion-d"><b>Cobros migrados</b> a tr4nsfer vs. total de la sucursal</div>
+          </div>
+          <div class="met-criterion">
+            <div class="met-criterion-val">≥70%</div>
+            <div class="met-criterion-d"><b>Satisfacción</b> — cajeros y dueños lo califican 7/10 o más</div>
+          </div>
+          <div class="met-criterion">
+            <div class="met-criterion-val">≥1</div>
+            <div class="met-criterion-d"><b>Caso claro</b> de "ya me acostumbré, quiero seguirlo usando"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S12 GRACIAS -->
+<div class="slide" id="s12">
+  <div class="ring" style="width:20em;height:20em;left:-6em;top:-6em;"></div>
+  <div class="ring" style="width:34em;height:34em;right:-10em;bottom:-10em;"></div>
+  <div class="gd" style="left:5em;top:4em;"></div>
+  <div class="thx-wrap">
+    <div class="thx-brand">
+      <div class="brand">
+        <svg class="brand-mark"><use href="#tr-mark"/></svg>
+        <span class="brand-text"><b>tr</b><span>4</span><i>nsfer.me</i></span>
+      </div>
+    </div>
+    <div class="thx-h1"><em>Gracias.</em></div>
+    <div class="thx-sub">Quedo atento a tus comentarios</div>
+    <div class="thx-rule"></div>
+    <div class="thx-name">Patricio González Aceves</div>
+    <div class="thx-role">Founder · tr4nsfer.me</div>
+    <div class="thx-contact">pgzzaceves@gmail.com · +52 81 2622 4761</div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+</div><!-- /viewer -->
+
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nc"><span id="cur">1</span> / <span id="tot">12</span></div>
+    <div id="pb"><div id="pf"></div></div>
+  </div>
+  <div id="ndots"></div>
+  <div id="nbtns"><button class="nb" id="bp">← PREV</button><button class="nb" id="bn">NEXT →</button></div>
+</div>
+
+<script>
+const slides=Array.from(document.querySelectorAll('.slide'));
+const TOTAL=slides.length;let cur=0;
+const ndots=document.getElementById('ndots');
+slides.forEach((s,i)=>{const d=document.createElement('div');d.className='ndot';d.addEventListener('click',()=>goTo(i));ndots.appendChild(d);});
+const dots=ndots.querySelectorAll('.ndot');
+function goTo(n){if(n<0||n>=TOTAL)return;slides[cur].classList.remove('active');slides[cur].classList.add('exit');const prev=cur;cur=n;slides[cur].classList.add('active');setTimeout(()=>slides[prev].classList.remove('exit'),400);update();}
+function update(){document.getElementById('cur').textContent=cur+1;document.getElementById('tot').textContent=TOTAL;document.getElementById('pf').style.width=((cur+1)/TOTAL*100)+'%';dots.forEach((d,i)=>d.classList.toggle('active',i===cur));}
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}});
+const ASPECT=16/9;const viewer=document.getElementById('viewer');const nav=document.getElementById('nav');
+function resize(){const navH=nav.offsetHeight;const aw=window.innerWidth-24;const ah=window.innerHeight-navH-20;let w=aw,h=w/ASPECT;if(h>ah){h=ah;w=h*ASPECT;}w=Math.floor(w);h=Math.floor(h);viewer.style.width=w+'px';viewer.style.height=h+'px';viewer.style.fontSize=(w/1280)*19+'px';nav.style.width=w+'px';}
+window.addEventListener('resize',resize);resize();slides[0].classList.add('active');update();
+</script>
+</body>
+</html>
