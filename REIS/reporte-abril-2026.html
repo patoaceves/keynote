@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REIS Logística — Reporte de Publicidad · Abril 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a1320;--s1:#11203a;--s2:#1a2d4a;--s3:#22395c;
+  --b1:#243a5e;--b2:#324d77;--b3:#3f5f8e;
+  --green:#38A169;--green2:#4ABB7C;--gdim:rgba(56,161,105,.12);--gring:rgba(56,161,105,.26);--gdim2:rgba(56,161,105,.18);
+  --blue:#3b82f6;--bdim:rgba(59,130,246,.12);--bring:rgba(59,130,246,.24);
+  --orange:#FB923C;--odim:rgba(251,146,60,.12);--oring:rgba(251,146,60,.24);
+  --amber:#FACC15;--ydim:rgba(250,204,21,.10);
+  --violet:#A78BFA;--vdim:rgba(167,139,250,.10);
+  --red:#F87171;--rdim:rgba(248,113,113,.10);
+  --text:#F0F8FF;--t2:#9CB3CC;--t3:#6A88AA;--t4:#3a567f;--t5:#243a5e;
+  --FD:'Outfit',sans-serif;--FM:'IBM Plex Mono',monospace;--FB:'Manrope',sans-serif;
+}
+html,body{width:100%;height:100%;background:#070d18;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-family:var(--FB);color:var(--text);}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(56,161,105,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(56,161,105,.014) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+#viewer{position:relative;z-index:1;flex-shrink:0;box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(56,161,105,.08);border-radius:10px 10px 0 0;overflow:hidden;background:var(--bg);}
+#deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(28px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:1.7em 2.4em 1.5em;background:var(--bg);overflow:hidden;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit{opacity:0;transform:translateX(-28px);}
+
+/* ── ATOMS ── */
+.stag{font-family:var(--FM);font-size:.6em;letter-spacing:.18em;color:var(--green);margin-bottom:.4em;text-transform:uppercase;opacity:.75;}
+.htitle{font-family:var(--FD);font-weight:800;font-size:1.95em;line-height:1.05;color:var(--text);}
+.htitle em{color:var(--green);font-style:normal;}
+.hsub{font-family:var(--FM);font-size:.6em;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;margin-top:.3em;}
+.rule{height:1px;flex-shrink:0;margin:.5em 0 .9em;background:linear-gradient(90deg,rgba(56,161,105,.45),transparent 70%);}
+.htop{display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0;}
+.htop-tag{font-family:var(--FM);font-size:.6em;letter-spacing:.18em;color:var(--green);text-transform:uppercase;padding:.3em .75em;border-radius:100px;background:var(--gdim);border:1px solid var(--gring);}
+
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(56,161,105,.06);pointer-events:none;}
+.gd{position:absolute;width:.4em;height:.4em;background:var(--green);border-radius:50%;box-shadow:0 0 1.5em .4em rgba(56,161,105,.32);animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(1.8)}}
+
+/* ── COVER ── */
+#s1{background:var(--bg);}
+#s1::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 60% 35%,rgba(56,161,105,.13) 0%,transparent 65%);pointer-events:none;}
+.cover-wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.cover-label{font-family:var(--FM);font-size:.8em;letter-spacing:.18em;color:rgba(240,248,255,.4);text-transform:uppercase;}
+.cover-mid{display:flex;flex-direction:column;}
+.cover-eyebrow{font-family:var(--FM);font-size:.78em;letter-spacing:.18em;color:rgba(240,248,255,.4);margin-bottom:.85em;text-transform:uppercase;display:flex;align-items:center;gap:.9em;}
+.cover-eyebrow .sep{width:1.4em;height:1px;background:rgba(240,248,255,.22);}
+.cover-h1{font-family:var(--FD);font-weight:900;font-size:4.6em;line-height:.9;color:var(--text);margin-bottom:.55em;text-transform:uppercase;}
+.cover-h1 em{color:var(--green);font-style:normal;display:block;}
+.cover-month{font-family:var(--FD);font-weight:800;font-size:2.6em;line-height:1;color:var(--green);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:baseline;gap:.3em;}
+.cover-month span{font-family:var(--FM);font-weight:300;font-size:.7em;color:var(--t2);letter-spacing:.16em;}
+.cover-sub{font-family:var(--FM);font-size:.78em;letter-spacing:.14em;color:rgba(240,248,255,.42);max-width:42em;line-height:1.65;text-transform:uppercase;}
+.cover-bottom{display:flex;align-items:center;gap:1.4em;}
+.cover-rule{width:2.4em;height:2px;background:linear-gradient(90deg,var(--green),var(--green2));flex-shrink:0;}
+.cover-name{font-family:var(--FD);font-weight:800;font-size:1.3em;color:var(--text);text-transform:uppercase;letter-spacing:.02em;}
+.cover-role{font-family:var(--FM);font-size:.72em;letter-spacing:.1em;color:rgba(240,248,255,.5);margin-top:.3em;}
+.cover-channels{display:flex;gap:.7em;align-items:center;margin-top:.5em;}
+.cover-chan{font-family:var(--FM);font-size:.65em;letter-spacing:.14em;color:rgba(240,248,255,.5);text-transform:uppercase;padding:.3em .75em;border-radius:100px;background:rgba(56,161,105,.06);border:1px solid rgba(56,161,105,.18);}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-family:var(--FB);}
+.tbl thead th{font-family:var(--FD);font-weight:700;font-size:.64em;letter-spacing:.06em;text-transform:uppercase;color:#fff;padding:.7em .8em;background:var(--s2);border-bottom:1px solid var(--b2);text-align:center;}
+.tbl thead th:first-child{text-align:left;border-radius:.5em 0 0 0;}
+.tbl thead th:last-child{border-radius:0 .5em 0 0;}
+.tbl tbody td{padding:.55em .8em;font-size:.7em;text-align:center;color:var(--text);border-bottom:1px solid var(--b1);background:var(--s1);}
+.tbl tbody td:first-child{text-align:left;font-family:var(--FD);font-weight:600;font-size:.72em;color:var(--text);}
+.tbl tbody tr:nth-child(even) td{background:var(--s2);}
+.tbl tbody tr.tot td{background:linear-gradient(180deg,var(--gdim2),var(--gdim));color:var(--text);font-family:var(--FD);font-weight:700;border-bottom:none;border-top:1px solid var(--gring);}
+.tbl tbody tr.tot td:first-child{color:var(--green);}
+.tbl tbody tr.tot td:last-child{border-radius:0 0 .5em 0;}
+.tbl tbody tr.tot td:first-child{border-radius:0 0 0 .5em;}
+.tbl-num{font-family:var(--FM);font-size:.92em;}
+
+/* ── STAT BOXES ── */
+.stats{display:grid;gap:.5em;flex-shrink:0;}
+.stat{background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.85em .55em .65em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3em;position:relative;overflow:hidden;}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);}
+.stat.blue::before{background:var(--blue);}
+.stat-v{font-family:var(--FD);font-weight:500;font-size:1.4em;color:var(--text);line-height:1;}
+.stat-l{font-family:var(--FM);font-size:.52em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;text-align:center;line-height:1.2;}
+
+/* ── CONVERSION BOXES ── */
+.cnv-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7em;flex-shrink:0;}
+.cnv-card{background:var(--s1);border:1px solid var(--b1);border-radius:.55em;overflow:hidden;display:flex;flex-direction:column;}
+.cnv-head{background:var(--s2);padding:.55em .9em;font-family:var(--FD);font-weight:700;font-size:.62em;letter-spacing:.08em;text-transform:uppercase;color:#fff;border-bottom:1px solid var(--b2);display:flex;justify-content:space-between;align-items:center;}
+.cnv-head .cnv-tot{color:var(--green);font-family:var(--FM);font-weight:600;}
+.cnv-body{padding:.7em .9em;display:flex;flex-direction:column;gap:.5em;flex:1;justify-content:space-evenly;}
+.cnv-row{display:grid;grid-template-columns:5em 1fr 2.4em;gap:.7em;align-items:center;font-size:.65em;}
+.cnv-row .k{color:var(--t2);font-family:var(--FB);font-size:1em;}
+.cnv-bar{height:.45em;background:rgba(56,161,105,.08);border-radius:100px;overflow:hidden;border:1px solid rgba(56,161,105,.1);}
+.cnv-fill{height:100%;background:linear-gradient(90deg,var(--green2),var(--green));border-radius:100px;}
+.cnv-row .v{color:var(--text);font-family:var(--FM);font-weight:600;font-size:1.1em;text-align:right;}
+
+/* ── INSIGHTS ── */
+.insights{display:flex;flex-direction:column;gap:.55em;flex-shrink:0;}
+.ins{display:flex;align-items:flex-start;gap:.7em;}
+.ins-num{flex-shrink:0;width:1.45em;height:1.45em;border-radius:50%;background:var(--green);color:#0a1320;font-family:var(--FD);font-weight:800;font-size:.7em;display:flex;align-items:center;justify-content:center;margin-top:.05em;}
+.ins-body{flex:1;font-size:.72em;line-height:1.5;color:var(--t2);}
+.ins-body b{color:var(--text);font-weight:700;font-family:var(--FB);}
+
+/* ── 2-COL LAYOUTS ── */
+.col2{display:grid;grid-template-columns:1.55fr 1fr;gap:1em;flex:1;min-height:0;}
+.col2-eq{display:grid;grid-template-columns:1fr 1fr;gap:1em;flex:1;min-height:0;}
+.panel{background:var(--s1);border:1px solid var(--b1);border-radius:.6em;padding:.85em 1em;display:flex;flex-direction:column;gap:.6em;min-height:0;overflow:hidden;}
+.panel-h{font-family:var(--FD);font-weight:700;font-size:.8em;text-transform:uppercase;color:var(--text);letter-spacing:.04em;display:flex;align-items:center;gap:.6em;}
+.panel-h .dot{width:.4em;height:.4em;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+/* ── CITY 2-COL (S4-S6) ── */
+.city-2col{display:grid;grid-template-columns:1.05fr 1fr;gap:1.1em;flex:1;min-height:0;}
+.city-left{display:flex;flex-direction:column;gap:.7em;min-height:0;justify-content:flex-start;}
+.city-right{display:flex;flex-direction:column;justify-content:space-evenly;gap:.5em;min-height:0;}
+.city-right .ins{padding:.4em 0;}
+.city-right .ins:not(:last-child){border-bottom:1px solid var(--b1);padding-bottom:.85em;}
+.city-right .ins:not(:first-child){padding-top:.85em;}
+
+/* ── INSIGHT CARDS (S3 grid 2x2) ── */
+.ins-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.85em;flex:1;min-height:0;}
+.ins-card{background:var(--s1);border:1px solid var(--b1);border-radius:.6em;padding:1em 1.1em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:hidden;}
+.ins-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);}
+.ins-card.blue::before{background:var(--blue);}
+.ins-card-num{font-family:var(--FD);font-weight:800;font-size:1.6em;color:var(--green);line-height:1;}
+.ins-card.blue .ins-card-num{color:var(--blue);}
+.ins-card-body{font-size:.78em;line-height:1.55;color:var(--t2);flex:1;}
+.ins-card-body b{color:var(--text);font-weight:700;}
+
+/* ── CITY CHIP ── */
+.city-chip{display:inline-flex;align-items:center;gap:.45em;font-family:var(--FM);font-size:.55em;letter-spacing:.14em;text-transform:uppercase;padding:.3em .8em;border-radius:100px;background:var(--gdim);color:var(--green);border:1px solid var(--gring);align-self:flex-start;}
+
+/* ── META AD CHIPS ── */
+.adchip-cx{display:inline-flex;align-items:center;font-family:var(--FM);font-size:.62em;font-weight:500;color:var(--orange);background:var(--odim);border:1px solid var(--oring);border-radius:.25em;padding:.05em .35em;margin-right:.4em;letter-spacing:.04em;}
+.adchip-alm{display:inline-flex;align-items:center;font-family:var(--FM);font-size:.62em;font-weight:500;color:var(--green);background:var(--gdim);border:1px solid var(--gring);border-radius:.25em;padding:.05em .35em;margin-right:.4em;letter-spacing:.04em;}
+
+/* ── META IMAGE PLACEHOLDERS ── */
+.meta-imgs{display:flex;flex-direction:column;gap:.5em;}
+.meta-img{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;min-height:0;position:relative;overflow:hidden;background-image:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(56,161,105,.025) 8px,rgba(56,161,105,.025) 9px);}
+.meta-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.meta-img-tag{font-family:var(--FM);font-size:.55em;letter-spacing:.14em;text-transform:uppercase;color:var(--green);padding:.3em .65em;border-radius:100px;background:rgba(10,19,32,.85);border:1px solid var(--gring);backdrop-filter:blur(8px);position:absolute;top:.55em;left:.55em;z-index:2;}
+.meta-img-tag.blue{color:var(--blue);background:rgba(10,19,32,.85);border-color:var(--bring);}
+.meta-img-info{position:absolute;bottom:0;left:0;right:0;padding:.7em .85em;background:linear-gradient(180deg,transparent 0%,rgba(7,13,24,.92) 100%);display:flex;flex-direction:column;gap:.2em;z-index:2;}
+.meta-img-name{font-family:var(--FD);font-weight:700;font-size:.8em;color:var(--text);text-transform:uppercase;letter-spacing:.02em;}
+.meta-img-meta{font-family:var(--FM);font-size:.55em;letter-spacing:.1em;color:var(--green);text-transform:uppercase;font-weight:500;}
+.meta-img-meta.blue{color:var(--blue);}
+/* legacy fallback (placeholders sin imagen) */
+.meta-img-icon{font-size:1.4em;opacity:.4;z-index:1;}
+.meta-img-single .meta-img{flex:1;}
+
+/* ── STACKED BAR (S13) ── */
+.stk-bar{display:flex;height:2.4em;border-radius:.5em;overflow:hidden;border:1px solid var(--b1);flex-shrink:0;}
+.stk-seg{display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-weight:800;font-size:.85em;color:#fff;}
+.stk-seg.s1{background:var(--green);}
+.stk-seg.s2{background:var(--blue);color:#fff;}
+.stk-seg.s3{background:var(--violet);}
+.stk-leg{display:flex;justify-content:center;gap:1.6em;flex-shrink:0;flex-wrap:wrap;}
+.stk-leg-item{display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.58em;letter-spacing:.06em;color:var(--t2);text-transform:uppercase;}
+.stk-leg-dot{width:.55em;height:.55em;border-radius:.15em;}
+
+/* ── LEARNINGS / PLAN ── */
+.lr-grid{display:grid;grid-template-columns:1fr 1fr;gap:1em;flex:1;min-height:0;}
+.lr-col{background:var(--s1);border:1px solid var(--b1);border-radius:.6em;padding:1em 1.1em;display:flex;flex-direction:column;gap:.65em;min-height:0;overflow:hidden;}
+.lr-h{font-family:var(--FD);font-weight:800;font-size:.95em;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:.6em;flex-shrink:0;padding-bottom:.6em;border-bottom:1px solid var(--b1);}
+.lr-h.green{color:var(--green);}
+.lr-h.blue{color:var(--blue);}
+.lr-h .num{font-family:var(--FM);font-size:.6em;color:var(--t3);font-weight:400;letter-spacing:.1em;}
+.lr-list{display:flex;flex-direction:column;flex:1;justify-content:space-evenly;gap:0;}
+.lr-item{display:flex;align-items:flex-start;gap:.7em;font-size:.72em;line-height:1.55;color:var(--t2);padding:.55em 0;}
+.lr-item:not(:last-child){border-bottom:1px solid var(--b1);}
+.lr-item-num{flex-shrink:0;width:1.45em;height:1.45em;border-radius:50%;font-family:var(--FD);font-weight:800;font-size:.62em;display:flex;align-items:center;justify-content:center;margin-top:.1em;}
+.lr-item-num.green{background:var(--gdim);color:var(--green);border:1px solid var(--gring);}
+.lr-item-num.blue{background:var(--bdim);color:var(--blue);border:1px solid var(--bring);}
+.lr-item-body{flex:1;}
+.lr-item-body b{color:var(--text);font-weight:700;font-family:var(--FB);}
+
+/* ── TWO TABLES (Saltillo+Ramos) ── */
+.dual-tables{display:grid;grid-template-columns:1fr 1fr;gap:1em;flex-shrink:0;}
+.dual-tbl-wrap{display:flex;flex-direction:column;gap:.5em;}
+
+/* ── NAV ── */
+#nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:16px;flex-shrink:0;}
+#nc{font-family:var(--FM);font-size:11px;letter-spacing:.12em;color:rgba(240,248,255,.3);}
+#pb{flex:1;max-width:200px;height:3px;background:rgba(56,161,105,.1);border-radius:100px;overflow:hidden;}
+#pf{height:100%;background:var(--green);border-radius:100px;transition:width .35s ease;}
+#ndots{display:flex;gap:6px;align-items:center;}
+.ndot{width:7px;height:7px;border-radius:50%;background:rgba(56,161,105,.18);cursor:pointer;transition:all .2s;}
+.ndot.active{background:var(--green);transform:scale(1.3);}
+#nbtns{display:flex;gap:8px;}
+.nb{padding:7px 18px;border-radius:6px;background:rgba(56,161,105,.06);border:1px solid rgba(56,161,105,.18);color:rgba(240,248,255,.55);font-family:var(--FM);font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s;}
+.nb:hover{background:rgba(56,161,105,.16);color:var(--text);}
+
+/* ── FOOTNOTE ── */
+.fnote{font-family:var(--FM);font-size:.55em;letter-spacing:.06em;color:var(--t3);text-transform:uppercase;text-align:center;padding-top:.4em;}
+</style>
+</head>
+<body>
+<div id="viewer">
+<div id="deck">
+
+<!-- ════════ S1 — COVER ═══════════════════════════════════════════════ -->
+<div class="slide active" id="s1">
+  <div class="ring" style="width:22em;height:22em;right:-4em;bottom:-4em;"></div>
+  <div class="ring" style="width:36em;height:36em;right:-12em;bottom:-12em;"></div>
+  <div class="gd" style="right:14em;bottom:14em;"></div>
+  <div class="cover-wrap">
+    <div class="cover-top">
+      <div></div>
+      <div class="cover-label">CONFIDENCIAL</div>
+    </div>
+    <div class="cover-mid">
+      <div class="cover-h1">Reporte de<em>Publicidad</em></div>
+      <div class="cover-month">Abril <span>2026</span></div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-rule"></div>
+      <div>
+        <div class="cover-name">REIS LOGÍSTICA</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="cover-channels">
+        <span class="cover-chan">Google Ads</span>
+        <span class="cover-chan">Meta Ads</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S2 — GOOGLE ADS · PANORAMA ══════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="htop">
+    <div>
+      <div class="htitle">Resumen de <em>Campañas</em></div>
+      <div class="hsub">Google Ads · Inversión y desempeño por ciudad</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+
+  <table class="tbl" style="margin-bottom:.7em;">
+    <thead>
+      <tr><th>Ciudad</th><th>Costo</th><th>Impresiones</th><th>Clicks</th><th>CTR</th><th>CPC Prom.</th><th>Costo / Conv.</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Monterrey</td><td class="tbl-num">$5,676.78</td><td class="tbl-num">5,053</td><td class="tbl-num">259</td><td class="tbl-num">5.13%</td><td class="tbl-num">$21.92</td><td class="tbl-num">—</td></tr>
+      <tr><td>Cd. Juárez</td><td class="tbl-num">$4,698.55</td><td class="tbl-num">1,329</td><td class="tbl-num">101</td><td class="tbl-num">7.60%</td><td class="tbl-num">$46.52</td><td class="tbl-num">—</td></tr>
+      <tr><td>San Luis Potosí</td><td class="tbl-num">$1,435.71</td><td class="tbl-num">1,107</td><td class="tbl-num">67</td><td class="tbl-num">6.05%</td><td class="tbl-num">$21.43</td><td class="tbl-num">—</td></tr>
+      <tr><td>Saltillo</td><td class="tbl-num">$972.68</td><td class="tbl-num">592</td><td class="tbl-num">44</td><td class="tbl-num">7.43%</td><td class="tbl-num">$22.11</td><td class="tbl-num">—</td></tr>
+      <tr><td>Ramos Arizpe</td><td class="tbl-num">$233.81</td><td class="tbl-num">108</td><td class="tbl-num">11</td><td class="tbl-num">10.19%</td><td class="tbl-num">$21.26</td><td class="tbl-num">—</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="tbl-num">$13,017.54</td><td class="tbl-num">8,189</td><td class="tbl-num">482</td><td class="tbl-num">5.89%</td><td class="tbl-num">$27.01</td><td class="tbl-num">$144.64</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stats" style="grid-template-columns:repeat(6,1fr);margin-bottom:.75em;">
+    <div class="stat"><div class="stat-v">$13,017.54</div><div class="stat-l">Inversión Total</div></div>
+    <div class="stat"><div class="stat-v">482</div><div class="stat-l">Clicks</div></div>
+    <div class="stat"><div class="stat-v">8,189</div><div class="stat-l">Impresiones</div></div>
+    <div class="stat"><div class="stat-v">90</div><div class="stat-l">Conversiones</div></div>
+    <div class="stat"><div class="stat-v">5.89%</div><div class="stat-l">CTR Prom.</div></div>
+    <div class="stat"><div class="stat-v">$27.01</div><div class="stat-l">CPC Prom.</div></div>
+  </div>
+
+  <div class="ins-grid" style="grid-template-rows:1fr 1fr;flex:1;min-height:0;">
+    <div class="ins-card" style="padding:.75em .9em;gap:.4em;">
+      <div class="ins-card-num" style="font-size:1.3em;">01</div>
+      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Monterrey pasó a liderar la cuenta</b> con 43.6% del gasto y 53.7% de los clicks ($5,676.78 / 259 clicks), desplazando a Cd. Juárez como la plaza principal del mes.</div>
+    </div>
+    <div class="ins-card" style="padding:.75em .9em;gap:.4em;">
+      <div class="ins-card-num" style="font-size:1.3em;">02</div>
+      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Ramos Arizpe casi cuadruplicó su inversión</b> ($58 → $234) y entrega el CTR más alto de la cuenta (10.19%), con REIS Logistics al 13.33%. La hipótesis del mes pasado se confirma.</div>
+    </div>
+    <div class="ins-card" style="padding:.75em .9em;gap:.4em;">
+      <div class="ins-card-num" style="font-size:1.3em;">03</div>
+      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Warehousing en CDJ sigue siendo la mayor ineficiencia</b> ($64.26 CPC), aunque mejoró desde $76.21 de marzo. Triplica el CPC promedio del resto de plazas (~$21–25).</div>
+    </div>
+    <div class="ins-card" style="padding:.75em .9em;gap:.4em;">
+      <div class="ins-card-num" style="font-size:1.3em;">04</div>
+      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Warehousing domina en CTR</b> en plazas pequeñas: Saltillo 8.89%, CDJ 8.67%, SLP 8.01%. El creativo de almacenaje resuena con mayor intención — patrón consistente con Meta.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S3 — GOOGLE ADS · CONVERSIONES ══════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="htop">
+    <div>
+      <div class="htitle">Conversiones del <em>Mes</em></div>
+      <div class="hsub">Google Ads · Distribución por canal de contacto</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:.85em;">
+    <div class="stat"><div class="stat-v">90</div><div class="stat-l">Conversiones Totales</div></div>
+    <div class="stat"><div class="stat-v">$144.64</div><div class="stat-l">Costo / Conversión</div></div>
+    <div class="stat"><div class="stat-v">46</div><div class="stat-l">WhatsApp (51%)</div></div>
+    <div class="stat"><div class="stat-v">35</div><div class="stat-l">Llamadas (39%)</div></div>
+  </div>
+
+  <div class="cnv-grid" style="margin-bottom:.85em;">
+    <div class="cnv-card">
+      <div class="cnv-head"><span>Conversiones Google Ads</span><span class="cnv-tot">44 total</span></div>
+      <div class="cnv-body" style="padding:.7em .9em;gap:.5em;justify-content:flex-start;flex:none;">
+        <div class="cnv-row"><span class="k">Llamada</span><div class="cnv-bar"><div class="cnv-fill" style="width:59.1%;"></div></div><span class="v">26</span></div>
+        <div class="cnv-row"><span class="k">WhatsApp</span><div class="cnv-bar"><div class="cnv-fill" style="width:38.6%;"></div></div><span class="v">17</span></div>
+        <div class="cnv-row"><span class="k">Forma</span><div class="cnv-bar"><div class="cnv-fill" style="width:2.3%;"></div></div><span class="v">1</span></div>
+      </div>
+    </div>
+    <div class="cnv-card">
+      <div class="cnv-head"><span>Conversiones Landing Pages</span><span class="cnv-tot">46 total</span></div>
+      <div class="cnv-body" style="padding:.7em .9em;gap:.5em;justify-content:flex-start;flex:none;">
+        <div class="cnv-row"><span class="k">WhatsApp</span><div class="cnv-bar"><div class="cnv-fill" style="width:63.0%;"></div></div><span class="v">29</span></div>
+        <div class="cnv-row"><span class="k">Llamada</span><div class="cnv-bar"><div class="cnv-fill" style="width:19.6%;"></div></div><span class="v">9</span></div>
+        <div class="cnv-row"><span class="k">Forma</span><div class="cnv-bar"><div class="cnv-fill" style="width:8.7%;"></div></div><span class="v">4</span></div>
+        <div class="cnv-row"><span class="k">Email</span><div class="cnv-bar"><div class="cnv-fill" style="width:8.7%;"></div></div><span class="v">4</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="flex:1;min-height:0;padding:.85em 1em;gap:.55em;">
+    <div class="panel-h"><span class="dot"></span><span>Mix Consolidado por Canal de Contacto</span></div>
+    <div style="display:flex;height:1.8em;border-radius:.4em;overflow:hidden;border:1px solid var(--b2);">
+      <div style="flex:46;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.85em;color:#fff;font-weight:500;">WhatsApp 51.1%</div>
+      <div style="flex:35;background:rgba(56,161,105,.6);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.8em;color:#fff;font-weight:500;">Llamada 38.9%</div>
+      <div style="flex:5;background:rgba(56,161,105,.35);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:#fff;">5.6%</div>
+      <div style="flex:4;background:rgba(56,161,105,.2);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.55em;color:var(--text);">4.4%</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:var(--green);"></span>WhatsApp · 46 (51.1%)</div>
+      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.6);"></span>Llamada · 35 (38.9%)</div>
+      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.35);"></span>Forma · 5 (5.6%)</div>
+      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.2);"></span>Email · 4 (4.4%)</div>
+    </div>
+    <div style="font-family:var(--FB);font-size:.72em;line-height:1.5;color:var(--t2);margin-top:.2em;"><b style="color:var(--text);">WhatsApp y Llamada concentran el 90% de las conversiones</b> (81 de 90). El canal de contacto preferido se mantiene consistente entre Google Ads y Landing Pages, con WhatsApp ganando peso en el flujo de Landing.</div>
+  </div>
+</div>
+
+<!-- ════════ S4 — GOOGLE · CD. JUÁREZ ════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="htop">
+    <div>
+      <div class="htitle">Cd. <em>Juárez</em></div>
+      <div class="hsub">Google Ads · Desglose por campaña</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th>Costo</th><th>Impresiones</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="tbl-num">$2,642.17</td><td class="tbl-num">960</td><td class="tbl-num">69</td><td class="tbl-num">7.19%</td><td class="tbl-num">$38.29</td></tr>
+          <tr><td>Warehousing</td><td class="tbl-num">$2,056.38</td><td class="tbl-num">369</td><td class="tbl-num">32</td><td class="tbl-num">8.67%</td><td class="tbl-num">$64.26</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">$4,698.55</td><td class="tbl-num">1,329</td><td class="tbl-num">101</td><td class="tbl-num">7.60%</td><td class="tbl-num">$46.52</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat"><div class="stat-v">$4,698.55</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">101</div><div class="stat-l">Clicks</div></div>
+        <div class="stat"><div class="stat-v">7.60%</div><div class="stat-l">CTR</div></div>
+        <div class="stat"><div class="stat-v">$46.52</div><div class="stat-l">CPC Prom.</div></div>
+      </div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.7em .9em;display:flex;flex-direction:column;gap:.3em;">
+        <div style="font-family:var(--FM);font-size:.55em;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;">Comparativo vs Marzo</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">Inversión −19.9% · Clicks −19.2% · CTR mejoró +2.4 pp</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins"><div class="ins-num">1</div><div class="ins-body"><b>Warehousing presenta el CPC más alto de toda la cuenta ($64.26),</b> aunque mejoró desde $76.21 de marzo. Sigue siendo la mayor oportunidad de optimización con un CTR sólido de 8.67% que valida la relevancia.</div></div>
+      <div class="ins"><div class="ins-num">2</div><div class="ins-body"><b>REIS Logistics concentra el 68% de los clicks (69 de 101) con CPC de $38.29,</b> volviéndose el sustento de la plaza. Aquí está la mayor escala mientras Warehousing requiere ajuste de pujas.</div></div>
+      <div class="ins"><div class="ins-num">3</div><div class="ins-body"><b>El CTR consolidado de CDJ subió de 5.20% a 7.60% (+2.4 pp),</b> evidenciando mejor relevancia de anuncios. La plaza dejó de liderar el gasto pero ganó eficiencia en intención de búsqueda.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S5 — GOOGLE · MONTERREY ═════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="htop">
+    <div>
+      <div class="htitle"><em>Monterrey</em></div>
+      <div class="hsub">Google Ads · Desglose por campaña</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th>Costo</th><th>Impresiones</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="tbl-num">$3,361.72</td><td class="tbl-num">3,784</td><td class="tbl-num">167</td><td class="tbl-num">4.41%</td><td class="tbl-num">$20.13</td></tr>
+          <tr><td>Warehousing</td><td class="tbl-num">$2,315.06</td><td class="tbl-num">1,269</td><td class="tbl-num">92</td><td class="tbl-num">7.25%</td><td class="tbl-num">$25.16</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">$5,676.78</td><td class="tbl-num">5,053</td><td class="tbl-num">259</td><td class="tbl-num">5.13%</td><td class="tbl-num">$21.92</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat"><div class="stat-v">$5,676.78</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">259</div><div class="stat-l">Clicks (líder)</div></div>
+        <div class="stat"><div class="stat-v">5.13%</div><div class="stat-l">CTR</div></div>
+        <div class="stat"><div class="stat-v">$21.92</div><div class="stat-l">CPC Prom.</div></div>
+      </div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.7em .9em;display:flex;flex-direction:column;gap:.3em;">
+        <div style="font-family:var(--FM);font-size:.55em;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;">Comparativo vs Marzo</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">Inversión +26.4% · Pasó a liderar la cuenta (43.6%)</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins"><div class="ins-num">1</div><div class="ins-body"><b>Monterrey pasó a liderar el gasto de la cuenta con $5,676.78 (43.6% del total),</b> creciendo 26.4% vs marzo. Es la plaza con mayor escala consolidada y la única con incremento sostenido en inversión.</div></div>
+      <div class="ins"><div class="ins-num">2</div><div class="ins-body"><b>REIS Logistics concentra el 64% de los clicks (167 de 259) con CPC de $20.13,</b> el mejor balance volumen-costo de toda la cuenta. Warehousing complementa con CTR superior de 7.25%.</div></div>
+      <div class="ins"><div class="ins-num">3</div><div class="ins-body"><b>El CPC subió de $17.54 a $21.92 (+25%) pero el CTR mejoró de 5.01% a 5.13%.</b> El mercado se volvió más competitivo, aunque la plaza mantiene la mejor relación de eficiencia operativa.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S6 — GOOGLE · SAN LUIS POTOSÍ ═══════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="htop">
+    <div>
+      <div class="htitle">San Luis <em>Potosí</em></div>
+      <div class="hsub">Google Ads · Desglose por campaña</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th>Costo</th><th>Impresiones</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="tbl-num">$833.54</td><td class="tbl-num">795</td><td class="tbl-num">42</td><td class="tbl-num">5.28%</td><td class="tbl-num">$19.85</td></tr>
+          <tr><td>Warehousing</td><td class="tbl-num">$602.17</td><td class="tbl-num">312</td><td class="tbl-num">25</td><td class="tbl-num">8.01%</td><td class="tbl-num">$24.09</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">$1,435.71</td><td class="tbl-num">1,107</td><td class="tbl-num">67</td><td class="tbl-num">6.05%</td><td class="tbl-num">$21.43</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat"><div class="stat-v">$1,435.71</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">67</div><div class="stat-l">Clicks</div></div>
+        <div class="stat"><div class="stat-v">6.05%</div><div class="stat-l">CTR</div></div>
+        <div class="stat"><div class="stat-v">$21.43</div><div class="stat-l">CPC Prom.</div></div>
+      </div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.7em .9em;display:flex;flex-direction:column;gap:.3em;">
+        <div style="font-family:var(--FM);font-size:.55em;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;">Comparativo vs Marzo</div>
+        <div style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">Inversión −8.1% · Clicks −25.6% · CPC subió 23%</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins"><div class="ins-num">1</div><div class="ins-body"><b>Warehousing destaca con CTR de 8.01% en SLP,</b> el mejor de la plaza y consistente con el patrón de la cuenta donde almacenaje resuena con mayor fuerza. CPC de $24.09 es razonable para ese nivel de relevancia.</div></div>
+      <div class="ins"><div class="ins-num">2</div><div class="ins-body"><b>SLP perdió 25.6% de los clicks vs marzo (90 → 67) con CPC subiendo de $17.35 a $21.43.</b> El CTR bajó de 7.05% a 6.05%, sugiriendo necesidad de refrescar creativos o revisar segmentación de keywords.</div></div>
+      <div class="ins"><div class="ins-num">3</div><div class="ins-body"><b>Con solo 11% del gasto total, SLP sigue subutilizada relativa a su CTR.</b> Dado el aumento de CPC, antes de escalar conviene optimizar la calidad del anuncio para recuperar el rendimiento de marzo.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S7 — GOOGLE · SALTILLO + RAMOS ARIZPE ═══════════════════ -->
+<div class="slide" id="s7">
+  <div class="htop">
+    <div>
+      <div class="htitle">Saltillo · <em>Ramos Arizpe</em></div>
+      <div class="hsub">Google Ads · Plazas con menor inversión</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="dual-tables" style="margin-bottom:.85em;">
+    <div class="dual-tbl-wrap">
+      <span class="city-chip">Saltillo</span>
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th>Costo</th><th>Impr.</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="tbl-num">$571.61</td><td class="tbl-num">412</td><td class="tbl-num">28</td><td class="tbl-num">6.80%</td><td class="tbl-num">$20.41</td></tr>
+          <tr><td>Warehousing</td><td class="tbl-num">$401.07</td><td class="tbl-num">180</td><td class="tbl-num">16</td><td class="tbl-num">8.89%</td><td class="tbl-num">$25.07</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">$972.68</td><td class="tbl-num">592</td><td class="tbl-num">44</td><td class="tbl-num">7.43%</td><td class="tbl-num">$22.11</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat"><div class="stat-v">$972.68</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">8.89%</div><div class="stat-l">CTR Top</div></div>
+        <div class="stat"><div class="stat-v">$22.11</div><div class="stat-l">CPC Prom.</div></div>
+      </div>
+    </div>
+    <div class="dual-tbl-wrap">
+      <span class="city-chip" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Ramos Arizpe</span>
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th>Costo</th><th>Impr.</th><th>Clicks</th><th>CTR</th><th>CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="tbl-num">$208.84</td><td class="tbl-num">75</td><td class="tbl-num">10</td><td class="tbl-num">13.33%</td><td class="tbl-num">$20.88</td></tr>
+          <tr><td>Warehousing</td><td class="tbl-num">$24.97</td><td class="tbl-num">33</td><td class="tbl-num">1</td><td class="tbl-num">3.03%</td><td class="tbl-num">$24.97</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">$233.81</td><td class="tbl-num">108</td><td class="tbl-num">11</td><td class="tbl-num">10.19%</td><td class="tbl-num">$21.26</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat blue"><div class="stat-v">$233.81</div><div class="stat-l">Inversión (+298%)</div></div>
+        <div class="stat blue"><div class="stat-v">10.19%</div><div class="stat-l">CTR (líder)</div></div>
+        <div class="stat blue"><div class="stat-v">$21.26</div><div class="stat-l">CPC Prom.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.7em;"><div class="ins-num">1</div><div class="ins-body"><b>Saltillo mantiene el segundo CTR más alto de la cuenta en Warehousing (8.89%)</b> con un CPC de $25.07 razonable. La plaza confirma su perfil de alta relevancia, aunque perdió 20% de los clicks vs marzo.</div></div>
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.7em;"><div class="ins-num">2</div><div class="ins-body"><b>Ramos Arizpe casi cuadruplicó su inversión y el CTR de REIS Logistics llegó a 13.33%,</b> el más alto de toda la cuenta. La hipótesis del mes pasado se valida: la plaza emergente está respondiendo con fuerza.</div></div>
+    <div class="ins"><div class="ins-num">3</div><div class="ins-body"><b>Ambas plazas suman $1,206.49 en inversión conjunta (9.3% del total),</b> ganando peso vs el 7.8% de marzo. Ramos Arizpe en particular merece seguir escalando — su perfil de baja competencia y alta intención está confirmado.</div></div>
+  </div>
+</div>
+
+<!-- ════════ S8 — GOOGLE · APRENDIZAJES Y PLAN ═══════════════════════ -->
+<div class="slide" id="s8">
+  <div class="htop">
+    <div>
+      <div class="htitle">Aprendizajes y <em>Plan de Acción</em></div>
+      <div class="hsub">Google Ads · Cierre del mes</div>
+    </div>
+    <div class="htop-tag">Google Ads</div>
+  </div>
+  <div class="rule"></div>
+  <div class="lr-grid">
+    <div class="lr-col">
+      <div class="lr-h green"><span class="num">01</span><span>Aprendizajes</span></div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-num green">1</div><div class="lr-item-body"><b>Monterrey desplazó a Cd. Juárez como la plaza líder en gasto y volumen.</b> Concentra el 43.6% de la inversión y el 53.7% de los clicks, consolidándose como el motor principal de la cuenta.</div></div>
+        <div class="lr-item"><div class="lr-item-num green">2</div><div class="lr-item-body"><b>Ramos Arizpe validó su potencial: $58 → $234 en gasto, CTR de 10.19% (líder de cuenta)</b> con REIS Logistics al 13.33%. La plaza emergente del mes pasado ya entrega resultados de alta eficiencia.</div></div>
+        <div class="lr-item"><div class="lr-item-num green">3</div><div class="lr-item-body"><b>Warehousing tiene la mejor relevancia (CTRs 7–9%) en todas las plazas excepto Monterrey,</b> pero su CPC en Cd. Juárez sigue siendo 2.5–3× más alto que en el resto. La ineficiencia es estructural, no de creativo.</div></div>
+      </div>
+    </div>
+    <div class="lr-col">
+      <div class="lr-h blue"><span class="num">02</span><span>Plan de Acción</span></div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-num blue">1</div><div class="lr-item-body"><b>Escalar Ramos Arizpe en mayo:</b> con CTR de 13.33% en REIS Logistics y CPC de $20–25, definir un presupuesto incremental de 50–70% para validar si el rendimiento se mantiene a mayor escala.</div></div>
+        <div class="lr-item"><div class="lr-item-num blue">2</div><div class="lr-item-body"><b>Optimizar Warehousing CDJ otra vez:</b> el CPC bajó de $76 a $64 con ajustes pero sigue siendo el más alto. Próximo paso: revisar audiencias geográficas y considerar separar keywords de mayor costo.</div></div>
+        <div class="lr-item"><div class="lr-item-num blue">3</div><div class="lr-item-body"><b>Refrescar creativos en SLP:</b> el CTR cayó de 7.05% a 6.05% y el CPC subió 23%. Antes de escalar, conviene rotar 2–3 nuevas variantes de anuncio para recuperar la relevancia del mes anterior.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S9 — META ADS · RESUMEN ═════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="htop">
+    <div>
+      <div class="htitle">Resumen de <em>Campañas</em></div>
+      <div class="hsub">Meta Ads · Dos campañas activas: Instant Form y Landing Page</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+
+  <table class="tbl" style="margin-bottom:.8em;">
+    <thead>
+      <tr><th>Campaña / Ciudad</th><th>Resultados</th><th>CPR</th><th>Gasto</th><th>Impresiones</th><th>Alcance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Instant Form · Cd. Juárez</td><td class="tbl-num">17</td><td class="tbl-num">$155.81</td><td class="tbl-num">$2,648.84</td><td class="tbl-num">142,644</td><td class="tbl-num">40,229</td></tr>
+      <tr><td>Instant Form · Monterrey</td><td class="tbl-num">19</td><td class="tbl-num">$105.97</td><td class="tbl-num">$2,013.42</td><td class="tbl-num">47,412</td><td class="tbl-num">23,004</td></tr>
+      <tr><td>Instant Form · San Luis Potosí</td><td class="tbl-num">10</td><td class="tbl-num">$172.20</td><td class="tbl-num">$1,721.96</td><td class="tbl-num">59,125</td><td class="tbl-num">18,197</td></tr>
+      <tr><td>Landing Page · Multi-ciudad <span style="font-family:var(--FM);font-size:.85em;color:var(--orange);font-weight:400;">· nueva (Apr 16+)</span></td><td class="tbl-num">4</td><td class="tbl-num">$572.84</td><td class="tbl-num">$2,291.34</td><td class="tbl-num">14,091</td><td class="tbl-num">8,041</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="tbl-num">50</td><td class="tbl-num">$173.50</td><td class="tbl-num">$8,674.97</td><td class="tbl-num">263,259</td><td class="tbl-num">86,178</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stats" style="grid-template-columns:repeat(5,1fr);margin-bottom:.8em;">
+    <div class="stat blue"><div class="stat-v">50</div><div class="stat-l">Total Resultados</div></div>
+    <div class="stat blue"><div class="stat-v">$173.50</div><div class="stat-l">CPR Promedio</div></div>
+    <div class="stat blue"><div class="stat-v">$8,674.97</div><div class="stat-l">Inversión Total</div></div>
+    <div class="stat blue"><div class="stat-v">263,259</div><div class="stat-l">Impresiones</div></div>
+    <div class="stat blue"><div class="stat-v">86,178</div><div class="stat-l">Alcance</div></div>
+  </div>
+
+  <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.6em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">1</div><div class="ins-body"><b>Instant Form genera 92% de los leads (46 de 50) con CPR de $138.78,</b> mientras Landing Page (campaña nueva desde Apr 16) tiene CPR de $572.84. La diferencia refleja la naturaleza inmediata vs nurture de cada formato.</div></div>
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.6em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">2</div><div class="ins-body"><b>Monterrey lidera en eficiencia Meta con CPR de $105.97 y 19 resultados,</b> consolidándose como la plaza más rentable del canal — patrón consistente con Google Ads donde MTY también pasó a liderar.</div></div>
+    <div class="ins"><div class="ins-num" style="background:var(--blue);color:#0a1320;">3</div><div class="ins-body"><b>El creativo CDJ_ALM_2_Confianza concentró 14 de los 46 leads de Instant Form (30%)</b> con CPR de $120.46 — sigue siendo el anuncio top de la cuenta, manteniendo la posición que tuvo en marzo.</div></div>
+  </div>
+</div>
+
+<!-- ════════ S10 — META · CD. JUÁREZ ═════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="htop">
+    <div>
+      <div class="htitle">Cd. <em>Juárez</em></div>
+      <div class="hsub">Meta Ads · Instant Form · Desglose por anuncio</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+
+  <div class="col2">
+    <div style="display:flex;flex-direction:column;gap:.85em;min-height:0;">
+      <table class="tbl">
+        <thead><tr><th>Anuncio</th><th>Resultados</th><th>CPR</th><th>Gasto</th><th>Impresiones</th></tr></thead>
+        <tbody>
+          <tr><td><span class="adchip-cx">CX</span>Fronteras</td><td class="tbl-num">—</td><td class="tbl-num">—</td><td class="tbl-num">$13.49</td><td class="tbl-num">375</td></tr>
+          <tr><td><span class="adchip-cx">CX</span>Operaciones</td><td class="tbl-num">—</td><td class="tbl-num">—</td><td class="tbl-num">$46.52</td><td class="tbl-num">904</td></tr>
+          <tr><td><span class="adchip-cx">CX</span>Importa/Exporta</td><td class="tbl-num">1</td><td class="tbl-num">$313.40</td><td class="tbl-num">$313.40</td><td class="tbl-num">5,721</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Inventario</td><td class="tbl-num">1</td><td class="tbl-num">$35.90</td><td class="tbl-num">$35.90</td><td class="tbl-num">1,367</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Confianza</td><td class="tbl-num">14</td><td class="tbl-num">$120.46</td><td class="tbl-num">$1,686.44</td><td class="tbl-num">112,957</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Sin Pausas</td><td class="tbl-num">1</td><td class="tbl-num">$553.09</td><td class="tbl-num">$553.09</td><td class="tbl-num">21,320</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">17</td><td class="tbl-num">$155.81</td><td class="tbl-num">$2,648.84</td><td class="tbl-num">142,644</td></tr>
+        </tbody>
+      </table>
+      <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+        <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">1</div><div class="ins-body"><b>CDJ_ALM_2_Confianza concentró el 82% de los resultados (14/17)</b> con CPR de $120.46 — el ad que sostiene toda la plaza. Sigue siendo el creativo top del sistema Meta tras dos meses consecutivos.</div></div>
+        <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">2</div><div class="ins-body"><b>Los anuncios CX en CDJ generaron solo 1 resultado en $373.41 de gasto.</b> Comercio exterior no resuena en esta plaza — patrón consistente con marzo, candidatos a pausa para reinvertir en Confianza.</div></div>
+        <div class="ins"><div class="ins-num" style="background:var(--blue);color:#0a1320;">3</div><div class="ins-body"><b>17 leads vs 56 del mes pasado (−70%) y CPR subió de $43 a $155.</b> La plaza perdió eficiencia significativamente; el ad set tuvo menor escala con el mismo creativo top, sugiriendo fatiga de audiencia.</div></div>
+      </div>
+    </div>
+    <div class="meta-imgs meta-img-single">
+      <div class="meta-img">
+        <img src="assets/CDJ-ALM2.jpeg" alt="ALM_2 Confianza · Cd. Juárez">
+        <span class="meta-img-tag">Top Spender · Top Performer</span>
+        <div class="meta-img-info">
+          <div class="meta-img-name">ALM_2 Confianza</div>
+          <div class="meta-img-meta">14 RES · $120.46 CPR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S11 — META · MONTERREY ══════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="htop">
+    <div>
+      <div class="htitle"><em>Monterrey</em></div>
+      <div class="hsub">Meta Ads · Instant Form · Desglose por anuncio</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+
+  <div class="col2">
+    <div style="display:flex;flex-direction:column;gap:.85em;min-height:0;">
+      <table class="tbl">
+        <thead><tr><th>Anuncio</th><th>Resultados</th><th>CPR</th><th>Gasto</th><th>Impresiones</th></tr></thead>
+        <tbody>
+          <tr><td><span class="adchip-cx">CX</span>Fronteras</td><td class="tbl-num">7</td><td class="tbl-num">$67.30</td><td class="tbl-num">$471.11</td><td class="tbl-num">3,782</td></tr>
+          <tr><td><span class="adchip-cx">CX</span>Operaciones</td><td class="tbl-num">4</td><td class="tbl-num">$133.60</td><td class="tbl-num">$534.38</td><td class="tbl-num">4,227</td></tr>
+          <tr><td><span class="adchip-cx">CX</span>Importa/Exporta</td><td class="tbl-num">1</td><td class="tbl-num">$72.62</td><td class="tbl-num">$72.62</td><td class="tbl-num">756</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Inventario</td><td class="tbl-num">1</td><td class="tbl-num">$40.62</td><td class="tbl-num">$40.62</td><td class="tbl-num">688</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Confianza</td><td class="tbl-num">6</td><td class="tbl-num">$141.91</td><td class="tbl-num">$851.45</td><td class="tbl-num">37,382</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Sin Pausas</td><td class="tbl-num">—</td><td class="tbl-num">—</td><td class="tbl-num">$43.24</td><td class="tbl-num">577</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">19</td><td class="tbl-num">$105.97</td><td class="tbl-num">$2,013.42</td><td class="tbl-num">47,412</td></tr>
+        </tbody>
+      </table>
+      <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+        <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">1</div><div class="ins-body"><b>CX_1_Fronteras es el anuncio más eficiente: 7 leads a CPR de $67.30,</b> el segundo CPR más bajo de toda la cuenta Meta. Comercio exterior conecta fuerte en Monterrey, a diferencia de las otras plazas.</div></div>
+        <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">2</div><div class="ins-body"><b>Los 3 ads CX juntos generaron 12 leads (63% del total),</b> superando a los 3 ads ALM con 7 leads. Patrón inverso al resto de plazas — MTY es la única donde CX domina sobre ALM.</div></div>
+        <div class="ins"><div class="ins-num" style="background:var(--blue);color:#0a1320;">3</div><div class="ins-body"><b>MTY pasó a liderar Meta con CPR de $105.97,</b> creciendo 5 leads vs marzo (15 → 19) con CPR mejorando de $93 a $106 — leve incremento pero la plaza más estable.</div></div>
+      </div>
+    </div>
+    <div class="meta-imgs">
+      <div class="meta-img">
+        <img src="assets/MTY-CX1.jpeg" alt="CX_1 Fronteras · Monterrey">
+        <span class="meta-img-tag">Top Performer</span>
+        <div class="meta-img-info">
+          <div class="meta-img-name">CX_1 Fronteras</div>
+          <div class="meta-img-meta">7 RES · $67.30 CPR</div>
+        </div>
+      </div>
+      <div class="meta-img">
+        <img src="assets/MTY-ALM2.jpeg" alt="ALM_2 Confianza · Monterrey">
+        <span class="meta-img-tag blue">Top Spender</span>
+        <div class="meta-img-info">
+          <div class="meta-img-name">ALM_2 Confianza</div>
+          <div class="meta-img-meta blue">$851.45 GASTO · 6 RES</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S12 — META · SAN LUIS POTOSÍ ════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="htop">
+    <div>
+      <div class="htitle">San Luis <em>Potosí</em></div>
+      <div class="hsub">Meta Ads · Instant Form · Desglose por anuncio</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+
+  <div class="col2">
+    <div style="display:flex;flex-direction:column;gap:.85em;min-height:0;">
+      <table class="tbl">
+        <thead><tr><th>Anuncio</th><th>Resultados</th><th>CPR</th><th>Gasto</th><th>Impresiones</th></tr></thead>
+        <tbody>
+          <tr><td><span class="adchip-cx">CX</span>Fronteras</td><td class="tbl-num">—</td><td class="tbl-num">—</td><td class="tbl-num">$46.68</td><td class="tbl-num">853</td></tr>
+          <tr><td><span class="adchip-cx">CX</span>Operaciones</td><td class="tbl-num">1</td><td class="tbl-num">$405.02</td><td class="tbl-num">$405.02</td><td class="tbl-num">7,090</td></tr>
+          <tr><td><span class="adchip-cx">CX</span>Importa/Exporta</td><td class="tbl-num">—</td><td class="tbl-num">—</td><td class="tbl-num">$93.15</td><td class="tbl-num">1,059</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Inventario</td><td class="tbl-num">1</td><td class="tbl-num">$237.09</td><td class="tbl-num">$237.09</td><td class="tbl-num">10,055</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Confianza</td><td class="tbl-num">8</td><td class="tbl-num">$113.89</td><td class="tbl-num">$911.12</td><td class="tbl-num">39,132</td></tr>
+          <tr><td><span class="adchip-alm">ALM</span>Sin Pausas</td><td class="tbl-num">—</td><td class="tbl-num">—</td><td class="tbl-num">$28.90</td><td class="tbl-num">936</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="tbl-num">10</td><td class="tbl-num">$172.20</td><td class="tbl-num">$1,721.96</td><td class="tbl-num">59,125</td></tr>
+        </tbody>
+      </table>
+      <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+        <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">1</div><div class="ins-body"><b>ALM_2_Confianza es el único anuncio eficiente de la plaza:</b> 8 leads a $113.89 CPR. El resto de los ads de SLP no generaron resultados o tienen CPRs de 2x–4x el promedio.</div></div>
+        <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">2</div><div class="ins-body"><b>Los 3 ads CX consumieron $544.85 sin generar más que 1 lead,</b> repitiendo el patrón de marzo. Comercio exterior sigue sin penetrar en SLP — conviene replantear creativos o pausar.</div></div>
+        <div class="ins"><div class="ins-num" style="background:var(--blue);color:#0a1320;">3</div><div class="ins-body"><b>SLP redujo leads de 15 a 10 (−33%) con CPR de $172.20 (vs $106 en marzo).</b> La plaza con menor eficiencia Meta del mes; requiere ajustes de segmentación urgentes para el siguiente ciclo.</div></div>
+      </div>
+    </div>
+    <div class="meta-imgs meta-img-single">
+      <div class="meta-img">
+        <img src="assets/SLP-ALM2.jpeg" alt="ALM_2 Confianza · San Luis Potosí">
+        <span class="meta-img-tag">Top Spender · Top Performer</span>
+        <div class="meta-img-info">
+          <div class="meta-img-name">ALM_2 Confianza</div>
+          <div class="meta-img-meta">8 RES · $113.89 CPR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S13 — META · SERVICIO POR CIUDAD ════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="htop">
+    <div>
+      <div class="htitle">Servicio por <em>Ciudad</em></div>
+      <div class="hsub">Meta Ads · Instant Form · Comercio Exterior vs Almacenaje</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+
+  <table class="tbl" style="margin-bottom:.85em;">
+    <thead>
+      <tr><th>Ciudad</th><th><span class="adchip-cx">CX</span>Resultados</th><th>CX Gasto</th><th>CX CPR</th><th><span class="adchip-alm">ALM</span>Resultados</th><th>ALM Gasto</th><th>ALM CPR</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cd. Juárez</td><td class="tbl-num">1</td><td class="tbl-num">$373.41</td><td class="tbl-num">$373.41</td><td class="tbl-num">16</td><td class="tbl-num">$2,275.43</td><td class="tbl-num">$142.21</td></tr>
+      <tr><td>Monterrey</td><td class="tbl-num">12</td><td class="tbl-num">$1,078.11</td><td class="tbl-num" style="color:var(--green);">$89.84</td><td class="tbl-num">7</td><td class="tbl-num">$935.31</td><td class="tbl-num">$133.62</td></tr>
+      <tr><td>San Luis Potosí</td><td class="tbl-num">1</td><td class="tbl-num">$544.85</td><td class="tbl-num">$544.85</td><td class="tbl-num">9</td><td class="tbl-num">$1,177.11</td><td class="tbl-num">$130.79</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="tbl-num">14</td><td class="tbl-num">$1,996.37</td><td class="tbl-num">$142.60</td><td class="tbl-num">32</td><td class="tbl-num">$4,387.85</td><td class="tbl-num">$137.12</td></tr>
+    </tbody>
+  </table>
+
+  <div class="col2-eq" style="margin-bottom:.7em;">
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.85em 1em;display:flex;flex-direction:column;gap:.5em;">
+      <div style="display:flex;align-items:center;gap:.5em;"><span class="adchip-cx" style="font-size:.75em;">CX</span><span style="font-family:var(--FD);font-weight:700;font-size:.85em;text-transform:uppercase;color:var(--text);">Comercio Exterior</span></div>
+      <div style="font-family:var(--FM);font-size:.65em;color:var(--t2);line-height:1.6;">14 leads · $1,996.37 · CPR $142.60 · <b style="color:var(--text);">86% de los leads vienen de Monterrey</b> (12 de 14)</div>
+      <div style="display:flex;height:1.4em;border-radius:.3em;overflow:hidden;border:1px solid var(--b2);">
+        <div style="flex:1;background:rgba(59,130,246,.18);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:var(--text);">CDJ 1</div>
+        <div style="flex:12;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.65em;color:#fff;font-weight:600;">MTY 12 (86%)</div>
+        <div style="flex:1;background:rgba(59,130,246,.18);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:var(--text);">SLP 1</div>
+      </div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.85em 1em;display:flex;flex-direction:column;gap:.5em;">
+      <div style="display:flex;align-items:center;gap:.5em;"><span class="adchip-alm" style="font-size:.75em;">ALM</span><span style="font-family:var(--FD);font-weight:700;font-size:.85em;text-transform:uppercase;color:var(--text);">Almacenaje</span></div>
+      <div style="font-family:var(--FM);font-size:.65em;color:var(--t2);line-height:1.6;">32 leads · $4,387.85 · CPR $137.12 · <b style="color:var(--text);">50% de los leads vienen de Cd. Juárez</b> (16 de 32)</div>
+      <div style="display:flex;height:1.4em;border-radius:.3em;overflow:hidden;border:1px solid var(--b2);">
+        <div style="flex:16;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.65em;color:#fff;font-weight:600;">CDJ 16 (50%)</div>
+        <div style="flex:7;background:rgba(56,161,105,.45);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.62em;color:#fff;">MTY 7</div>
+        <div style="flex:9;background:rgba(56,161,105,.65);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.62em;color:#fff;">SLP 9</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">1</div><div class="ins-body"><b>Almacenaje genera 70% de los leads totales (32 de 46)</b> con CPR competitivo de $137.12. ALM_2_Confianza es el ad responsable principal, dominando en CDJ y SLP donde concentra >80% de los resultados de la plaza.</div></div>
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">2</div><div class="ins-body"><b>Monterrey es la única plaza donde CX supera a ALM:</b> 12 leads CX vs 7 ALM, con CPR de $89.84 (vs $133.62 ALM). El mercado regio responde mejor al mensaje de comercio exterior — oportunidad clara para escalar.</div></div>
+    <div class="ins"><div class="ins-num" style="background:var(--blue);color:#0a1320;">3</div><div class="ins-body"><b>CX en CDJ y SLP genera solo 2 leads en $918.26 combinados</b> (CPRs de $373 y $545). Pausar o replantear creativos de comercio exterior en estas dos plazas — reasignar a ALM_Confianza puede liberar ~$900 mensuales.</div></div>
+  </div>
+</div>
+
+<!-- ════════ S14 — META · INSTANT FORM VS LANDING PAGE ═══════════════ -->
+<div class="slide" id="s14">
+  <div class="htop">
+    <div>
+      <div class="htitle">Instant Form vs <em>Landing Page</em></div>
+      <div class="hsub">Meta Ads · Comparativa de canal de captura</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+
+  <div class="col2-eq" style="margin-bottom:.85em;">
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.6em;padding:1em 1.1em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--green);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5em;">
+        <div>
+          <div style="font-family:var(--FD);font-weight:800;font-size:1.15em;text-transform:uppercase;color:var(--text);">Instant Form</div>
+          <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-top:.15em;">Mes completo · Captura nativa Meta</div>
+        </div>
+        <span class="city-chip" style="font-size:.5em;">Activa</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5em;margin-top:.2em;">
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Resultados</div><div style="font-family:var(--FD);font-size:1.6em;color:var(--green);font-weight:500;">46</div></div>
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">CPR</div><div style="font-family:var(--FD);font-size:1.6em;color:var(--text);font-weight:500;">$138.78</div></div>
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Gasto</div><div style="font-family:var(--FD);font-size:1.1em;color:var(--text);font-weight:500;">$6,383.63</div></div>
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Impresiones</div><div style="font-family:var(--FD);font-size:1.1em;color:var(--text);font-weight:500;">249,168</div></div>
+      </div>
+      <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.05em;color:var(--t2);text-transform:uppercase;line-height:1.5;margin-top:.15em;">3 ad sets · 18 anuncios · 92% del volumen total Meta</div>
+    </div>
+
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.6em;padding:1em 1.1em;display:flex;flex-direction:column;gap:.55em;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5em;">
+        <div>
+          <div style="font-family:var(--FD);font-weight:800;font-size:1.15em;text-transform:uppercase;color:var(--text);">Landing Page</div>
+          <div style="font-family:var(--FM);font-size:.6em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-top:.15em;">Apr 16 – Apr 30 · Tracking en CRM</div>
+        </div>
+        <span class="city-chip" style="font-size:.5em;background:var(--odim);color:var(--orange);border-color:var(--oring);">Nueva</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5em;margin-top:.2em;">
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Resultados</div><div style="font-family:var(--FD);font-size:1.6em;color:var(--orange);font-weight:500;">4</div></div>
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">CPR</div><div style="font-family:var(--FD);font-size:1.6em;color:var(--text);font-weight:500;">$572.84</div></div>
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Gasto</div><div style="font-family:var(--FD);font-size:1.1em;color:var(--text);font-weight:500;">$2,291.34</div></div>
+        <div style="background:var(--s2);border-radius:.4em;padding:.55em .7em;"><div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Impresiones</div><div style="font-family:var(--FD);font-size:1.1em;color:var(--text);font-weight:500;">14,091</div></div>
+      </div>
+      <div style="font-family:var(--FM);font-size:.58em;letter-spacing:.05em;color:var(--t2);text-transform:uppercase;line-height:1.5;margin-top:.15em;">Activa 15 días · MTY con mayor gasto · 8% del volumen Meta</div>
+    </div>
+  </div>
+
+  <div class="insights" style="flex:1;justify-content:space-evenly;gap:0;">
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">1</div><div class="ins-body"><b>Instant Form es 4.1× más eficiente que Landing Page en CPR</b> ($138.78 vs $572.84). El formato nativo de Meta sigue siendo el canal principal de captura por amplio margen.</div></div>
+    <div class="ins" style="border-bottom:1px solid var(--b1);padding-bottom:.55em;"><div class="ins-num" style="background:var(--blue);color:#0a1320;">2</div><div class="ins-body"><b>Landing Page lleva solo 2 semanas activa y depende de tracking manual desde CRM,</b> lo que limita la lectura. La campaña requiere al menos un mes completo para evaluar tendencia real.</div></div>
+    <div class="ins"><div class="ins-num" style="background:var(--blue);color:#0a1320;">3</div><div class="ins-body"><b>Landing Page consumió $2,291 (26% del gasto Meta) generando 8% de los leads.</b> Si en mayo el CPR no baja de $300, conviene reducir presupuesto o optimizar el flow de conversión en el sitio.</div></div>
+  </div>
+</div>
+
+<!-- ════════ S15 — META · APRENDIZAJES Y PLAN ════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="htop">
+    <div>
+      <div class="htitle">Aprendizajes y <em>Plan de Acción</em></div>
+      <div class="hsub">Meta Ads · Cierre del mes</div>
+    </div>
+    <div class="htop-tag" style="color:var(--blue);background:var(--bdim);border-color:var(--bring);">Meta Ads</div>
+  </div>
+  <div class="rule" style="background:linear-gradient(90deg,rgba(59,130,246,.45),transparent 70%);"></div>
+  <div class="lr-grid">
+    <div class="lr-col">
+      <div class="lr-h green"><span class="num">01</span><span>Aprendizajes</span></div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-num green">1</div><div class="lr-item-body"><b>ALM_2_Confianza sigue siendo el ad rey:</b> 28 leads en total (14 CDJ + 6 MTY + 8 SLP), 60% de los leads Instant Form. Es el creativo más resiliente de la cuenta y debe protegerse.</div></div>
+        <div class="lr-item"><div class="lr-item-num green">2</div><div class="lr-item-body"><b>Monterrey responde diferente:</b> única plaza donde CX supera a ALM. CX_1_Fronteras a $67.30 CPR es el segundo mejor de toda la cuenta — el mensaje de comercio exterior funciona específicamente aquí.</div></div>
+        <div class="lr-item"><div class="lr-item-num green">3</div><div class="lr-item-body"><b>Landing Page es 4× menos eficiente que Instant Form</b> ($572 vs $138 CPR) en sus primeras 2 semanas. Demasiado pronto para conclusiones, pero requiere observación cercana.</div></div>
+      </div>
+    </div>
+    <div class="lr-col">
+      <div class="lr-h blue"><span class="num">02</span><span>Plan de Acción</span></div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-num blue">1</div><div class="lr-item-body"><b>Escalar CX_1_Fronteras en Monterrey:</b> con CPR $67.30 es el ad más eficiente del mes. Aumentar presupuesto 50% para validar si mantiene eficiencia a mayor escala.</div></div>
+        <div class="lr-item"><div class="lr-item-num blue">2</div><div class="lr-item-body"><b>Pausar CX en CDJ y SLP:</b> consumieron $918 sin generar más que 2 leads combinados. Liberar ese presupuesto a ALM_Confianza en ambas plazas para optimizar CPR consolidado.</div></div>
+        <div class="lr-item"><div class="lr-item-num blue">3</div><div class="lr-item-body"><b>Evaluar Landing Page con mes completo de mayo:</b> si el CPR no baja de $300, reducir gasto a $1,500 mensuales y enfocarse en optimización del sitio antes de seguir invirtiendo.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+</div><!-- /viewer -->
+
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nc"><span id="cur">1</span> / <span id="tot">15</span></div>
+    <div id="pb"><div id="pf"></div></div>
+  </div>
+  <div id="ndots"></div>
+  <div id="nbtns"><button class="nb" id="bp">← PREV</button><button class="nb" id="bn">NEXT →</button></div>
+</div>
+
+<script>
+const slides=Array.from(document.querySelectorAll('.slide'));
+const TOTAL=slides.length;let cur=0;
+const ndots=document.getElementById('ndots');
+slides.forEach((s,i)=>{const d=document.createElement('div');d.className='ndot';d.addEventListener('click',()=>goTo(i));ndots.appendChild(d);});
+const dots=ndots.querySelectorAll('.ndot');
+function goTo(n){if(n<0||n>=TOTAL)return;slides[cur].classList.remove('active');slides[cur].classList.add('exit');const prev=cur;cur=n;slides[cur].classList.add('active');setTimeout(()=>slides[prev].classList.remove('exit'),400);update();}
+function update(){document.getElementById('cur').textContent=cur+1;document.getElementById('tot').textContent=TOTAL;document.getElementById('pf').style.width=((cur+1)/TOTAL*100)+'%';dots.forEach((d,i)=>d.classList.toggle('active',i===cur));}
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}});
+const ASPECT=16/9;const viewer=document.getElementById('viewer');const nav=document.getElementById('nav');
+function resize(){const navH=nav.offsetHeight;const aw=window.innerWidth-24;const ah=window.innerHeight-navH-20;let w=aw,h=w/ASPECT;if(h>ah){h=ah;w=h*ASPECT;}w=Math.floor(w);h=Math.floor(h);viewer.style.width=w+'px';viewer.style.height=h+'px';viewer.style.fontSize=(w/1280)*19+'px';nav.style.width=w+'px';}
+window.addEventListener('resize',resize);resize();slides[0].classList.add('active');update();
+</script>
+</body>
+</html>
