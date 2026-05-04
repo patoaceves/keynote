@@ -54,6 +54,34 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .cover-month{font-family:var(--FD);font-weight:800;font-size:2.6em;line-height:1;color:var(--green);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:baseline;gap:.3em;}
 .cover-month span{font-family:var(--FM);font-weight:300;font-size:.7em;color:var(--t2);letter-spacing:.16em;}
 .cover-sub{font-family:var(--FM);font-size:.78em;letter-spacing:.14em;color:rgba(240,248,255,.42);max-width:42em;line-height:1.65;text-transform:uppercase;}
+
+/* ── COVER V2 ── */
+.cv2-wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:.3em 0;}
+.cv2-top{display:flex;justify-content:space-between;align-items:center;}
+.cv2-conf{display:flex;align-items:center;gap:.55em;font-family:var(--FM);font-size:.62em;letter-spacing:.22em;color:var(--green);text-transform:uppercase;}
+.cv2-conf-dot{width:.4em;height:.4em;border-radius:50%;background:var(--green);}
+.cv2-id{font-family:var(--FM);font-size:.62em;letter-spacing:.22em;color:rgba(240,248,255,.32);text-transform:uppercase;}
+.cv2-mid{display:flex;flex-direction:column;gap:1.4em;}
+.cv2-month-block{display:flex;flex-direction:column;gap:.5em;align-items:flex-start;}
+.cv2-month-tag{font-family:var(--FM);font-size:.6em;letter-spacing:.22em;color:var(--green);text-transform:uppercase;padding:.35em .8em;border-radius:100px;background:var(--gdim);border:1px solid var(--gring);}
+.cv2-month-name{font-family:var(--FD);font-weight:900;font-size:3em;line-height:1;color:var(--green);text-transform:uppercase;letter-spacing:-.01em;display:flex;align-items:baseline;gap:.4em;}
+.cv2-month-name span{font-family:var(--FM);font-weight:300;font-size:.45em;letter-spacing:.28em;color:var(--t2);}
+.cv2-monthnum{display:flex;align-items:flex-start;gap:1.1em;}
+.cv2-num{font-family:var(--FD);font-weight:900;font-size:6.6em;line-height:.85;color:var(--green);letter-spacing:-.04em;}
+.cv2-num-divider{width:1px;align-self:stretch;background:linear-gradient(180deg,var(--green) 0%,rgba(56,161,105,.15) 100%);margin-top:.4em;}
+.cv2-num-info{display:flex;flex-direction:column;gap:.4em;justify-content:center;padding-top:.7em;}
+.cv2-num-month{font-family:var(--FD);font-weight:800;font-size:1.5em;color:var(--text);text-transform:uppercase;letter-spacing:.08em;line-height:1;}
+.cv2-num-year{font-family:var(--FM);font-weight:300;font-size:.85em;letter-spacing:.24em;color:var(--t2);}
+.cv2-num-tag{font-family:var(--FM);font-size:.55em;letter-spacing:.18em;color:var(--green);text-transform:uppercase;padding:.3em .65em;border-radius:100px;background:var(--gdim);border:1px solid var(--gring);align-self:flex-start;margin-top:.4em;}
+.cv2-h1{font-family:var(--FD);font-weight:900;font-size:5em;line-height:.9;text-transform:uppercase;letter-spacing:-.02em;}
+.cv2-h1-w{color:var(--text);display:block;}
+.cv2-h1-em{color:var(--green);display:block;}
+.cv2-bot{display:flex;flex-direction:column;gap:.7em;}
+.cv2-bot-line{height:1px;background:linear-gradient(90deg,var(--green) 0%,rgba(56,161,105,.15) 40%,transparent 80%);}
+.cv2-bot-row{display:flex;justify-content:space-between;align-items:center;}
+.cv2-name{font-family:var(--FD);font-weight:800;font-size:1em;text-transform:uppercase;color:var(--text);letter-spacing:.06em;}
+.cv2-chans{display:flex;align-items:center;gap:.7em;font-family:var(--FM);font-size:.65em;letter-spacing:.18em;color:var(--t2);text-transform:uppercase;}
+.cv2-chans .ch-dot{color:var(--green);}
 .cover-bottom{display:flex;align-items:center;gap:1.4em;}
 .cover-rule{width:2.4em;height:2px;background:linear-gradient(90deg,var(--green),var(--green2));flex-shrink:0;}
 .cover-name{font-family:var(--FD);font-weight:800;font-size:1.3em;color:var(--text);text-transform:uppercase;letter-spacing:.02em;}
@@ -134,9 +162,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .adchip-cx{display:inline-flex;align-items:center;font-family:var(--FM);font-size:.62em;font-weight:500;color:var(--orange);background:var(--odim);border:1px solid var(--oring);border-radius:.25em;padding:.05em .35em;margin-right:.4em;letter-spacing:.04em;}
 .adchip-alm{display:inline-flex;align-items:center;font-family:var(--FM);font-size:.62em;font-weight:500;color:var(--green);background:var(--gdim);border:1px solid var(--gring);border-radius:.25em;padding:.05em .35em;margin-right:.4em;letter-spacing:.04em;}
 
-/* ── META IMAGE PLACEHOLDERS ── */
-.meta-imgs{display:flex;flex-direction:column;gap:.5em;}
-.meta-img{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;min-height:0;position:relative;overflow:hidden;background-image:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(56,161,105,.025) 8px,rgba(56,161,105,.025) 9px);}
+/* ── META IMAGE PLACEHOLDERS (1:1 square) ── */
+.meta-imgs{display:flex;gap:.5em;}
+.meta-imgs:not(.meta-img-single){flex-direction:column;align-items:center;justify-content:center;flex:1;}
+.meta-imgs:not(.meta-img-single) .meta-img{flex:none;width:88%;aspect-ratio:1/1;height:auto;}
+.meta-imgs.meta-img-single{flex-direction:column;align-items:center;justify-content:center;flex:1;}
+.meta-imgs.meta-img-single .meta-img{flex:none;width:90%;aspect-ratio:1/1;height:auto;}
+.meta-img{background:var(--s2);border:1px solid var(--b1);border-radius:.5em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;position:relative;overflow:hidden;background-image:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(56,161,105,.025) 8px,rgba(56,161,105,.025) 9px);}
 .meta-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .meta-img-tag{font-family:var(--FM);font-size:.55em;letter-spacing:.14em;text-transform:uppercase;color:var(--green);padding:.3em .65em;border-radius:100px;background:rgba(10,19,32,.85);border:1px solid var(--gring);backdrop-filter:blur(8px);position:absolute;top:.55em;left:.55em;z-index:2;}
 .meta-img-tag.blue{color:var(--blue);background:rgba(10,19,32,.85);border-color:var(--bring);}
@@ -144,9 +176,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .meta-img-name{font-family:var(--FD);font-weight:700;font-size:.8em;color:var(--text);text-transform:uppercase;letter-spacing:.02em;}
 .meta-img-meta{font-family:var(--FM);font-size:.55em;letter-spacing:.1em;color:var(--green);text-transform:uppercase;font-weight:500;}
 .meta-img-meta.blue{color:var(--blue);}
-/* legacy fallback (placeholders sin imagen) */
 .meta-img-icon{font-size:1.4em;opacity:.4;z-index:1;}
-.meta-img-single .meta-img{flex:1;}
 
 /* ── STACKED BAR (S13) ── */
 .stk-bar{display:flex;height:2.4em;border-radius:.5em;overflow:hidden;border:1px solid var(--b1);flex-shrink:0;}
@@ -200,27 +230,37 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 <!-- ════════ S1 — COVER ═══════════════════════════════════════════════ -->
 <div class="slide active" id="s1">
-  <div class="ring" style="width:22em;height:22em;right:-4em;bottom:-4em;"></div>
-  <div class="ring" style="width:36em;height:36em;right:-12em;bottom:-12em;"></div>
-  <div class="gd" style="right:14em;bottom:14em;"></div>
-  <div class="cover-wrap">
-    <div class="cover-top">
-      <div></div>
-      <div class="cover-label">CONFIDENCIAL</div>
+  <div class="ring" style="width:24em;height:24em;right:-5em;bottom:-5em;"></div>
+  <div class="ring" style="width:38em;height:38em;right:-13em;bottom:-13em;"></div>
+  <div class="ring" style="width:14em;height:14em;left:-3em;top:-3em;border-color:rgba(56,161,105,.04);"></div>
+
+  <div class="cv2-wrap">
+    <div class="cv2-top">
+      <div class="cv2-conf"><span class="cv2-conf-dot"></span><span>Confidencial</span></div>
+      <div class="cv2-id">REIS · 2026 · 04</div>
     </div>
-    <div class="cover-mid">
-      <div class="cover-h1">Reporte de<em>Publicidad</em></div>
-      <div class="cover-month">Abril <span>2026</span></div>
-    </div>
-    <div class="cover-bottom">
-      <div class="cover-rule"></div>
-      <div>
-        <div class="cover-name">REIS LOGÍSTICA</div>
+
+    <div class="cv2-mid">
+      <div class="cv2-month-block">
+        <div class="cv2-month-tag">Reporte mensual</div>
+        <div class="cv2-month-name">Abril <span>2026</span></div>
       </div>
-      <div style="flex:1"></div>
-      <div class="cover-channels">
-        <span class="cover-chan">Google Ads</span>
-        <span class="cover-chan">Meta Ads</span>
+
+      <div class="cv2-h1">
+        <span class="cv2-h1-w">Reporte de</span>
+        <span class="cv2-h1-em">Publicidad</span>
+      </div>
+    </div>
+
+    <div class="cv2-bot">
+      <div class="cv2-bot-line"></div>
+      <div class="cv2-bot-row">
+        <div class="cv2-name">REIS Logística</div>
+        <div class="cv2-chans">
+          <span>Google Ads</span>
+          <span class="ch-dot">·</span>
+          <span>Meta Ads</span>
+        </div>
       </div>
     </div>
   </div>
@@ -318,21 +358,49 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
   </div>
 
-  <div class="panel" style="flex:1;min-height:0;padding:.85em 1em;gap:.55em;">
-    <div class="panel-h"><span class="dot"></span><span>Mix Consolidado por Canal de Contacto</span></div>
-    <div style="display:flex;height:1.8em;border-radius:.4em;overflow:hidden;border:1px solid var(--b2);">
-      <div style="flex:46;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.85em;color:#fff;font-weight:500;">WhatsApp 51.1%</div>
-      <div style="flex:35;background:rgba(56,161,105,.6);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.8em;color:#fff;font-weight:500;">Llamada 38.9%</div>
-      <div style="flex:5;background:rgba(56,161,105,.35);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:#fff;">5.6%</div>
-      <div style="flex:4;background:rgba(56,161,105,.2);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.55em;color:var(--text);">4.4%</div>
+  <div class="panel" style="flex:1;min-height:0;padding:.85em 1em;gap:.55em;justify-content:space-between;">
+    <div>
+      <div class="panel-h" style="margin-bottom:.55em;"><span class="dot"></span><span>Mix Consolidado por Canal de Contacto</span></div>
+      <div style="display:flex;height:1.8em;border-radius:.4em;overflow:hidden;border:1px solid var(--b2);">
+        <div style="flex:46;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.85em;color:#fff;font-weight:500;">WhatsApp 51.1%</div>
+        <div style="flex:35;background:rgba(56,161,105,.6);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.8em;color:#fff;font-weight:500;">Llamada 38.9%</div>
+        <div style="flex:5;background:rgba(56,161,105,.35);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:#fff;">5.6%</div>
+        <div style="flex:4;background:rgba(56,161,105,.2);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.55em;color:var(--text);">4.4%</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;margin-top:.5em;">
+        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:var(--green);"></span>WhatsApp · 46 (51.1%)</div>
+        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.6);"></span>Llamada · 35 (38.9%)</div>
+        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.35);"></span>Forma · 5 (5.6%)</div>
+        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.2);"></span>Email · 4 (4.4%)</div>
+      </div>
     </div>
-    <div style="display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;">
-      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:var(--green);"></span>WhatsApp · 46 (51.1%)</div>
-      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.6);"></span>Llamada · 35 (38.9%)</div>
-      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.35);"></span>Forma · 5 (5.6%)</div>
-      <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.2);"></span>Email · 4 (4.4%)</div>
+
+    <div style="border-top:1px solid var(--b1);padding-top:.65em;display:flex;flex-direction:column;gap:.5em;">
+      <div class="panel-h" style="font-size:.7em;color:var(--t3);"><span class="dot" style="background:var(--orange);"></span><span>Comparativo vs Marzo</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5em;">
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:.4em;padding:.5em .7em;display:flex;flex-direction:column;gap:.15em;">
+          <div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Llamada</div>
+          <div style="font-family:var(--FM);font-size:.7em;color:var(--text);">24 → <b style="color:var(--green);font-weight:500;">35</b></div>
+          <div style="font-family:var(--FM);font-size:.5em;color:var(--green);">+46% ↑</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:.4em;padding:.5em .7em;display:flex;flex-direction:column;gap:.15em;">
+          <div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">WhatsApp</div>
+          <div style="font-family:var(--FM);font-size:.7em;color:var(--text);">55 → <b style="color:var(--orange);font-weight:500;">46</b></div>
+          <div style="font-family:var(--FM);font-size:.5em;color:var(--orange);">−16% ↓</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:.4em;padding:.5em .7em;display:flex;flex-direction:column;gap:.15em;">
+          <div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Forma</div>
+          <div style="font-family:var(--FM);font-size:.7em;color:var(--text);">6 → <b style="color:var(--text);font-weight:500;">5</b></div>
+          <div style="font-family:var(--FM);font-size:.5em;color:var(--t3);">−17%</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:.4em;padding:.5em .7em;display:flex;flex-direction:column;gap:.15em;">
+          <div style="font-family:var(--FM);font-size:.5em;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;">Email</div>
+          <div style="font-family:var(--FM);font-size:.7em;color:var(--text);">6 → <b style="color:var(--text);font-weight:500;">4</b></div>
+          <div style="font-family:var(--FM);font-size:.5em;color:var(--t3);">−33%</div>
+        </div>
+      </div>
+      <div style="font-family:var(--FB);font-size:.7em;line-height:1.5;color:var(--t2);"><b style="color:var(--text);">Las llamadas crecieron 46% mientras WhatsApp bajó 16%.</b> Cambio de patrón: el contacto telefónico ganó peso en abril, posiblemente por la mayor concentración de tráfico en Cd. Juárez (industria/frontera, perfil más directo).</div>
     </div>
-    <div style="font-family:var(--FB);font-size:.72em;line-height:1.5;color:var(--t2);margin-top:.2em;"><b style="color:var(--text);">WhatsApp y Llamada concentran el 90% de las conversiones</b> (81 de 90). El canal de contacto preferido se mantiene consistente entre Google Ads y Landing Pages, con WhatsApp ganando peso en el flujo de Landing.</div>
   </div>
 </div>
 
@@ -743,9 +811,9 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div style="display:flex;align-items:center;gap:.5em;"><span class="adchip-cx" style="font-size:.75em;">CX</span><span style="font-family:var(--FD);font-weight:700;font-size:.85em;text-transform:uppercase;color:var(--text);">Comercio Exterior</span></div>
       <div style="font-family:var(--FM);font-size:.65em;color:var(--t2);line-height:1.6;">14 leads · $1,996.37 · CPR $142.60 · <b style="color:var(--text);">86% de los leads vienen de Monterrey</b> (12 de 14)</div>
       <div style="display:flex;height:1.4em;border-radius:.3em;overflow:hidden;border:1px solid var(--b2);">
-        <div style="flex:1;background:rgba(59,130,246,.18);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:var(--text);">CDJ 1</div>
-        <div style="flex:12;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.65em;color:#fff;font-weight:600;">MTY 12 (86%)</div>
-        <div style="flex:1;background:rgba(59,130,246,.18);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:var(--text);">SLP 1</div>
+        <div style="flex:12;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.65em;color:#0a1320;font-weight:600;">MTY 12 (86%)</div>
+        <div style="flex:1;background:rgba(251,146,60,.45);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:var(--text);">CDJ 1</div>
+        <div style="flex:1;background:rgba(251,146,60,.25);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.6em;color:var(--text);">SLP 1</div>
       </div>
     </div>
     <div style="background:var(--s1);border:1px solid var(--b1);border-radius:.55em;padding:.85em 1em;display:flex;flex-direction:column;gap:.5em;">
@@ -753,8 +821,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div style="font-family:var(--FM);font-size:.65em;color:var(--t2);line-height:1.6;">32 leads · $4,387.85 · CPR $137.12 · <b style="color:var(--text);">50% de los leads vienen de Cd. Juárez</b> (16 de 32)</div>
       <div style="display:flex;height:1.4em;border-radius:.3em;overflow:hidden;border:1px solid var(--b2);">
         <div style="flex:16;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.65em;color:#fff;font-weight:600;">CDJ 16 (50%)</div>
-        <div style="flex:7;background:rgba(56,161,105,.45);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.62em;color:#fff;">MTY 7</div>
         <div style="flex:9;background:rgba(56,161,105,.65);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.62em;color:#fff;">SLP 9</div>
+        <div style="flex:7;background:rgba(56,161,105,.4);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.62em;color:#fff;">MTY 7</div>
       </div>
     </div>
   </div>
