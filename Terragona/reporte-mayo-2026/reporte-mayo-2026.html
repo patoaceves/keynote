@@ -61,12 +61,18 @@ h2 em{font-style:italic;color:var(--moss);font-weight:500;}
 
 /* ── KPI GRID ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);flex:1;min-height:0;}
-.kpi{background:var(--paper);padding:1.1em 1em 1em;display:flex;flex-direction:column;justify-content:center;gap:.4em;}
-.kpi-label{font-size:.5em;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+.kpi{background:var(--paper);padding:1.1em 1em 1em;display:flex;flex-direction:column;justify-content:center;gap:.4em;position:relative;}
+.kpi::before{content:'';position:absolute;top:0;left:0;width:2px;height:1.6em;background:var(--tan);opacity:.7;}
+.kpi.moss::before{background:var(--moss);}
+.kpi.brown::before{background:var(--brown);}
+.kpi-label{font-size:.5em;letter-spacing:.18em;text-transform:uppercase;color:var(--moss);font-weight:600;}
+.kpi.brown .kpi-label{color:var(--brown);}
 .kpi-value{font-family:var(--serif);font-size:1.9em;font-weight:500;color:var(--brown);line-height:1;letter-spacing:-.02em;}
-.kpi-value .unit{font-size:.55em;color:var(--ink-soft);font-weight:400;}
+.kpi.moss .kpi-value{color:var(--moss);}
+.kpi-value .unit{font-size:.55em;color:var(--tan);font-weight:500;letter-spacing:.04em;}
 .kpi-sub{font-size:.55em;color:var(--ink-soft);line-height:1.4;}
-.kpi-sub.accent{color:var(--moss);}
+.kpi-sub.accent{color:var(--moss);font-weight:500;}
+.kpi-sub b{color:var(--brown);font-weight:600;}
 
 /* ── TABLE ── */
 .table-wrap{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);overflow:hidden;}
@@ -84,7 +90,9 @@ tbody tr:last-child td{border-bottom:none;}
 .bars{display:flex;flex-direction:column;gap:.85em;flex:1;justify-content:center;}
 .bar-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1em;}
 .bar-label{font-family:var(--serif);font-size:1em;color:var(--ink);font-style:italic;}
-.bar-label .sm{font-family:var(--sans);font-style:normal;font-size:.55em;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;margin-left:.4em;}
+.bar-label .sm{font-family:var(--sans);font-style:normal;font-size:.55em;letter-spacing:.08em;text-transform:uppercase;margin-left:.4em;padding:.15em .55em;border-radius:2px;font-weight:600;}
+.bar-label .sm.on{color:var(--moss);background:rgba(58,66,32,.1);}
+.bar-label .sm.off{color:var(--brown-light);background:rgba(92,74,50,.08);}
 .bar-track{grid-column:1/-1;height:.35em;background:var(--accent);overflow:hidden;}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--brown) 0%,var(--tan) 100%);transform-origin:left;animation:grow 1.2s cubic-bezier(.22,1,.36,1) both;}
 .bar-value{font-family:var(--serif);font-size:1.1em;color:var(--brown);font-weight:600;white-space:nowrap;}
@@ -108,10 +116,18 @@ tbody tr:last-child td{border-bottom:none;}
 
 /* ── INSIGHTS ── */
 .insights{display:grid;grid-template-columns:repeat(3,1fr);gap:1em;flex:1;min-height:0;}
-.insight{background:var(--paper);border:1px solid var(--line);padding:1.8em 1.6em;display:flex;flex-direction:column;gap:.8em;justify-content:center;}
+.insight{background:var(--paper);border:1px solid var(--line);padding:1.8em 1.6em;display:flex;flex-direction:column;gap:.8em;justify-content:center;position:relative;overflow:hidden;}
+.insight::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--tan);}
+.insight.brown::before{background:var(--brown);}
+.insight.moss::before{background:var(--moss);}
 .insight-num{font-family:var(--serif);font-style:italic;font-size:2em;color:var(--tan);line-height:1;margin-bottom:.2em;}
+.insight.brown .insight-num{color:var(--brown);}
+.insight.moss .insight-num{color:var(--moss);}
 .insight h4{font-family:var(--serif);font-size:1.3em;font-weight:600;color:var(--brown);line-height:1.2;}
+.insight.moss h4{color:var(--moss);}
 .insight p{font-size:.8em;color:var(--ink-soft);line-height:1.6;}
+.insight p strong{color:var(--brown);font-weight:600;}
+.insight.moss p strong{color:var(--moss);}
 .insight p strong{color:var(--moss);font-weight:600;}
 
 /* ── RECOS ── */
@@ -176,14 +192,14 @@ tbody tr:last-child td{border-bottom:none;}
     <div class="kpi">
       <div class="kpi-label">Inversión total</div>
       <div class="kpi-value"><span class="unit">$</span>17,266<span class="unit"> MXN</span></div>
-      <div class="kpi-sub">35 palabras clave activadas</div>
+      <div class="kpi-sub"><b>35</b> palabras clave activadas</div>
     </div>
-    <div class="kpi">
+    <div class="kpi moss">
       <div class="kpi-label">Clics</div>
       <div class="kpi-value">573</div>
-      <div class="kpi-sub">sobre 7,368 impresiones</div>
+      <div class="kpi-sub">sobre <b>7,368</b> impresiones</div>
     </div>
-    <div class="kpi">
+    <div class="kpi moss">
       <div class="kpi-label">CTR promedio</div>
       <div class="kpi-value">7.78<span class="unit">%</span></div>
       <div class="kpi-sub accent">↑ por encima del promedio del sector (≈3%)</div>
@@ -191,24 +207,24 @@ tbody tr:last-child td{border-bottom:none;}
     <div class="kpi">
       <div class="kpi-label">CPC promedio</div>
       <div class="kpi-value"><span class="unit">$</span>30.13</div>
-      <div class="kpi-sub">moneda MXN</div>
+      <div class="kpi-sub">moneda <b>MXN</b></div>
     </div>
-    <div class="kpi">
+    <div class="kpi moss">
       <div class="kpi-label">Leads generados</div>
       <div class="kpi-value">11</div>
-      <div class="kpi-sub">contactos reales en GoHighLevel</div>
+      <div class="kpi-sub">contactos reales en <b>GoHighLevel</b></div>
     </div>
-    <div class="kpi">
+    <div class="kpi brown">
       <div class="kpi-label">Costo por lead</div>
       <div class="kpi-value"><span class="unit">$</span>1,569</div>
-      <div class="kpi-sub">MXN por contacto cualificado</div>
+      <div class="kpi-sub"><b>MXN</b> por contacto cualificado</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Tasa clic → lead</div>
       <div class="kpi-value">1.92<span class="unit">%</span></div>
       <div class="kpi-sub">de visitantes que dejan datos</div>
     </div>
-    <div class="kpi">
+    <div class="kpi moss">
       <div class="kpi-label">Vía WhatsApp</div>
       <div class="kpi-value">7<span class="unit"> / 11</span></div>
       <div class="kpi-sub accent">64% prefiere conversación directa</div>
@@ -265,12 +281,12 @@ tbody tr:last-child td{border-bottom:none;}
     <div class="panel">
       <h3>Distribución de clics por keyword <span style="font-family:var(--sans);font-style:normal;font-size:.5em;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-left:.6em;">Top 6</span></h3>
       <div class="bars">
-        <div class="bar-row"><span class="bar-label">terrenos en venta coahuila <span class="sm">activa</span></span><span class="bar-value">244</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
-        <div class="bar-row"><span class="bar-label">terrenos en coahuila <span class="sm">pausada</span></span><span class="bar-value">104</span><div class="bar-track"><div class="bar-fill" style="width:42.6%"></div></div></div>
-        <div class="bar-row"><span class="bar-label">fraccionamiento residencial <span class="sm">pausada</span></span><span class="bar-value">52</span><div class="bar-track"><div class="bar-fill" style="width:21.3%"></div></div></div>
-        <div class="bar-row"><span class="bar-label">terrenos en torreon <span class="sm">pausada</span></span><span class="bar-value">28</span><div class="bar-track"><div class="bar-fill" style="width:11.5%"></div></div></div>
-        <div class="bar-row"><span class="bar-label">terrenos en venta en coahuila <span class="sm">pausada</span></span><span class="bar-value">27</span><div class="bar-track"><div class="bar-fill" style="width:11.1%"></div></div></div>
-        <div class="bar-row"><span class="bar-label">terreno coahuila <span class="sm">activa</span></span><span class="bar-value">19</span><div class="bar-track"><div class="bar-fill" style="width:7.8%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en venta coahuila <span class="sm on">activa</span></span><span class="bar-value">244</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en coahuila <span class="sm off">pausada</span></span><span class="bar-value">104</span><div class="bar-track"><div class="bar-fill" style="width:42.6%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">fraccionamiento residencial <span class="sm off">pausada</span></span><span class="bar-value">52</span><div class="bar-track"><div class="bar-fill" style="width:21.3%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en torreon <span class="sm off">pausada</span></span><span class="bar-value">28</span><div class="bar-track"><div class="bar-fill" style="width:11.5%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en venta en coahuila <span class="sm off">pausada</span></span><span class="bar-value">27</span><div class="bar-track"><div class="bar-fill" style="width:11.1%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terreno coahuila <span class="sm on">activa</span></span><span class="bar-value">19</span><div class="bar-track"><div class="bar-fill" style="width:7.8%"></div></div></div>
       </div>
     </div>
 
@@ -311,12 +327,12 @@ tbody tr:last-child td{border-bottom:none;}
       <h4>Una keyword carga el 30% del gasto</h4>
       <p><strong>"terrenos en venta coahuila"</strong> consume $5,264 MXN —el 30% del presupuesto— y trajo 244 de los 573 clics totales. Es el motor, pero también el cuello de botella si no se controla el CPC.</p>
     </div>
-    <div class="insight">
+    <div class="insight brown">
       <div class="insight-num">ii.</div>
       <h4>El 43% del gasto está en keywords pausadas</h4>
       <p>Las palabras clave pausadas acumulan <strong>$7,443 MXN</strong> del histórico. Conviene revisar cuáles vale la pena reactivar (alto CTR) y cuáles descartar definitivamente.</p>
     </div>
-    <div class="insight">
+    <div class="insight moss">
       <div class="insight-num">iii.</div>
       <h4>WhatsApp es el canal preferido</h4>
       <p><strong>7 de cada 11 leads</strong> (64%) llegaron por WhatsApp en lugar del formulario web. La conversación directa funciona mejor que el formulario para este perfil de cliente.</p>
