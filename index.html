@@ -85,6 +85,8 @@ main { max-width:1000px; margin:0 auto; padding:32px 32px 80px; }
 .folder-card.green .fc-tag { background:rgba(5,150,105,.08);  color:var(--green); }
 .folder-card.amber .fc-tag { background:rgba(217,119,6,.08);  color:var(--amber); }
 .folder-card.purple.fc-tag { background:rgba(124,58,237,.08); color:var(--purple); }
+.folder-card.cyan  .fc-tag { background:rgba(8,145,178,.08);  color:var(--cyan); }
+.folder-card.rose  .fc-tag { background:rgba(225,29,72,.08);  color:var(--rose); }
 .fc-arrow { width:24px; height:24px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; opacity:0; transform:translateX(-5px); transition:opacity .2s,transform .2s; }
 
 /* ── FILE LIST ── */
@@ -282,6 +284,23 @@ const folders = [
         date: 'Apr 2026',
         tag: 'Propuesta',
         icon: '💸'
+      }
+    ]
+  },
+  {
+    id: 'terragona',
+    name: 'Terragona',
+    icon: '📁',
+    color: 'rose',
+    tag: 'Active',
+    files: [
+      {
+        name: 'Reporte de Publicidad — Mayo 2026',
+        desc: 'Google Ads + GoHighLevel · 9 slides · Keywords, leads, hallazgos y plan de acción · Histórico de campaña',
+        path: 'Terragona/reporte-mayo-2026/reporte-mayo-2026.html',
+        date: 'May 2026',
+        tag: 'Reporte',
+        icon: '📈'
       }
     ]
   }

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terragona — Reporte de Google Ads · Mayo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f0e8;
+  --paper:#ffffff;
+  --accent:#ede4d3;
+  --brown:#5C4A32;
+  --brown-light:#8a7556;
+  --tan:#b7a38a;
+  --tan-soft:#d4c5ac;
+  --moss:#3a4220;
+  --moss-light:#6b7548;
+  --ink:#2b2317;
+  --ink-soft:#6b5d48;
+  --line:rgba(92,74,50,0.15);
+  --line-soft:rgba(92,74,50,0.08);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',-apple-system,sans-serif;
+}
+html,body{width:100%;height:100%;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-family:var(--sans);color:var(--ink);}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(92,74,50,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(92,74,50,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+
+#viewer{position:relative;z-index:1;flex-shrink:0;box-shadow:0 24px 80px rgba(92,74,50,.18),0 0 0 1px rgba(92,74,50,.08);border-radius:10px 10px 0 0;overflow:hidden;background:var(--paper);}
+#deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(28px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:2.2em 2.8em 1.8em;background:var(--paper);overflow:hidden;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit{opacity:0;transform:translateX(-28px);}
+
+.eyebrow{display:inline-block;font-size:.55em;letter-spacing:.22em;text-transform:uppercase;color:var(--moss-light);font-weight:600;margin-bottom:.6em;padding:.3em .85em;background:var(--accent);border-radius:2px;}
+h2{font-family:var(--serif);font-size:2.4em;font-weight:500;color:var(--brown);letter-spacing:-.015em;line-height:1.05;}
+h2 em{font-style:italic;color:var(--moss);font-weight:500;}
+.sub{font-family:var(--serif);font-style:italic;font-size:1em;color:var(--ink-soft);margin-top:.35em;max-width:38em;}
+.rule{height:1px;background:linear-gradient(90deg,var(--tan) 0%,transparent 70%);margin:.9em 0 1.2em;flex-shrink:0;}
+
+/* ── COVER ── */
+#s1{padding:0;}
+#s1::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--brown) 0%,var(--tan) 50%,var(--moss) 100%);z-index:2;}
+#s1::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 70% 35%,rgba(58,66,32,.06) 0%,transparent 65%);pointer-events:none;}
+.cover{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:2.5em 3em;}
+.cover-top{display:flex;justify-content:space-between;align-items:center;font-size:.65em;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;}
+.cover-brand{font-family:var(--serif);font-size:1.6em;font-weight:600;letter-spacing:.02em;color:var(--brown);text-transform:none;}
+.cover-brand span{color:var(--tan);}
+.cover-h1{font-family:var(--serif);font-size:5em;font-weight:500;line-height:1;color:var(--brown);letter-spacing:-.02em;margin-bottom:.3em;}
+.cover-h1 em{font-style:italic;color:var(--moss);font-weight:500;}
+.cover-lede{font-family:var(--serif);font-style:italic;font-size:1.3em;color:var(--ink-soft);max-width:30em;line-height:1.45;}
+.cover-bot-line{height:1px;background:linear-gradient(90deg,var(--brown) 0%,var(--tan) 30%,transparent 70%);width:100%;}
+
+/* ── HERO STAT ── */
+.hero-stat{display:flex;align-items:baseline;gap:.4em;}
+.hero-stat .n{font-family:var(--serif);font-style:italic;font-size:4em;font-weight:500;color:var(--brown);line-height:1;letter-spacing:-.02em;}
+.hero-stat .u{font-family:var(--sans);font-size:1em;color:var(--ink-soft);font-weight:500;}
+
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);flex:1;min-height:0;}
+.kpi{background:var(--paper);padding:1.1em 1em 1em;display:flex;flex-direction:column;justify-content:center;gap:.4em;}
+.kpi-label{font-size:.5em;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+.kpi-value{font-family:var(--serif);font-size:1.9em;font-weight:500;color:var(--brown);line-height:1;letter-spacing:-.02em;}
+.kpi-value .unit{font-size:.55em;color:var(--ink-soft);font-weight:400;}
+.kpi-sub{font-size:.55em;color:var(--ink-soft);line-height:1.4;}
+.kpi-sub.accent{color:var(--moss);}
+
+/* ── TABLE ── */
+.table-wrap{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);overflow:hidden;}
+table{width:100%;border-collapse:collapse;font-size:.7em;}
+th{text-align:left;padding:.85em 1.4em;font-size:.65em;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);font-weight:600;background:var(--accent);border-bottom:1px solid var(--line);}
+th.num,td.num{text-align:right;}
+td{padding:.7em 1.4em;border-bottom:1px solid var(--line-soft);color:var(--ink);}
+tbody tr:last-child td{border-bottom:none;}
+.kw{font-family:var(--serif);font-style:italic;font-size:1.1em;color:var(--brown);}
+.badge{display:inline-block;padding:.2em .65em;font-size:.75em;text-transform:uppercase;letter-spacing:.1em;font-weight:600;border-radius:2px;}
+.badge-on{background:rgba(58,66,32,.12);color:var(--moss);}
+.badge-off{background:rgba(92,74,50,.1);color:var(--brown-light);}
+
+/* ── BARS ── */
+.bars{display:flex;flex-direction:column;gap:.85em;flex:1;justify-content:center;}
+.bar-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1em;}
+.bar-label{font-family:var(--serif);font-size:1em;color:var(--ink);font-style:italic;}
+.bar-label .sm{font-family:var(--sans);font-style:normal;font-size:.55em;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;margin-left:.4em;}
+.bar-track{grid-column:1/-1;height:.35em;background:var(--accent);overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--brown) 0%,var(--tan) 100%);transform-origin:left;animation:grow 1.2s cubic-bezier(.22,1,.36,1) both;}
+.bar-value{font-family:var(--serif);font-size:1.1em;color:var(--brown);font-weight:600;white-space:nowrap;}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ── LEADS PANEL ── */
+.col2{display:grid;grid-template-columns:1.3fr 1fr;gap:1.2em;flex:1;min-height:0;}
+.panel{background:var(--paper);border:1px solid var(--line);padding:1.3em 1.4em;display:flex;flex-direction:column;gap:1em;min-height:0;}
+.panel h3{font-family:var(--serif);font-size:1.2em;color:var(--brown);font-weight:600;}
+.split-stat{display:grid;grid-template-columns:1fr 1fr;gap:.7em;}
+.ss{text-align:center;padding:1em .5em;background:var(--accent);border:1px solid var(--line-soft);}
+.ss .n{font-family:var(--serif);font-style:italic;font-size:2.5em;font-weight:500;color:var(--brown);line-height:1;letter-spacing:-.02em;}
+.ss .l{font-size:.55em;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-soft);margin-top:.6em;font-weight:600;}
+.donut-wrap{display:flex;align-items:center;gap:1.4em;flex:1;}
+.donut{width:7.5em;height:7.5em;flex-shrink:0;}
+.donut-legend{flex:1;display:flex;flex-direction:column;gap:.55em;}
+.leg-item{display:flex;align-items:center;gap:.7em;font-size:.75em;}
+.leg-dot{width:.7em;height:.7em;flex-shrink:0;}
+.leg-item .name{flex:1;color:var(--ink);}
+.leg-item .val{font-family:var(--serif);font-style:italic;font-size:1.4em;color:var(--brown);font-weight:600;}
+
+/* ── INSIGHTS ── */
+.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:1em;flex:1;min-height:0;}
+.insight{background:var(--paper);border:1px solid var(--line);padding:1.8em 1.6em;display:flex;flex-direction:column;gap:.8em;justify-content:center;}
+.insight-num{font-family:var(--serif);font-style:italic;font-size:2em;color:var(--tan);line-height:1;margin-bottom:.2em;}
+.insight h4{font-family:var(--serif);font-size:1.3em;font-weight:600;color:var(--brown);line-height:1.2;}
+.insight p{font-size:.8em;color:var(--ink-soft);line-height:1.6;}
+.insight p strong{color:var(--moss);font-weight:600;}
+
+/* ── RECOS ── */
+.reco-list{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);flex:1;min-height:0;}
+.reco{display:grid;grid-template-columns:2em 1fr auto;gap:1em;padding:.85em 1.4em;border-bottom:1px solid var(--line-soft);align-items:center;}
+.reco:last-child{border-bottom:none;}
+.reco-icon{font-family:var(--serif);font-style:italic;font-size:1.6em;color:var(--tan);line-height:1;}
+.reco-body h4{font-family:var(--serif);font-size:1.05em;font-weight:600;color:var(--brown);margin-bottom:.2em;}
+.reco-body p{font-size:.65em;color:var(--ink-soft);line-height:1.5;}
+.reco-prio{font-size:.5em;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:.35em .75em;border-radius:2px;white-space:nowrap;}
+.prio-alta{background:var(--moss);color:var(--bg);}
+.prio-media{background:var(--tan);color:var(--brown);}
+.prio-baja{background:var(--accent);color:var(--brown);border:1px solid var(--line);}
+
+/* ── NAV ── */
+#nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:16px;flex-shrink:0;}
+#nc{font-family:'Inter',monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-soft);opacity:.6;}
+#pb{flex:1;max-width:200px;height:3px;background:var(--accent);border-radius:100px;overflow:hidden;}
+#pf{height:100%;background:linear-gradient(90deg,var(--brown),var(--tan));border-radius:100px;transition:width .35s ease;}
+#ndots{display:flex;gap:6px;align-items:center;}
+.ndot{width:7px;height:7px;border-radius:50%;background:rgba(92,74,50,.18);cursor:pointer;transition:all .2s;}
+.ndot.active{background:var(--brown);transform:scale(1.3);}
+#nbtns{display:flex;gap:8px;}
+.nb{padding:7px 18px;border-radius:6px;background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);font-family:'Inter',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s;font-weight:500;}
+.nb:hover{background:var(--brown);color:var(--bg);border-color:var(--brown);}
+</style>
+</head>
+<body>
+
+<div id="viewer">
+<div id="deck">
+
+<!-- ════════ S1 — COVER ═══════════════════════════════════════════════ -->
+<div class="slide active" id="s1">
+  <div class="cover">
+    <div class="cover-top">
+      <span>Confidencial</span>
+      <div class="cover-brand">Terragona</div>
+      <span>Reporte de campañas</span>
+    </div>
+
+    <div>
+      <span class="eyebrow" style="margin-bottom:1.2em;">Reporte mensual · Mayo 2026</span>
+      <h1 class="cover-h1">Resultados de<br><em>Google Ads</em></h1>
+      <p class="cover-lede">Un panorama claro y honesto del desempeño publicitario, los leads generados y las oportunidades de optimización.</p>
+    </div>
+
+    <div class="cover-bot-line"></div>
+  </div>
+</div>
+
+<!-- ════════ S2 — KPIs ═══════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div>
+    <span class="eyebrow">Resumen ejecutivo</span>
+    <h2>Los números <em>de un vistazo</em></h2>
+    <p class="sub">Indicadores clave de inversión, tráfico y conversión a lead cualificado.</p>
+  </div>
+  <div class="rule"></div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Inversión total</div>
+      <div class="kpi-value"><span class="unit">$</span>17,266<span class="unit"> MXN</span></div>
+      <div class="kpi-sub">35 palabras clave activadas</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Clics</div>
+      <div class="kpi-value">573</div>
+      <div class="kpi-sub">sobre 7,368 impresiones</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CTR promedio</div>
+      <div class="kpi-value">7.78<span class="unit">%</span></div>
+      <div class="kpi-sub accent">↑ por encima del promedio del sector (≈3%)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CPC promedio</div>
+      <div class="kpi-value"><span class="unit">$</span>30.13</div>
+      <div class="kpi-sub">moneda MXN</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Leads generados</div>
+      <div class="kpi-value">11</div>
+      <div class="kpi-sub">contactos reales en GoHighLevel</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Costo por lead</div>
+      <div class="kpi-value"><span class="unit">$</span>1,569</div>
+      <div class="kpi-sub">MXN por contacto cualificado</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Tasa clic → lead</div>
+      <div class="kpi-value">1.92<span class="unit">%</span></div>
+      <div class="kpi-sub">de visitantes que dejan datos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Vía WhatsApp</div>
+      <div class="kpi-value">7<span class="unit"> / 11</span></div>
+      <div class="kpi-sub accent">64% prefiere conversación directa</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S3 — TOP KEYWORDS ════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div>
+    <span class="eyebrow">Análisis de palabras clave</span>
+    <h2>Dónde se está <em>invirtiendo</em> el presupuesto</h2>
+    <p class="sub">Top 10 palabras clave por inversión, con su desempeño en clics, impresiones y estado actual.</p>
+  </div>
+  <div class="rule"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Palabra clave</th>
+          <th>Estado</th>
+          <th class="num">Clics</th>
+          <th class="num">Impresiones</th>
+          <th class="num">CTR</th>
+          <th class="num">Costo (MXN)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="kw">terrenos en venta coahuila</td><td><span class="badge badge-on">Activa</span></td><td class="num">244</td><td class="num">2,775</td><td class="num">8.79%</td><td class="num">$5,264.54</td></tr>
+        <tr><td class="kw">terrenos en coahuila</td><td><span class="badge badge-off">Pausada</span></td><td class="num">104</td><td class="num">1,245</td><td class="num">8.35%</td><td class="num">$3,620.59</td></tr>
+        <tr><td class="kw">lotes urbanizados en venta</td><td><span class="badge badge-on">Activa</span></td><td class="num">15</td><td class="num">220</td><td class="num">6.82%</td><td class="num">$2,852.28</td></tr>
+        <tr><td class="kw">fraccionamiento residencial Coahuila</td><td><span class="badge badge-off">Pausada</span></td><td class="num">52</td><td class="num">816</td><td class="num">6.37%</td><td class="num">$943.04</td></tr>
+        <tr><td class="kw">terrenos en venta en coahuila</td><td><span class="badge badge-off">Pausada</span></td><td class="num">27</td><td class="num">526</td><td class="num">5.13%</td><td class="num">$692.28</td></tr>
+        <tr><td class="kw">terrenos en venta Coahuila (limitada)</td><td><span class="badge badge-on">Activa</span></td><td class="num">11</td><td class="num">143</td><td class="num">7.69%</td><td class="num">$641.87</td></tr>
+        <tr><td class="kw">terrenos en torreon</td><td><span class="badge badge-off">Pausada</span></td><td class="num">28</td><td class="num">216</td><td class="num">12.96%</td><td class="num">$516.95</td></tr>
+        <tr><td class="kw">terreno coahuila</td><td><span class="badge badge-on">Activa</span></td><td class="num">19</td><td class="num">465</td><td class="num">4.09%</td><td class="num">$500.16</td></tr>
+        <tr><td class="kw">venta de terrenos en saltillo</td><td><span class="badge badge-off">Pausada</span></td><td class="num">18</td><td class="num">302</td><td class="num">5.96%</td><td class="num">$478.84</td></tr>
+        <tr><td class="kw">terrenos en venta saltillo</td><td><span class="badge badge-off">Pausada</span></td><td class="num">15</td><td class="num">139</td><td class="num">10.79%</td><td class="num">$372.66</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════ S4 — TRÁFICO + LEADS ══════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div>
+    <span class="eyebrow">Tráfico y conversión</span>
+    <h2>De impresión a <em>lead cualificado</em></h2>
+  </div>
+  <div class="rule"></div>
+
+  <div class="col2">
+    <div class="panel">
+      <h3>Distribución de clics por keyword <span style="font-family:var(--sans);font-style:normal;font-size:.5em;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-left:.6em;">Top 6</span></h3>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label">terrenos en venta coahuila <span class="sm">activa</span></span><span class="bar-value">244</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en coahuila <span class="sm">pausada</span></span><span class="bar-value">104</span><div class="bar-track"><div class="bar-fill" style="width:42.6%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">fraccionamiento residencial <span class="sm">pausada</span></span><span class="bar-value">52</span><div class="bar-track"><div class="bar-fill" style="width:21.3%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en torreon <span class="sm">pausada</span></span><span class="bar-value">28</span><div class="bar-track"><div class="bar-fill" style="width:11.5%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terrenos en venta en coahuila <span class="sm">pausada</span></span><span class="bar-value">27</span><div class="bar-track"><div class="bar-fill" style="width:11.1%"></div></div></div>
+        <div class="bar-row"><span class="bar-label">terreno coahuila <span class="sm">activa</span></span><span class="bar-value">19</span><div class="bar-track"><div class="bar-fill" style="width:7.8%"></div></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Leads en GoHighLevel</h3>
+      <div class="split-stat">
+        <div class="ss"><div class="n">11</div><div class="l">Leads totales</div></div>
+        <div class="ss"><div class="n">7</div><div class="l">Vía WhatsApp</div></div>
+      </div>
+      <div class="donut-wrap" style="padding-top:.8em;border-top:1px solid var(--line-soft);">
+        <svg class="donut" viewBox="0 0 42 42">
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--accent)" stroke-width="6"></circle>
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--brown)" stroke-width="6" stroke-dasharray="45.45 54.55" stroke-dashoffset="25" transform="rotate(-90 21 21)"></circle>
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--moss)" stroke-width="6" stroke-dasharray="36.36 63.64" stroke-dashoffset="-20.45" transform="rotate(-90 21 21)"></circle>
+          <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--tan)" stroke-width="6" stroke-dasharray="18.18 81.82" stroke-dashoffset="-56.81" transform="rotate(-90 21 21)"></circle>
+        </svg>
+        <div class="donut-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--brown);"></div><span class="name">Rachid Arranaga</span><span class="val">5</span></div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--moss);"></div><span class="name">José G. Aceves</span><span class="val">4</span></div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--tan);"></div><span class="name">Sin asignar</span><span class="val">2</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S5 — HALLAZGOS ═══════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div>
+    <span class="eyebrow">Hallazgos</span>
+    <h2>Tres observaciones <em>importantes</em></h2>
+  </div>
+  <div class="rule"></div>
+
+  <div class="insights">
+    <div class="insight">
+      <div class="insight-num">i.</div>
+      <h4>Una keyword carga el 30% del gasto</h4>
+      <p><strong>"terrenos en venta coahuila"</strong> consume $5,264 MXN —el 30% del presupuesto— y trajo 244 de los 573 clics totales. Es el motor, pero también el cuello de botella si no se controla el CPC.</p>
+    </div>
+    <div class="insight">
+      <div class="insight-num">ii.</div>
+      <h4>El 43% del gasto está en keywords pausadas</h4>
+      <p>Las palabras clave pausadas acumulan <strong>$7,443 MXN</strong> del histórico. Conviene revisar cuáles vale la pena reactivar (alto CTR) y cuáles descartar definitivamente.</p>
+    </div>
+    <div class="insight">
+      <div class="insight-num">iii.</div>
+      <h4>WhatsApp es el canal preferido</h4>
+      <p><strong>7 de cada 11 leads</strong> (64%) llegaron por WhatsApp en lugar del formulario web. La conversación directa funciona mejor que el formulario para este perfil de cliente.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ S6 — RECOMENDACIONES (removed) ═══════════════════════════ -->
+
+</div><!-- /deck -->
+</div><!-- /viewer -->
+
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nc"><span id="cur">1</span> / <span id="tot">5</span></div>
+    <div id="pb"><div id="pf"></div></div>
+  </div>
+  <div id="ndots"></div>
+  <div id="nbtns"><button class="nb" id="bp">← PREV</button><button class="nb" id="bn">NEXT →</button></div>
+</div>
+
+<script>
+const slides=Array.from(document.querySelectorAll('.slide'));
+const TOTAL=slides.length;let cur=0;
+const ndots=document.getElementById('ndots');
+slides.forEach((s,i)=>{const d=document.createElement('div');d.className='ndot';d.addEventListener('click',()=>goTo(i));ndots.appendChild(d);});
+const dots=ndots.querySelectorAll('.ndot');
+function goTo(n){if(n<0||n>=TOTAL)return;slides[cur].classList.remove('active');slides[cur].classList.add('exit');const prev=cur;cur=n;slides[cur].classList.add('active');setTimeout(()=>slides[prev].classList.remove('exit'),400);update();}
+function update(){document.getElementById('cur').textContent=cur+1;document.getElementById('tot').textContent=TOTAL;document.getElementById('pf').style.width=((cur+1)/TOTAL*100)+'%';dots.forEach((d,i)=>d.classList.toggle('active',i===cur));}
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}});
+const ASPECT=16/9;const viewer=document.getElementById('viewer');const nav=document.getElementById('nav');
+function resize(){const navH=nav.offsetHeight;const aw=window.innerWidth-24;const ah=window.innerHeight-navH-20;let w=aw,h=w/ASPECT;if(h>ah){h=ah;w=h*ASPECT;}w=Math.floor(w);h=Math.floor(h);viewer.style.width=w+'px';viewer.style.height=h+'px';viewer.style.fontSize=(w/1280)*19+'px';nav.style.width=w+'px';}
+window.addEventListener('resize',resize);resize();slides[0].classList.add('active');update();
+</script>
+</body>
+</html>
