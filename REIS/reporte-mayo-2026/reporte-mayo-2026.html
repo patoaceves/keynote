@@ -311,11 +311,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
     <div class="ins-card" style="padding:.75em .9em;gap:.4em;">
       <div class="ins-card-num" style="font-size:1.3em;">03</div>
-      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Warehousing CDJ sigue siendo el problema</b> ($66.47 CPC, +3% vs abril). Es el tercer mes consecutivo con CPC por encima de $60 — la ineficiencia es estructural, no de creativo o segmentación táctica.</div>
+      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Monterrey sigue como el motor de la cuenta:</b> 271 clicks (51% del total), $5,330 de inversión y CPC de $19.67 — el más eficiente entre las plazas grandes. La plaza regia mantiene su rol de principal generador de tráfico.</div>
     </div>
     <div class="ins-card" style="padding:.75em .9em;gap:.4em;">
       <div class="ins-card-num" style="font-size:1.3em;">04</div>
-      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>El CTR general bajó</b> de 5.89% a 5.26% pero el costo/conversión subió de $144.64 a $172.42 (+19%). Más clicks pero menos conversión — algo en el flow después del click está perdiendo eficiencia.</div>
+      <div class="ins-card-body" style="font-size:.72em;line-height:1.5;"><b>Warehousing lidera en CTR donde tiene escala:</b> SLP 10.11%, CDJ 6.75%, Monterrey 7.43%. El servicio de almacenaje resuena con mayor intención de búsqueda — patrón consistente que valida el mensaje y abre oportunidad para escalar.</div>
     </div>
   </div>
 </div>
@@ -357,22 +357,69 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     </div>
   </div>
 
-  <div class="panel" style="flex:1;min-height:0;padding:.85em 1em;gap:.55em;">
-    <div>
-      <div class="panel-h" style="margin-bottom:.55em;"><span class="dot"></span><span>Mix Consolidado por Canal de Contacto</span></div>
-      <div style="display:flex;height:1.8em;border-radius:.4em;overflow:hidden;border:1px solid var(--b2);">
-        <div style="flex:41;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.85em;color:#fff;font-weight:500;">WhatsApp 54.7%</div>
-        <div style="flex:20;background:rgba(56,161,105,.6);display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-size:.8em;color:#fff;font-weight:500;">Llamada 26.7%</div>
-        <div style="flex:11;background:rgba(56,161,105,.4);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.65em;color:#fff;">Email 14.7%</div>
-        <div style="flex:3;background:rgba(56,161,105,.2);display:flex;align-items:center;justify-content:center;font-family:var(--FM);font-size:.55em;color:var(--text);">4%</div>
+  <div class="panel" style="flex:1;min-height:0;padding:.95em 1.2em;gap:.75em;">
+    <div class="panel-h"><span class="dot"></span><span>Mix Consolidado por Canal de Contacto</span></div>
+    <div style="flex:1;min-height:0;display:grid;grid-template-columns:auto 1fr;gap:1.5em;align-items:center;">
+      <!-- Donut chart -->
+      <div style="height:100%;display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;">
+        <svg viewBox="0 0 200 200" style="height:100%;width:auto;display:block;" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background ring -->
+          <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(56,161,105,.06)" stroke-width="34"/>
+          <!-- WhatsApp 54.667% -->
+          <circle cx="100" cy="100" r="72" fill="none" stroke="#38A169" stroke-width="34"
+                  stroke-dasharray="247.31 452.39" stroke-dashoffset="0"
+                  transform="rotate(-90 100 100)" stroke-linecap="butt"/>
+          <!-- Llamada 26.667% -->
+          <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(56,161,105,.6)" stroke-width="34"
+                  stroke-dasharray="120.64 452.39" stroke-dashoffset="-247.31"
+                  transform="rotate(-90 100 100)" stroke-linecap="butt"/>
+          <!-- Email 14.667% -->
+          <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(56,161,105,.4)" stroke-width="34"
+                  stroke-dasharray="66.35 452.39" stroke-dashoffset="-367.95"
+                  transform="rotate(-90 100 100)" stroke-linecap="butt"/>
+          <!-- Forma 4% -->
+          <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(56,161,105,.2)" stroke-width="34"
+                  stroke-dasharray="18.10 452.39" stroke-dashoffset="-434.30"
+                  transform="rotate(-90 100 100)" stroke-linecap="butt"/>
+          <!-- Center text -->
+          <text x="100" y="98" text-anchor="middle" fill="#F0F8FF" font-family="Outfit, sans-serif" font-size="32" font-weight="700">75</text>
+          <text x="100" y="118" text-anchor="middle" fill="rgba(240,248,255,.45)" font-family="'IBM Plex Mono', monospace" font-size="9" letter-spacing="2">CONVERSIONES</text>
+        </svg>
       </div>
-      <div style="display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;margin-top:.5em;">
-        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:var(--green);"></span>WhatsApp · 41 (54.7%)</div>
-        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.6);"></span>Llamada · 20 (26.7%)</div>
-        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.4);"></span>Email · 11 (14.7%)</div>
-        <div style="display:flex;align-items:center;gap:.4em;font-family:var(--FM);font-size:.6em;color:var(--t2);"><span style="width:.5em;height:.5em;border-radius:50%;background:rgba(56,161,105,.2);"></span>Forma · 3 (4.0%)</div>
+      <!-- Legend + insight -->
+      <div style="display:flex;flex-direction:column;gap:.65em;height:100%;justify-content:center;">
+        <div style="display:flex;flex-direction:column;gap:.5em;">
+          <div style="display:flex;align-items:center;gap:.8em;padding:.5em .8em;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;">
+            <span style="width:.9em;height:.9em;border-radius:.2em;background:var(--green);flex-shrink:0;"></span>
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:center;gap:.5em;">
+              <span style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">WhatsApp</span>
+              <span style="font-family:var(--FM);font-size:.7em;color:var(--t2);">41 · <b style="color:var(--text);font-weight:600;">54.7%</b></span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.8em;padding:.5em .8em;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;">
+            <span style="width:.9em;height:.9em;border-radius:.2em;background:rgba(56,161,105,.6);flex-shrink:0;"></span>
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:center;gap:.5em;">
+              <span style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">Llamada</span>
+              <span style="font-family:var(--FM);font-size:.7em;color:var(--t2);">20 · <b style="color:var(--text);font-weight:600;">26.7%</b></span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.8em;padding:.5em .8em;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;">
+            <span style="width:.9em;height:.9em;border-radius:.2em;background:rgba(56,161,105,.4);flex-shrink:0;"></span>
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:center;gap:.5em;">
+              <span style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">Email</span>
+              <span style="font-family:var(--FM);font-size:.7em;color:var(--t2);">11 · <b style="color:var(--text);font-weight:600;">14.7%</b></span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.8em;padding:.5em .8em;background:var(--s2);border:1px solid var(--b1);border-radius:.5em;">
+            <span style="width:.9em;height:.9em;border-radius:.2em;background:rgba(56,161,105,.2);flex-shrink:0;"></span>
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:center;gap:.5em;">
+              <span style="font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--text);">Forma</span>
+              <span style="font-family:var(--FM);font-size:.7em;color:var(--t2);">3 · <b style="color:var(--text);font-weight:600;">4.0%</b></span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family:var(--FB);font-size:.72em;line-height:1.5;color:var(--t2);margin-top:.3em;border-top:1px solid var(--b1);padding-top:.65em;"><b style="color:var(--text);">WhatsApp y Llamada concentran el 81% de las conversiones</b> (61 de 75). WhatsApp se mantiene como punto de entrada dominante y Email gana relevancia como canal alternativo desde Landing Pages.</div>
       </div>
-      <div style="font-family:var(--FB);font-size:.72em;line-height:1.55;color:var(--t2);margin-top:.8em;"><b style="color:var(--text);">WhatsApp y Llamada concentran el 81% de las conversiones</b> (61 de 75). El canal de contacto preferido se mantiene consistente entre Google Ads y Landing Pages, con WhatsApp como punto de entrada dominante. Email gana relevancia como canal alternativo desde Landing Pages.</div>
     </div>
   </div>
 </div>
@@ -563,7 +610,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div class="lr-list">
         <div class="lr-item"><div class="lr-item-num green">1</div><div class="lr-item-body"><b>SLP tuvo un mes excepcional:</b> +25% inversión, +40% clicks, Warehousing al 10.11% CTR (récord de la cuenta). La inversión incremental se tradujo en mayor eficiencia simultáneamente — patrón que valida seguir escalando la plaza.</div></div>
         <div class="lr-item"><div class="lr-item-num green">2</div><div class="lr-item-body"><b>Warehousing CDJ sigue como ineficiencia estructural:</b> tercer mes consecutivo con CPC arriba de $60 ($76→$64→$66). No se corrige con ajustes tácticos — requiere replantear segmentación geográfica o tipos de keyword más drásticamente.</div></div>
-        <div class="lr-item"><div class="lr-item-num green">3</div><div class="lr-item-body"><b>Más clicks por mismo gasto:</b> 528 clicks vs 482 (+10%) con misma inversión. CPC general bajó 9% a $24.49. Pero el costo/conversión subió 19% — el problema migró del costo del click al funnel de conversión.</div></div>
+        <div class="lr-item"><div class="lr-item-num green">3</div><div class="lr-item-body"><b>Más clicks por mismo gasto:</b> 528 clicks vs 482 (+10%) con misma inversión. CPC general bajó 9% a $24.49. El tráfico se volvió más eficiente — oportunidad para optimizar el funnel post-click y capitalizar el volumen adicional.</div></div>
       </div>
     </div>
     <div class="lr-col">
