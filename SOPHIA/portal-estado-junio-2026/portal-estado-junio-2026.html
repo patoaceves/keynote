@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOPHIA, Estado del Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&family=Karla:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#faf6ee;--cream2:#f3ede0;--paper:#ffffff;
+  --border:#e8dfd0;--border-strong:#c9bea9;
+  --ink:#1f1a14;--t2:#6b5f50;--t3:#9a8e7e;
+  --accent:#c0112f;--accent-h:#9b0d26;--accent-soft:#f0d4d9;--accent-faint:#fbecef;
+  --grn:#6f8e5e;--grnsoft:rgba(111,142,94,.13);--grnring:rgba(111,142,94,.32);
+  --blu:#5a7eb8;--blusoft:rgba(90,126,184,.13);--bluring:rgba(90,126,184,.32);
+  --gold:#c98f10;--goldsoft:rgba(201,143,16,.14);--goldring:rgba(201,143,16,.34);
+  --red:#c0112f;--redsoft:rgba(192,17,47,.10);--redring:rgba(192,17,47,.28);
+  --FD:"Poltawski Nowy",Georgia,serif;--FB:"Karla",system-ui,sans-serif;
+}
+html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-family:var(--FB);color:var(--ink);}
+#viewer{position:relative;z-index:1;flex-shrink:0;box-shadow:0 24px 70px rgba(31,26,20,.28),0 0 0 1px rgba(31,26,20,.06);border-radius:10px 10px 0 0;overflow:hidden;background:var(--cream);}
+#deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(26px);transition:opacity .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:2.1em 2.8em 1.9em;background:var(--cream);overflow:hidden;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit{opacity:0;transform:translateX(-26px);}
+
+.eyebrow{font-family:var(--FB);font-size:.72em;font-weight:600;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;display:flex;align-items:center;gap:.7em;margin-bottom:.55em;flex-shrink:0;}
+.eyebrow::before{content:'';width:.5em;height:.5em;background:var(--accent);border-radius:1px;flex-shrink:0;}
+.htitle{font-family:var(--FD);font-weight:600;font-size:2.3em;line-height:1.04;color:var(--ink);letter-spacing:-.01em;flex-shrink:0;}
+.htitle em{color:var(--accent);font-style:italic;}
+.rule{height:2px;flex-shrink:0;margin:.7em 0 0;width:2.6em;background:var(--accent);border-radius:2px;}
+.body-c{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;margin-top:1em;}
+.lead{font-size:.95em;color:var(--t2);line-height:1.55;max-width:50em;flex-shrink:0;}
+.lead b{color:var(--ink);font-weight:700;}
+
+/* card base */
+.card{background:var(--paper);border:1px solid var(--border);border-radius:.85em;box-shadow:0 1px 2px rgba(31,26,20,.04),0 7px 20px rgba(31,26,20,.05);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+
+/* glows + cover + closing */
+.glow{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(192,17,47,.10) 0%,transparent 68%);}
+.cover-wrap,.cl-wrap{position:relative;z-index:1;height:100%;}
+.cover-wrap{display:flex;flex-direction:column;justify-content:space-between;}
+.cover-top{display:flex;justify-content:space-between;align-items:center;}
+.cover-logo{height:2.3em;width:auto;}
+.cover-date{font-family:var(--FB);font-size:.76em;font-weight:600;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;}
+.cover-mid{display:flex;flex-direction:column;}
+.cover-eyebrow{font-family:var(--FB);font-size:.78em;font-weight:600;letter-spacing:.16em;color:var(--accent);margin-bottom:.85em;text-transform:uppercase;display:flex;align-items:center;gap:.85em;}
+.cover-eyebrow .sep{width:1.4em;height:1px;background:var(--border-strong);}
+.cover-eyebrow span:last-child{color:var(--t3);}
+.cover-h1{font-family:var(--FD);font-weight:600;font-size:5em;line-height:.96;color:var(--ink);margin-bottom:.42em;letter-spacing:-.02em;}
+.cover-h1 em{color:var(--accent);font-style:italic;}
+.cover-sub{font-family:var(--FB);font-size:1.02em;font-weight:400;color:var(--t2);max-width:32em;line-height:1.55;}
+.cover-bottom{display:flex;align-items:center;gap:1.1em;}
+.cover-tick{width:2.4em;height:2px;background:var(--accent);flex-shrink:0;}
+.cover-meta{font-family:var(--FB);font-size:.82em;font-weight:600;letter-spacing:.06em;color:var(--t2);text-transform:uppercase;}
+
+/* KPI grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:.7em;margin-top:1em;}
+.kpi{padding:.95em 1.1em;display:flex;flex-direction:column;justify-content:center;}
+.kpi-1::before{background:var(--accent);}.kpi-2::before{background:var(--grn);}.kpi-3::before{background:var(--blu);}
+.kpi-4::before{background:var(--gold);}.kpi-5::before{background:var(--accent);}.kpi-6::before{background:var(--grn);}
+.kpi-n{font-family:var(--FD);font-weight:700;font-size:2.5em;line-height:.9;letter-spacing:-.02em;}
+.kpi-1 .kpi-n,.kpi-5 .kpi-n{color:var(--accent);}.kpi-2 .kpi-n,.kpi-6 .kpi-n{color:var(--grn);}
+.kpi-3 .kpi-n{color:var(--blu);}.kpi-4 .kpi-n{color:var(--gold);}
+.kpi-l{font-size:.78em;color:var(--t2);line-height:1.3;margin-top:.5em;font-weight:500;}
+
+/* insights row */
+.ins-row{display:flex;gap:.8em;margin-top:.8em;}
+.ins{flex:1;padding:.95em 1.1em;display:flex;flex-direction:column;gap:.3em;}
+.ins::before{background:var(--accent);}
+.ins-t{font-family:var(--FD);font-weight:600;font-size:1.02em;color:var(--ink);line-height:1.1;}
+.ins-d{font-size:.78em;color:var(--t2);line-height:1.45;}
+
+/* stack rows */
+.stack{display:flex;flex-direction:column;margin-top:.5em;border-top:1px solid var(--border);}
+.srow{display:grid;grid-template-columns:9em 1fr;gap:1.4em;padding:.62em .2em;border-bottom:1px solid var(--border);align-items:baseline;}
+.srow .sk{font-family:var(--FB);font-size:.66em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);}
+.srow .sv{font-size:.9em;color:var(--t2);line-height:1.4;}
+.srow .sv b{color:var(--ink);font-weight:700;}
+.note{margin-top:.95em;font-size:.82em;color:var(--t3);font-family:var(--FD);font-style:italic;flex-shrink:0;}
+
+/* course cards (3) */
+.crs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85em;margin-top:1em;}
+.crs{padding:1.15em 1.25em;display:flex;flex-direction:column;gap:.45em;}
+.crs-1::before{background:var(--accent);}.crs-2::before{background:var(--gold);}.crs-3::before{background:var(--blu);}
+.crs-mode{font-family:var(--FB);font-size:.58em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:.32em .65em;border-radius:.35em;align-self:flex-start;}
+.crs-1 .crs-mode{background:var(--accent-faint);color:var(--accent);}
+.crs-2 .crs-mode{background:var(--goldsoft);color:var(--gold);}
+.crs-3 .crs-mode{background:var(--blusoft);color:var(--blu);}
+.crs-n{font-family:var(--FD);font-weight:600;font-size:1.4em;color:var(--ink);line-height:1.04;}
+.crs-d{font-size:.8em;color:var(--t2);line-height:1.45;}
+.pipe{display:flex;align-items:center;margin-top:1.1em;border-top:1px solid var(--border);padding-top:1em;}
+.pipe-step{flex:1;text-align:center;position:relative;font-family:var(--FD);font-weight:600;font-size:.95em;letter-spacing:.04em;color:var(--accent);}
+.pipe-step::after{content:'›';position:absolute;right:-.3em;top:50%;transform:translateY(-50%);color:var(--border-strong);font-size:1.1em;font-family:var(--FB);}
+.pipe-step:last-child::after{content:'';}
+.pipe-cap{text-align:center;font-size:.8em;color:var(--t3);margin-top:.7em;}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:.55em;margin-top:1em;}
+.chip{background:var(--paper);border:1px solid var(--border);border-radius:.5em;padding:.5em .85em;font-size:.82em;color:var(--ink);font-weight:500;box-shadow:0 1px 2px rgba(31,26,20,.03);}
+.chip i{color:var(--accent);font-weight:700;font-style:normal;margin-right:.45em;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.6em;margin-top:1.2em;}
+.two h4{font-family:var(--FD);font-weight:600;font-size:1.12em;color:var(--ink);margin-bottom:.35em;}
+.two h4 em{color:var(--accent);font-style:italic;}
+.two p{font-size:.85em;color:var(--t2);line-height:1.5;}
+
+/* instrument grid 6 */
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:.7em;margin-top:1em;}
+.ig{padding:.9em 1.05em;display:flex;flex-direction:column;gap:.3em;}
+.ig-1::before{background:var(--grn);}.ig-2::before{background:var(--blu);}.ig-3::before{background:var(--gold);}
+.ig-4::before{background:var(--accent);}.ig-5::before{background:var(--blu);}.ig-6::before{background:var(--accent);}
+.ig-rn{font-family:var(--FD);font-weight:700;font-size:.95em;}
+.ig-1 .ig-rn{color:var(--grn);}.ig-2 .ig-rn{color:var(--blu);}.ig-3 .ig-rn{color:var(--gold);}
+.ig-4 .ig-rn{color:var(--accent);}.ig-5 .ig-rn{color:var(--blu);}.ig-6 .ig-rn{color:var(--accent);}
+.ig-t{font-family:var(--FD);font-weight:600;font-size:1em;color:var(--ink);line-height:1.05;}
+.ig-d{font-size:.74em;color:var(--t2);line-height:1.4;}
+.split{display:flex;gap:1em;margin-top:.95em;}
+.split div{flex:1;font-size:.84em;color:var(--t2);line-height:1.4;}
+.split div b{color:var(--accent);font-weight:700;}
+
+/* pillars */
+.pil-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6em;margin-top:1em;}
+.pil{padding:.8em .9em;display:flex;flex-direction:column;gap:.2em;}
+.pil::before{background:var(--accent);}
+.pil-n{font-family:var(--FD);font-weight:700;font-size:.85em;color:var(--accent);}
+.pil-t{font-family:var(--FD);font-weight:600;font-size:.98em;color:var(--ink);line-height:1.1;}
+.bands{display:flex;gap:.8em;margin-top:1em;}
+.band{flex:1;padding-top:.6em;border-top:3px solid;}
+.band-1{border-color:var(--grn);}.band-2{border-color:var(--gold);}.band-3{border-color:var(--red);}
+.band b{font-family:var(--FD);font-weight:600;font-size:1.02em;color:var(--ink);}
+.band span{display:block;font-size:.76em;color:var(--t2);margin-top:.25em;line-height:1.4;}
+
+/* pair detail */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.9em;margin-top:1.1em;}
+.pd{padding:1.35em 1.45em;display:flex;flex-direction:column;gap:.5em;}
+.pd-1::before{background:var(--blu);}.pd-2::before{background:var(--gold);}
+.pd-k{font-family:var(--FB);font-size:.62em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;}
+.pd-1 .pd-k{color:var(--blu);}.pd-2 .pd-k{color:var(--gold);}
+.pd-t{font-family:var(--FD);font-weight:600;font-size:1.42em;color:var(--ink);line-height:1.05;}
+.pd-d{font-size:.84em;color:var(--t2);line-height:1.55;}
+.pd-site{font-size:.74em;font-weight:700;letter-spacing:.04em;margin-top:.2em;}
+.pd-1 .pd-site{color:var(--blu);}.pd-2 .pd-site{color:var(--gold);}
+
+/* next admin grid */
+.nx-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:.8em;margin-top:1em;}
+.nx{padding:1.05em 1.2em;display:flex;flex-direction:column;gap:.3em;}
+.nx-1::before{background:var(--accent);}.nx-2::before{background:var(--grn);}.nx-3::before{background:var(--blu);}.nx-4::before{background:var(--gold);}
+.nx-t{font-family:var(--FD);font-weight:600;font-size:1.15em;color:var(--ink);line-height:1.06;}
+.nx-d{font-size:.82em;color:var(--t2);line-height:1.45;}
+
+/* roadmap stages */
+.grow{background:var(--accent-faint);border:1px solid var(--accent-soft);border-radius:.8em;padding:1em 1.25em;margin-top:1em;font-size:.95em;color:var(--ink);line-height:1.5;flex-shrink:0;}
+.grow b{color:var(--accent);font-weight:700;}
+.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:.7em;margin-top:.95em;}
+.st{padding:1em 1.1em;display:flex;flex-direction:column;gap:.35em;}
+.st-1::before{background:var(--accent);}.st-2::before{background:var(--grn);}.st-3::before{background:var(--blu);}.st-4::before{background:var(--gold);}
+.st-e{font-family:var(--FB);font-size:.6em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;}
+.st-1 .st-e{color:var(--accent);}.st-2 .st-e{color:var(--grn);}.st-3 .st-e{color:var(--blu);}.st-4 .st-e{color:var(--gold);}
+.st-t{font-family:var(--FD);font-weight:600;font-size:1.08em;color:var(--ink);line-height:1.08;}
+.st-d{font-size:.76em;color:var(--t2);line-height:1.4;}
+
+/* closing */
+.cl-wrap{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:1.35em;}
+.cl-logo{height:2.5em;width:auto;margin-bottom:.2em;}
+.cl-h1{font-family:var(--FD);font-weight:600;font-size:3.1em;line-height:1.08;color:var(--ink);letter-spacing:-.01em;max-width:18em;}
+.cl-h1 em{color:var(--accent);font-style:italic;}
+.cl-note{background:var(--paper);border:1px solid var(--border);border-radius:.7em;padding:1.05em 1.35em;max-width:44em;display:flex;flex-direction:column;gap:.45em;text-align:left;box-shadow:0 1px 2px rgba(31,26,20,.04),0 7px 20px rgba(31,26,20,.05);}
+.cl-note-tag{font-family:var(--FB);font-size:.62em;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+.cl-note-d{font-size:.84em;color:var(--t2);line-height:1.6;}
+.cl-note-d em{color:var(--ink);font-style:normal;font-weight:600;}
+
+/* nav */
+#nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:16px;flex-shrink:0;}
+#nc{font-family:var(--FB);font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--t3);}
+#pb{flex:1;max-width:200px;height:3px;background:var(--border);border-radius:100px;overflow:hidden;}
+#pf{height:100%;background:var(--accent);border-radius:100px;transition:width .35s ease;}
+#ndots{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;}
+.ndot{width:7px;height:7px;border-radius:50%;background:var(--border-strong);cursor:pointer;transition:all .2s;}
+.ndot.active{background:var(--accent);transform:scale(1.3);}
+#nbtns{display:flex;gap:8px;}
+.nb{padding:7px 18px;border-radius:6px;background:var(--paper);border:1px solid var(--border-strong);color:var(--t2);font-family:var(--FB);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.nb:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}#pf{transition:none}}
+</style>
+</head>
+<body>
+
+<div id="viewer">
+<div id="deck">
+
+<!-- S1 COVER -->
+<div class="slide active" id="s1">
+  <div class="glow" style="width:30em;height:30em;right:-6em;top:-8em;"></div>
+  <div class="cover-wrap">
+    <div class="cover-top">
+      <img class="cover-logo" src="assets/logo-horizontal-rojo.png" alt="SOPHIA">
+      <div class="cover-date">Junio 2026</div>
+    </div>
+    <div class="cover-mid">
+      <div class="cover-eyebrow">
+        <span>Portal SOPHIA</span>
+        <span class="sep"></span>
+        <span>Estado de la plataforma</span>
+      </div>
+      <div class="cover-h1">El Portal, <em>hoy.</em></div>
+      <div class="cover-sub">Qué se ha construido, cómo está estructurado y por dónde sigue. Una lectura del avance del Portal y de lo que viene.</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-tick"></div>
+      <div class="cover-meta">Avances, funcionalidades y siguientes pasos · portal.sophiamx.org</div>
+    </div>
+  </div>
+</div>
+
+<!-- S2 RESUMEN -->
+<div class="slide" id="s2">
+  <div class="eyebrow">Resumen ejecutivo</div>
+  <div class="htitle">De una herramienta suelta a una <em>plataforma académica</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <p class="lead">El Portal pasó de ser un test aislado a cubrir todo el camino del alumno: cursos, lecciones, evaluaciones e inscripción automatizada, sobre una arquitectura propia y reutilizable.</p>
+    <div class="kpi-grid">
+      <div class="card kpi kpi-1"><div class="kpi-n">3</div><div class="kpi-l">Cursos activos</div></div>
+      <div class="card kpi kpi-2"><div class="kpi-n">8</div><div class="kpi-l">Pilares del bienestar medidos</div></div>
+      <div class="card kpi kpi-3"><div class="kpi-n">6</div><div class="kpi-l">Instrumentos de evaluación</div></div>
+      <div class="card kpi kpi-4"><div class="kpi-n">13</div><div class="kpi-l">Formatos de lección</div></div>
+      <div class="card kpi kpi-5"><div class="kpi-n">29</div><div class="kpi-l">Edge Functions en producción</div></div>
+      <div class="card kpi kpi-6"><div class="kpi-n">100%</div><div class="kpi-l">Datos migrados a Postgres</div></div>
+    </div>
+    <div class="ins-row">
+      <div class="card ins"><div class="ins-t">Backend consolidado</div><div class="ins-d">Migración completa de Airtable a Postgres en Supabase, con seguridad por fila.</div></div>
+      <div class="card ins"><div class="ins-t">Evaluación integral</div><div class="ins-d">Actividades, autoconocimiento y bienestar psicológico en un mismo lugar.</div></div>
+      <div class="card ins"><div class="ins-t">Operación automatizada</div><div class="ins-d">Alta, invitación y onboarding del alumno de extremo a extremo.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 ARQUITECTURA -->
+<div class="slide" id="s3">
+  <div class="eyebrow">Arquitectura</div>
+  <div class="htitle">Cómo está <em>construido</em> el Portal</div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <p class="lead">Sitio estático sin frameworks, ligero y rápido. Cada capa hace una sola cosa y todas son reemplazables sin tocar el resto.</p>
+    <div class="stack">
+      <div class="srow"><div class="sk">Frontend</div><div class="sv"><b>HTML, CSS y JavaScript estático</b> servido en Vercel, sin frameworks</div></div>
+      <div class="srow"><div class="sk">Acceso</div><div class="sv"><b>Supabase Auth</b> con Google y Magic Link, flujo PKCE</div></div>
+      <div class="srow"><div class="sk">Datos</div><div class="sv"><b>Postgres en Supabase</b>, con seguridad por fila por alumno</div></div>
+      <div class="srow"><div class="sk">Lógica</div><div class="sv"><b>Edge Functions en Deno</b>, una por cada operación del Portal</div></div>
+      <div class="srow"><div class="sk">Correos</div><div class="sv"><b>GoHighLevel</b>, disparado por webhook para bienvenida y onboarding</div></div>
+      <div class="srow"><div class="sk">Archivos</div><div class="sv"><b>Supabase Storage</b> para las entregas de tarea de los alumnos</div></div>
+    </div>
+    <p class="note">Arquitectura genérica: un curso nuevo solo necesita su registro de curso, cohorte, módulos y lecciones.</p>
+  </div>
+</div>
+
+<!-- S4 CURSOS -->
+<div class="slide" id="s4">
+  <div class="eyebrow">Catálogo</div>
+  <div class="htitle">Cursos <em>activos</em> hoy</div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <div class="crs-grid">
+      <div class="card crs crs-1">
+        <span class="crs-mode">Presencial</span>
+        <div class="crs-n">Happiness Workshop</div>
+        <div class="crs-d">Programa humanista sobre la felicidad y el florecimiento, impartido en sesiones presenciales con seguimiento en el Portal.</div>
+      </div>
+      <div class="card crs crs-2">
+        <span class="crs-mode">Online</span>
+        <div class="crs-n">Happiness Workshop</div>
+        <div class="crs-d">Misma experiencia en versión digital autogestionada, lección por lección, a ritmo del alumno dentro del Portal.</div>
+      </div>
+      <div class="card crs crs-3">
+        <span class="crs-mode">Presencial</span>
+        <div class="crs-n">Fundamentos de Coaching I</div>
+        <div class="crs-d">Primer nivel de formación en coaching, con módulos, lecturas, actividades y evaluaciones dentro del mismo Portal.</div>
+      </div>
+    </div>
+    <div class="pipe">
+      <div class="pipe-step">Curso</div>
+      <div class="pipe-step">Cohorte</div>
+      <div class="pipe-step">Módulo</div>
+      <div class="pipe-step">Lección</div>
+    </div>
+    <div class="pipe-cap">La lección es la unidad atómica del Portal, con trece formatos posibles.</div>
+  </div>
+</div>
+
+<!-- S5 REPRODUCTOR -->
+<div class="slide" id="s5">
+  <div class="eyebrow">Experiencia del alumno</div>
+  <div class="htitle">Una sola lección, <em>muchos formatos</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <p class="lead">El reproductor abre cualquier tipo de contenido en la misma pantalla, lleva el progreso del alumno y lo regresa a donde se quedó.</p>
+    <div class="chips">
+      <div class="chip"><i>01</i>Texto enriquecido</div>
+      <div class="chip"><i>02</i>Video</div>
+      <div class="chip"><i>03</i>PDF con visor integrado</div>
+      <div class="chip"><i>04</i>Quiz</div>
+      <div class="chip"><i>05</i>Autoevaluación</div>
+      <div class="chip"><i>06</i>Tarea con entrega</div>
+      <div class="chip"><i>07</i>Test de Felicidad</div>
+      <div class="chip"><i>08</i>Escala Ryff</div>
+    </div>
+    <div class="two">
+      <div>
+        <h4>Progreso <em>confiable</em></h4>
+        <p>El avance se guarda lección por lección, con el caché de checkpoint ya corregido, así el alumno nunca pierde su lugar ni repite lo que ya completó.</p>
+      </div>
+      <div>
+        <h4>Comunidad <em>por curso</em></h4>
+        <p>Cada curso cuenta con su propio foro para preguntas y conversación, con publicación y moderación dentro del mismo Portal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 INSTRUMENTOS PANORAMA -->
+<div class="slide" id="s6">
+  <div class="eyebrow">Evaluación</div>
+  <div class="htitle">Seis maneras de <em>medir el avance</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <div class="ig-grid">
+      <div class="card ig ig-1"><div class="ig-rn">i</div><div class="ig-t">Actividades y tareas</div><div class="ig-d">El alumno entrega archivos que el equipo revisa y califica.</div></div>
+      <div class="card ig ig-2"><div class="ig-rn">ii</div><div class="ig-t">Evaluaciones (quizzes)</div><div class="ig-d">Cuestionarios con banco de preguntas y resultado automático.</div></div>
+      <div class="card ig ig-3"><div class="ig-rn">iii</div><div class="ig-t">Evaluación de ponentes</div><div class="ig-d">El alumno califica cada sesión y a quien la imparte.</div></div>
+      <div class="card ig ig-4"><div class="ig-rn">iv</div><div class="ig-t">Autoevaluaciones</div><div class="ig-d">El alumno se mide a sí mismo en los ocho pilares.</div></div>
+      <div class="card ig ig-5"><div class="ig-rn">v</div><div class="ig-t">Escala Ryff</div><div class="ig-d">Bienestar psicológico, instrumento de seis dimensiones.</div></div>
+      <div class="card ig ig-6"><div class="ig-rn">vi</div><div class="ig-t">Test de Felicidad</div><div class="ig-d">Diagnóstico inicial de dieciséis reactivos sobre los pilares.</div></div>
+    </div>
+    <div class="split">
+      <div><b>Lo que el alumno entrega.</b> Actividades, tareas y quizzes que el claustro revisa.</div>
+      <div><b>Lo que el alumno se aplica.</b> Autoevaluaciones, Test de Felicidad y Escala Ryff.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S7 ENTREGA -->
+<div class="slide" id="s7">
+  <div class="eyebrow">Evaluación, detalle</div>
+  <div class="htitle">Lo que el alumno <em>entrega</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <div class="two">
+      <div>
+        <h4>Actividades y <em>tareas</em></h4>
+        <p>El alumno sube sus archivos, que se guardan en Supabase Storage para revisión del equipo. Puede reemplazar o borrar su entrega antes de la fecha límite, y todo queda ligado a su lección y su curso.</p>
+      </div>
+      <div>
+        <h4>Quizzes <em>calificados</em></h4>
+        <p>Cuestionarios con banco de preguntas y calificación automática. Cada intento guarda las respuestas y es idempotente, un solo registro por intento, así el alumno pausa y reanuda sin duplicar resultados.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="srow"><div class="sk">Entregas</div><div class="sv">Archivo en Storage, reemplazable, ligado a lección y alumno</div></div>
+      <div class="srow"><div class="sk">Quizzes</div><div class="sv">Respuestas guardadas, resultado idempotente, reanudable</div></div>
+      <div class="srow"><div class="sk">Revisión</div><div class="sv">El claustro consulta y califica desde el lado administrativo</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 TEST DE FELICIDAD -->
+<div class="slide" id="s8">
+  <div class="eyebrow">Instrumento</div>
+  <div class="htitle">Test de <em>Felicidad</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <p class="lead">Diagnóstico inicial de dieciséis reactivos tipo Likert que califican los ocho pilares del bienestar y devuelven una rueda interactiva con análisis por pilar.</p>
+    <div class="pil-grid">
+      <div class="card pil"><div class="pil-n">i</div><div class="pil-t">Autoconocimiento</div></div>
+      <div class="card pil"><div class="pil-n">ii</div><div class="pil-t">Bienestar Emocional</div></div>
+      <div class="card pil"><div class="pil-n">iii</div><div class="pil-t">Bienestar Físico</div></div>
+      <div class="card pil"><div class="pil-n">iv</div><div class="pil-t">Presencia Consciente</div></div>
+      <div class="card pil"><div class="pil-n">v</div><div class="pil-t">Vínculos Vitales</div></div>
+      <div class="card pil"><div class="pil-n">vi</div><div class="pil-t">Trabajo con Propósito</div></div>
+      <div class="card pil"><div class="pil-n">vii</div><div class="pil-t">Estética Existencial</div></div>
+      <div class="card pil"><div class="pil-n">viii</div><div class="pil-t">Fe y Filosofía de Vida</div></div>
+    </div>
+    <div class="bands">
+      <div class="band band-1"><b>Fortaleza</b><span>Pilar consolidado, base para sostener el resto</span></div>
+      <div class="band band-2"><b>Crecimiento</b><span>Avance en curso, conviene reforzarlo</span></div>
+      <div class="band band-3"><b>Vulnerable</b><span>Área de atención prioritaria</span></div>
+    </div>
+    <p class="note">Disponible dentro del Portal y como micrositio independiente en evalfelicidad.sophiamx.org.</p>
+  </div>
+</div>
+
+<!-- S9 AUTOEVALUACIONES -->
+<div class="slide" id="s9">
+  <div class="eyebrow">Instrumento</div>
+  <div class="htitle">Autoevaluación <em>por pilar</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <p class="lead">Un sistema genérico permite al alumno autoevaluarse en cualquiera de los ocho pilares, con análisis textual según su nivel. Una sola arquitectura sirve a los ocho, lo que hace trivial sumar nuevos pilares o instrumentos.</p>
+    <div class="pil-grid">
+      <div class="card pil"><div class="pil-n">01</div><div class="pil-t">Autoconocimiento</div></div>
+      <div class="card pil"><div class="pil-n">02</div><div class="pil-t">Bienestar Emocional</div></div>
+      <div class="card pil"><div class="pil-n">03</div><div class="pil-t">Bienestar Físico</div></div>
+      <div class="card pil"><div class="pil-n">04</div><div class="pil-t">Presencia Consciente</div></div>
+      <div class="card pil"><div class="pil-n">05</div><div class="pil-t">Vínculos Vitales</div></div>
+      <div class="card pil"><div class="pil-n">06</div><div class="pil-t">Trabajo con Propósito</div></div>
+      <div class="card pil"><div class="pil-n">07</div><div class="pil-t">Estética Existencial</div></div>
+      <div class="card pil"><div class="pil-n">08</div><div class="pil-t">Fe y Filosofía de Vida</div></div>
+    </div>
+    <p class="note">Cada autoevaluación guarda el resultado y entrega retroalimentación inmediata al alumno.</p>
+  </div>
+</div>
+
+<!-- S10 RYFF + PONENTES -->
+<div class="slide" id="s10">
+  <div class="eyebrow">Instrumentos</div>
+  <div class="htitle">Bienestar psicológico y <em>voz del alumno</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <div class="pair">
+      <div class="card pd pd-1">
+        <div class="pd-k">Escala Ryff</div>
+        <div class="pd-t">Bienestar Psicológico</div>
+        <div class="pd-d">Instrumento académico de Bienestar Psicológico de Ryff, con seis dimensiones. El resultado se guarda a nivel de persona, así acompaña al alumno a lo largo de todos sus cursos.</div>
+        <div class="pd-site">Portal y micrositio en ryff.sophiamx.org</div>
+      </div>
+      <div class="card pd pd-2">
+        <div class="pd-k">Evaluación de ponentes</div>
+        <div class="pd-t">Voz del alumno</div>
+        <div class="pd-d">Al cerrar cada sesión, el alumno califica la sesión y a quien la imparte mediante un asistente de varios pasos. La retroalimentación llega estructurada al claustro para mejorar curso a curso.</div>
+        <div class="pd-site">Integrada en el reproductor de lecciones</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 INSCRIPCION -->
+<div class="slide" id="s11">
+  <div class="eyebrow">Operación</div>
+  <div class="htitle">Del alta a la primera lección, <em>sin fricción</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <div class="pipe" style="border-top:none;padding-top:0;">
+      <div class="pipe-step">Alta en ventas</div>
+      <div class="pipe-step">Invitación con token</div>
+      <div class="pipe-step">El alumno entra</div>
+      <div class="pipe-step">Inscrito en cohorte</div>
+    </div>
+    <div class="pipe-cap" style="margin-bottom:.4em;">Cada paso es automático, sin intervención manual entre uno y otro.</div>
+    <div class="stack">
+      <div class="srow"><div class="sk">Alta</div><div class="sv">Ventas registra al participante desde un formulario embebido, sin login</div></div>
+      <div class="srow"><div class="sk">Invitación</div><div class="sv">Se genera un token de invitación único que el alumno canjea al entrar</div></div>
+      <div class="srow"><div class="sk">Onboarding</div><div class="sv">Bienvenida y seguimiento por correo vía GoHighLevel</div></div>
+      <div class="srow"><div class="sk">Cohortes</div><div class="sv">Las cohortes abiertas se pueden listar de forma pública y segura</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S12 SIGUIENTE: ADMIN -->
+<div class="slide" id="s12">
+  <div class="eyebrow">Siguientes pasos</div>
+  <div class="htitle">Panel de <em>administración</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <p class="lead">El siguiente gran bloque es habilitar la vista del administrador, para dar seguimiento cercano a cada alumno y gestionar los cursos sin tocar la base de datos a mano.</p>
+    <div class="nx-grid">
+      <div class="card nx nx-1"><div class="nx-t">Roster de alumnos</div><div class="nx-d">Ver a los inscritos por curso y cohorte, con su estado de avance de un vistazo.</div></div>
+      <div class="card nx nx-2"><div class="nx-t">Seguimiento de evaluaciones</div><div class="nx-d">Evaluaciones, autoevaluaciones, Test de Felicidad y Ryff de cada alumno en un solo lugar.</div></div>
+      <div class="card nx nx-3"><div class="nx-t">Edición de currícula</div><div class="nx-d">Modificar módulos, planes y syllabus de los cursos directamente desde el Portal.</div></div>
+      <div class="card nx nx-4"><div class="nx-t">Cohortes e invitaciones</div><div class="nx-d">Abrir cohortes, generar invitaciones y administrar inscripciones sin pasos manuales.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S13 SIGUIENTE: OFERTA -->
+<div class="slide" id="s13">
+  <div class="eyebrow">Siguientes pasos</div>
+  <div class="htitle">Crecer la <em>oferta de cursos</em></div>
+  <div class="rule"></div>
+  <div class="body-c">
+    <div class="grow">Sobre la misma arquitectura genérica, el Portal puede sumar <b>más cursos presenciales y digitales</b> sin reconstruir nada: cada curso nuevo es contenido, no código.</div>
+    <div class="stages">
+      <div class="card st st-1"><div class="st-e">Etapa 1</div><div class="st-t">Panel de administración</div><div class="st-d">Roster y seguimiento de evaluaciones por alumno.</div></div>
+      <div class="card st st-2"><div class="st-e">Etapa 2</div><div class="st-t">Editor de currícula</div><div class="st-d">Módulos, planes y syllabus editables desde el Portal.</div></div>
+      <div class="card st st-3"><div class="st-e">Etapa 3</div><div class="st-t">Nuevos cursos digitales</div><div class="st-d">Más programas autogestionados, lección por lección.</div></div>
+      <div class="card st st-4"><div class="st-e">Etapa 4</div><div class="st-t">Cursos presenciales</div><div class="st-d">Seguimiento de cursos presenciales dentro del Portal.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S14 CIERRE -->
+<div class="slide" id="s14">
+  <div class="glow" style="width:34em;height:34em;left:50%;top:50%;transform:translate(-50%,-50%);"></div>
+  <div class="cl-wrap">
+    <img class="cl-logo" src="assets/logo-horizontal-rojo.png" alt="SOPHIA">
+    <div class="cl-h1">Una plataforma, <em>todo el camino del alumno.</em></div>
+    <div class="cl-note">
+      <div class="cl-note-tag">Lo que sigue</div>
+      <div class="cl-note-d">Habilitar el <em>panel de administración</em> con roster y seguimiento de evaluaciones · abrir el <em>editor de currícula</em> · y crecer la oferta con más cursos presenciales y digitales sobre la misma base.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+</div><!-- /viewer -->
+
+<div id="nav">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div id="nc"><span id="cur">1</span> / <span id="tot">14</span></div>
+    <div id="pb"><div id="pf"></div></div>
+  </div>
+  <div id="ndots"></div>
+  <div id="nbtns"><button class="nb" id="bp">← Prev</button><button class="nb" id="bn">Next →</button></div>
+</div>
+
+<script>
+const slides=Array.from(document.querySelectorAll('.slide'));
+const TOTAL=slides.length;let cur=0;
+const ndots=document.getElementById('ndots');
+slides.forEach((s,i)=>{const d=document.createElement('div');d.className='ndot';d.addEventListener('click',()=>goTo(i));ndots.appendChild(d);});
+const dots=ndots.querySelectorAll('.ndot');
+function goTo(n){if(n<0||n>=TOTAL)return;slides[cur].classList.remove('active');slides[cur].classList.add('exit');const prev=cur;cur=n;slides[cur].classList.add('active');setTimeout(()=>slides[prev].classList.remove('exit'),400);update();}
+function update(){document.getElementById('cur').textContent=cur+1;document.getElementById('tot').textContent=TOTAL;document.getElementById('pf').style.width=((cur+1)/TOTAL*100)+'%';dots.forEach((d,i)=>d.classList.toggle('active',i===cur));}
+document.getElementById('bp').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bn').addEventListener('click',()=>goTo(cur+1));
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goTo(cur+1);}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goTo(cur-1);}});
+const ASPECT=16/9;const viewer=document.getElementById('viewer');const nav=document.getElementById('nav');
+function resize(){const navH=nav.offsetHeight;const aw=window.innerWidth-24;const ah=window.innerHeight-navH-20;let w=aw,h=w/ASPECT;if(h>ah){h=ah;w=h*ASPECT;}w=Math.floor(w);h=Math.floor(h);viewer.style.width=w+'px';viewer.style.height=h+'px';viewer.style.fontSize=(w/1280)*19+'px';nav.style.width=w+'px';}
+window.addEventListener('resize',resize);resize();slides[0].classList.add('active');update();
+</script>
+</body>
+</html>
