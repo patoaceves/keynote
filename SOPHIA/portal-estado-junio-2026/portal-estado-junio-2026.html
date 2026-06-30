@@ -122,6 +122,16 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
 .split div{flex:1;font-size:.84em;color:var(--t2);line-height:1.4;}
 .split div b{color:var(--accent);font-weight:700;}
 
+/* lo que el alumno entrega / oferta */
+.del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85em;margin-top:1.1em;}
+.del{padding:1.2em 1.3em;display:flex;flex-direction:column;gap:.5em;}
+.del-1::before{background:var(--grn);}.del-2::before{background:var(--blu);}.del-3::before{background:var(--gold);}
+.del-k{font-family:var(--FB);font-size:.6em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;}
+.del-1 .del-k{color:var(--grn);}.del-2 .del-k{color:var(--blu);}.del-3 .del-k{color:var(--gold);}
+.del-t{font-family:var(--FD);font-weight:600;font-size:1.3em;color:var(--ink);line-height:1.05;}
+.del-d{font-size:.84em;color:var(--t2);line-height:1.5;}
+.del-meta{font-size:.74em;color:var(--t3);line-height:1.45;margin-top:auto;}
+
 /* pillars */
 .pil-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6em;margin-top:1em;}
 .pil{padding:.8em .9em;display:flex;flex-direction:column;gap:.2em;}
@@ -216,30 +226,7 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
   </div>
 </div>
 
-<!-- S2 RESUMEN -->
-<div class="slide" id="s2">
-  <div class="eyebrow">Resumen ejecutivo</div>
-  <div class="htitle">De una herramienta suelta a una <em>plataforma académica</em></div>
-  <div class="rule"></div>
-  <div class="body-c">
-    <p class="lead">El Portal pasó de ser un test aislado a cubrir todo el camino del alumno: cursos, lecciones, evaluaciones e inscripción automatizada, sobre una arquitectura propia y reutilizable.</p>
-    <div class="kpi-grid">
-      <div class="card kpi kpi-1"><div class="kpi-n">3</div><div class="kpi-l">Cursos activos</div></div>
-      <div class="card kpi kpi-2"><div class="kpi-n">8</div><div class="kpi-l">Pilares del bienestar medidos</div></div>
-      <div class="card kpi kpi-3"><div class="kpi-n">6</div><div class="kpi-l">Instrumentos de evaluación</div></div>
-      <div class="card kpi kpi-4"><div class="kpi-n">13</div><div class="kpi-l">Formatos de lección</div></div>
-      <div class="card kpi kpi-5"><div class="kpi-n">29</div><div class="kpi-l">Edge Functions en producción</div></div>
-      <div class="card kpi kpi-6"><div class="kpi-n">100%</div><div class="kpi-l">Datos migrados a Postgres</div></div>
-    </div>
-    <div class="ins-row">
-      <div class="card ins"><div class="ins-t">Backend consolidado</div><div class="ins-d">Migración completa de Airtable a Postgres en Supabase, con seguridad por fila.</div></div>
-      <div class="card ins"><div class="ins-t">Evaluación integral</div><div class="ins-d">Actividades, autoconocimiento y bienestar psicológico en un mismo lugar.</div></div>
-      <div class="card ins"><div class="ins-t">Operación automatizada</div><div class="ins-d">Alta, invitación y onboarding del alumno de extremo a extremo.</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- S3 ARQUITECTURA -->
+<!-- S2 ARQUITECTURA -->
 <div class="slide" id="s3">
   <div class="eyebrow">Arquitectura</div>
   <div class="htitle">Cómo está <em>construido</em> el Portal</div>
@@ -254,7 +241,7 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
       <div class="srow"><div class="sk">Correos</div><div class="sv"><b>GoHighLevel</b>, disparado por webhook para bienvenida y onboarding</div></div>
       <div class="srow"><div class="sk">Archivos</div><div class="sv"><b>Supabase Storage</b> para las entregas de tarea de los alumnos</div></div>
     </div>
-    <p class="note">Arquitectura genérica: un curso nuevo solo necesita su registro de curso, cohorte, módulos y lecciones.</p>
+    <p class="note">Arquitectura genérica: un curso nuevo solo necesita su registro de curso, módulos y lecciones.</p>
   </div>
 </div>
 
@@ -283,41 +270,10 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
     </div>
     <div class="pipe">
       <div class="pipe-step">Curso</div>
-      <div class="pipe-step">Cohorte</div>
       <div class="pipe-step">Módulo</div>
       <div class="pipe-step">Lección</div>
     </div>
     <div class="pipe-cap">La lección es la unidad atómica del Portal, con trece formatos posibles.</div>
-  </div>
-</div>
-
-<!-- S5 REPRODUCTOR -->
-<div class="slide" id="s5">
-  <div class="eyebrow">Experiencia del alumno</div>
-  <div class="htitle">Una sola lección, <em>muchos formatos</em></div>
-  <div class="rule"></div>
-  <div class="body-c">
-    <p class="lead">El reproductor abre cualquier tipo de contenido en la misma pantalla, lleva el progreso del alumno y lo regresa a donde se quedó.</p>
-    <div class="chips">
-      <div class="chip"><i>01</i>Texto enriquecido</div>
-      <div class="chip"><i>02</i>Video</div>
-      <div class="chip"><i>03</i>PDF con visor integrado</div>
-      <div class="chip"><i>04</i>Quiz</div>
-      <div class="chip"><i>05</i>Autoevaluación</div>
-      <div class="chip"><i>06</i>Tarea con entrega</div>
-      <div class="chip"><i>07</i>Test de Felicidad</div>
-      <div class="chip"><i>08</i>Escala Ryff</div>
-    </div>
-    <div class="two">
-      <div>
-        <h4>Progreso <em>confiable</em></h4>
-        <p>El avance se guarda lección por lección, con el caché de checkpoint ya corregido, así el alumno nunca pierde su lugar ni repite lo que ya completó.</p>
-      </div>
-      <div>
-        <h4>Comunidad <em>por curso</em></h4>
-        <p>Cada curso cuenta con su propio foro para preguntas y conversación, con publicación y moderación dentro del mismo Portal.</p>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -348,20 +304,11 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
   <div class="htitle">Lo que el alumno <em>entrega</em></div>
   <div class="rule"></div>
   <div class="body-c">
-    <div class="two">
-      <div>
-        <h4>Actividades y <em>tareas</em></h4>
-        <p>El alumno sube sus archivos, que se guardan en Supabase Storage para revisión del equipo. Puede reemplazar o borrar su entrega antes de la fecha límite, y todo queda ligado a su lección y su curso.</p>
-      </div>
-      <div>
-        <h4>Quizzes <em>calificados</em></h4>
-        <p>Cuestionarios con banco de preguntas y calificación automática. Cada intento guarda las respuestas y es idempotente, un solo registro por intento, así el alumno pausa y reanuda sin duplicar resultados.</p>
-      </div>
-    </div>
-    <div class="stack">
-      <div class="srow"><div class="sk">Entregas</div><div class="sv">Archivo en Storage, reemplazable, ligado a lección y alumno</div></div>
-      <div class="srow"><div class="sk">Quizzes</div><div class="sv">Respuestas guardadas, resultado idempotente, reanudable</div></div>
-      <div class="srow"><div class="sk">Revisión</div><div class="sv">El claustro consulta y califica desde el lado administrativo</div></div>
+    <p class="lead">Tres formas en que el alumno produce evidencia de su avance. Cada una vive en su lección y queda lista para que el claustro la revise.</p>
+    <div class="del-grid">
+      <div class="card del del-1"><div class="del-k">Entrega</div><div class="del-t">Actividades y tareas</div><div class="del-d">El alumno sube sus archivos, que se guardan en Supabase Storage para revisión del equipo.</div><div class="del-meta">Reemplazables hasta la fecha límite, ligadas a su lección y curso.</div></div>
+      <div class="card del del-2"><div class="del-k">Calificación</div><div class="del-t">Quizzes</div><div class="del-d">Cuestionarios con banco de preguntas y calificación automática al instante.</div><div class="del-meta">Respuestas guardadas, resultado idempotente, reanudable.</div></div>
+      <div class="card del del-3"><div class="del-k">Seguimiento</div><div class="del-t">Revisión del claustro</div><div class="del-d">El equipo consulta y califica cada entrega desde el lado administrativo.</div><div class="del-meta">Una vista por curso, alumno y lección.</div></div>
     </div>
   </div>
 </div>
@@ -446,14 +393,14 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
       <div class="pipe-step">Alta en ventas</div>
       <div class="pipe-step">Invitación con token</div>
       <div class="pipe-step">El alumno entra</div>
-      <div class="pipe-step">Inscrito en cohorte</div>
+      <div class="pipe-step">Inscrito en el curso</div>
     </div>
     <div class="pipe-cap" style="margin-bottom:.4em;">Cada paso es automático, sin intervención manual entre uno y otro.</div>
     <div class="stack">
       <div class="srow"><div class="sk">Alta</div><div class="sv">Ventas registra al participante desde un formulario embebido, sin login</div></div>
       <div class="srow"><div class="sk">Invitación</div><div class="sv">Se genera un token de invitación único que el alumno canjea al entrar</div></div>
       <div class="srow"><div class="sk">Onboarding</div><div class="sv">Bienvenida y seguimiento por correo vía GoHighLevel</div></div>
-      <div class="srow"><div class="sk">Cohortes</div><div class="sv">Las cohortes abiertas se pueden listar de forma pública y segura</div></div>
+      <div class="srow"><div class="sk">Cursos abiertos</div><div class="sv">Los cursos disponibles se pueden listar de forma pública y segura</div></div>
     </div>
   </div>
 </div>
@@ -466,10 +413,10 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
   <div class="body-c">
     <p class="lead">El siguiente gran bloque es habilitar la vista del administrador, para dar seguimiento cercano a cada alumno y gestionar los cursos sin tocar la base de datos a mano.</p>
     <div class="nx-grid">
-      <div class="card nx nx-1"><div class="nx-t">Roster de alumnos</div><div class="nx-d">Ver a los inscritos por curso y cohorte, con su estado de avance de un vistazo.</div></div>
+      <div class="card nx nx-1"><div class="nx-t">Roster de alumnos</div><div class="nx-d">Ver a los inscritos por curso, con su estado de avance de un vistazo.</div></div>
       <div class="card nx nx-2"><div class="nx-t">Seguimiento de evaluaciones</div><div class="nx-d">Evaluaciones, autoevaluaciones, Test de Felicidad y Ryff de cada alumno en un solo lugar.</div></div>
       <div class="card nx nx-3"><div class="nx-t">Edición de currícula</div><div class="nx-d">Modificar módulos, planes y syllabus de los cursos directamente desde el Portal.</div></div>
-      <div class="card nx nx-4"><div class="nx-t">Cohortes e invitaciones</div><div class="nx-d">Abrir cohortes, generar invitaciones y administrar inscripciones sin pasos manuales.</div></div>
+      <div class="card nx nx-4"><div class="nx-t">Inscripciones e invitaciones</div><div class="nx-d">Generar invitaciones y administrar las inscripciones de cada curso sin pasos manuales.</div></div>
     </div>
   </div>
 </div>
@@ -480,13 +427,13 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
   <div class="htitle">Crecer la <em>oferta de cursos</em></div>
   <div class="rule"></div>
   <div class="body-c">
-    <div class="grow">Sobre la misma arquitectura genérica, el Portal puede sumar <b>más cursos presenciales y digitales</b> sin reconstruir nada: cada curso nuevo es contenido, no código.</div>
-    <div class="stages">
-      <div class="card st st-1"><div class="st-e">Etapa 1</div><div class="st-t">Panel de administración</div><div class="st-d">Roster y seguimiento de evaluaciones por alumno.</div></div>
-      <div class="card st st-2"><div class="st-e">Etapa 2</div><div class="st-t">Editor de currícula</div><div class="st-d">Módulos, planes y syllabus editables desde el Portal.</div></div>
-      <div class="card st st-3"><div class="st-e">Etapa 3</div><div class="st-t">Nuevos cursos digitales</div><div class="st-d">Más programas autogestionados, lección por lección.</div></div>
-      <div class="card st st-4"><div class="st-e">Etapa 4</div><div class="st-t">Cursos presenciales</div><div class="st-d">Seguimiento de cursos presenciales dentro del Portal.</div></div>
+    <p class="lead">El crecimiento de SOPHIA no pasa por reconstruir el Portal, sino por llenarlo. Cada curso nuevo es contenido sobre la misma estructura de curso, módulo y lección.</p>
+    <div class="del-grid">
+      <div class="card del del-1"><div class="del-k">Online</div><div class="del-t">Catálogo digital</div><div class="del-d">Más cursos autogestionados, lección por lección, listos para escalar sin instructor.</div></div>
+      <div class="card del del-2"><div class="del-k">Presencial</div><div class="del-t">Programas y niveles</div><div class="del-d">Nuevos cursos presenciales y niveles avanzados, con seguimiento y evaluación dentro del Portal.</div></div>
+      <div class="card del del-3"><div class="del-k">Temario</div><div class="del-t">Nuevas líneas</div><div class="del-d">Ampliar los temas de humanidades sobre la misma estructura de curso, módulo y lección.</div></div>
     </div>
+    <p class="note">El panel de administración es lo que vuelve operable este crecimiento, sumar y dar seguimiento a más cursos sin fricción.</p>
   </div>
 </div>
 
@@ -508,7 +455,7 @@ html,body{width:100%;height:100%;background:#ece4d4;display:flex;flex-direction:
 
 <div id="nav">
   <div style="display:flex;align-items:center;gap:10px">
-    <div id="nc"><span id="cur">1</span> / <span id="tot">14</span></div>
+    <div id="nc"><span id="cur">1</span> / <span id="tot">12</span></div>
     <div id="pb"><div id="pf"></div></div>
   </div>
   <div id="ndots"></div>
