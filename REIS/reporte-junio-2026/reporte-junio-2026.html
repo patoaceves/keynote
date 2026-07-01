@@ -25,23 +25,50 @@
     --shadow-lg: 0 24px 60px -20px rgba(0,0,0,.6);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { background: #060f14; }
+  html, body { background: #060f14; height: 100%; overflow: hidden; }
   body {
     font-family: var(--font-sans);
     color: var(--text);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    padding: 40px 0 100px;
     font-variant-numeric: tabular-nums;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* Deck: viewport que contiene las slides en fila horizontal */
+  #deck {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+  .deck-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform .5s cubic-bezier(.65, .05, .36, 1);
+    will-change: transform;
   }
 
   /* ============================================================
      SLIDE, fixed 1440 x 900 (16:10), stacked
      ============================================================ */
   .slide {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Contenido interno a tamaño fijo 1440x900, escalado para caber */
+  .slide-inner {
     width: 1440px;
     height: 900px;
-    margin: 0 auto 40px;
+    flex-shrink: 0;
     background: linear-gradient(155deg, #0d1e27 0%, #0a1820 100%);
     border: 1px solid var(--line);
     border-radius: var(--r-lg);
@@ -50,9 +77,8 @@
     display: flex; flex-direction: column;
     position: relative;
     overflow: hidden;
-    scroll-margin-top: 40px;
   }
-  .slide::before {
+  .slide-inner::before {
     content: '';
     position: absolute; inset: 0;
     background:
@@ -63,7 +89,16 @@
     background-size: 100% 100%, 100% 100%, 58px 58px, 58px 58px;
     pointer-events: none;
   }
-  .slide > * { position: relative; z-index: 1; }
+  .slide-inner > * { position: relative; z-index: 1; }
+  /* Cover usa su propio fondo, el slide-inner no pinta */
+  .cover.slide .slide-inner,
+  .slide-inner.cover-inner-wrap {
+    background: none;
+    border: none;
+    padding: 0;
+    overflow: hidden;
+  }
+  .slide-inner.cover-inner-wrap::before { display: none; }
 
   /* ============================================================
      COVER
@@ -369,17 +404,23 @@
   .navbar-counter b { color: var(--green-bright); }
 
   @media print {
+    html, body { overflow: visible; height: auto; }
+    #deck { position: static; }
+    .deck-track { display: block; transform: none !important; }
     body { padding: 0; background: #fff; }
-    .slide { box-shadow: none; margin: 0; page-break-after: always; border-radius: 0; }
+    .slide { width: 100%; height: auto; page-break-after: always; display: block; }
+    .slide-inner { transform: none !important; box-shadow: none; margin: 0 auto; border-radius: 0; }
     .navbar { display: none; }
   }
 </style>
 </head>
 <body>
 <div id="deck">
+<div class="deck-track" id="deckTrack">
 
 <!-- ═══════════ S1, COVER ═══════════ -->
 <div class="slide cover" id="slide-1">
+<div class="slide-inner cover-inner-wrap">
   <div class="cover-bg"></div>
   <div class="cover-grid"></div>
   <div class="cover-inner">
@@ -409,9 +450,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S2, PANORAMA GOOGLE ═══════════ -->
 <div class="slide" id="slide-2">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads</div>
@@ -465,9 +508,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S3, CONVERSIONES ═══════════ -->
 <div class="slide" id="slide-3">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads</div>
@@ -559,9 +604,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S4, GOOGLE · CDJ ═══════════ -->
 <div class="slide" id="slide-4">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads</div>
@@ -601,9 +648,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S5, GOOGLE · MTY ═══════════ -->
 <div class="slide" id="slide-5">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads</div>
@@ -643,9 +692,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S6, GOOGLE · SLP ═══════════ -->
 <div class="slide" id="slide-6">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads</div>
@@ -685,9 +736,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S7, SALTILLO + RAMOS ═══════════ -->
 <div class="slide" id="slide-7">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads, plaza complementaria</div>
@@ -727,9 +780,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S8, APRENDIZAJES GOOGLE ═══════════ -->
 <div class="slide" id="slide-8">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Google Ads</div>
@@ -766,9 +821,11 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S9, META RESUMEN ═══════════ -->
 <div class="slide" id="slide-9">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -805,9 +862,11 @@
     <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>Landing Page consolidó su rol activo:</b> 3 leads capturados con inversión sustancial ($6,794), casi el doble del gasto de mayo. Canal estable de leads de perfil distinto al Instant Form.</div></div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S10, META CDJ ═══════════ -->
 <div class="slide" id="slide-10">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -837,9 +896,11 @@
     <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>Las impresiones crecieron a 98,226 (+104% vs mayo)</b> con alcance de 27,790 personas. La plaza expandió su presencia significativamente y la eficiencia por lead se mantuvo estable, buena base para escalar.</div></div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S11, META MTY ═══════════ -->
 <div class="slide" id="slide-11">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -869,9 +930,11 @@
     <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>CX_3_ImportaExporta concentró el 79% del gasto de la plaza</b> ($1,750 de $2,225) generando 3 leads. Los otros ads mantuvieron actividad baja pero presente, dando al algoritmo señales completas.</div></div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S12, META SLP ═══════════ -->
 <div class="slide" id="slide-12">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -901,9 +964,11 @@
     <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>SLP se especializa cada vez más en Almacenaje:</b> ALM concentra el 66% de los leads históricos de la plaza. Patrón consistente que valida invertir presupuesto de forma priorizada en ads ALM en este mercado.</div></div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S13, SERVICIO POR CIUDAD ═══════════ -->
 <div class="slide" id="slide-13">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -958,9 +1023,11 @@
     <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>El CPR de ALM ($246.50) es más eficiente que CX ($381.74):</b> el almacenaje sigue rindiendo mejor costo por lead. La cuenta tiene claridad estratégica para asignar presupuesto por mercado.</div></div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S14, IF vs LP ═══════════ -->
 <div class="slide" id="slide-14">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -1006,9 +1073,11 @@
     <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>Los dos canales operan de forma complementaria:</b> Instant Form como captura inmediata con alto volumen, Landing Page como nurturing con perfil calificado. Juntos suman 25 leads Meta.</div></div>
   </div>
 </div>
+</div>
 
 <!-- ═══════════ S15, APRENDIZAJES META ═══════════ -->
 <div class="slide" id="slide-15">
+<div class="slide-inner">
   <div class="head">
     <div class="head-left">
       <div class="head-eyebrow">Meta Ads</div>
@@ -1045,7 +1114,8 @@
     </div>
   </div>
 </div>
-
+</div>
+</div>
 </div>
 
 <!-- ═══════════ NAV BAR ═══════════ -->
@@ -1062,19 +1132,31 @@
 <script>
   const slides = Array.from(document.querySelectorAll('.slide'));
   const total = slides.length;
+  const track = document.getElementById('deckTrack');
   const navCur = document.getElementById('navCur');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
   let current = 0;
 
+  // Escala el contenido interno (1440x900) para caber en el viewport
+  function fitScale() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const scale = Math.min(vw / 1440, vh / 900);
+    document.querySelectorAll('.slide-inner').forEach(el => {
+      el.style.transform = `scale(${scale})`;
+      el.style.transformOrigin = 'center center';
+    });
+  }
+
   function update() {
     navCur.textContent = String(current + 1).padStart(2, '0');
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === total - 1;
+    track.style.transform = `translateX(-${current * 100}vw)`;
   }
   function goTo(i) {
     current = Math.max(0, Math.min(total - 1, i));
-    slides[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
     update();
   }
   prevBtn.addEventListener('click', () => goTo(current - 1));
@@ -1085,16 +1167,19 @@
     else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
     else if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
   });
-  // Sync counter on manual scroll
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        const idx = slides.indexOf(en.target);
-        if (idx >= 0) { current = idx; update(); }
-      }
-    });
-  }, { threshold: 0.5 });
-  slides.forEach(s => io.observe(s));
+
+  // Swipe táctil / trackpad horizontal
+  let touchStartX = null;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { goTo(current + (dx < 0 ? 1 : -1)); }
+    touchStartX = null;
+  }, { passive: true });
+
+  window.addEventListener('resize', fitScale);
+  fitScale();
   update();
 </script>
 
