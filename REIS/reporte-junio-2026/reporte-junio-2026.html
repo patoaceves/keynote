@@ -376,17 +376,20 @@
      NAV BAR (bottom, fixed), arrows like mayo/abril
      ============================================================ */
   .navbar {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
     z-index: 100;
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(11, 26, 34, .95);
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(11, 26, 34, .8);
     backdrop-filter: blur(12px);
     border-radius: 999px;
-    padding: 8px 10px;
-    box-shadow: var(--shadow-lg);
+    padding: 4px 6px;
+    box-shadow: var(--shadow-md);
+    opacity: .55;
+    transition: opacity .2s ease;
   }
+  .navbar:hover { opacity: 1; }
   .navbar-btn {
-    width: 40px; height: 40px; border-radius: 50%;
+    width: 28px; height: 28px; border-radius: 50%;
     background: rgba(255,255,255,.1); color: #fff;
     display: inline-flex; align-items: center; justify-content: center;
     cursor: pointer; border: 0;
@@ -395,11 +398,11 @@
   .navbar-btn:hover { background: var(--green); }
   .navbar-btn:disabled { opacity: .3; cursor: not-allowed; }
   .navbar-btn:disabled:hover { background: rgba(255,255,255,.1); }
-  .navbar-btn svg { width: 18px; height: 18px; }
+  .navbar-btn svg { width: 14px; height: 14px; }
   .navbar-counter {
-    font-family: var(--font-eyebrow); font-size: 13px; font-weight: 700;
-    color: #fff; letter-spacing: .1em;
-    padding: 0 16px; min-width: 76px; text-align: center;
+    font-family: var(--font-eyebrow); font-size: 11px; font-weight: 700;
+    color: #fff; letter-spacing: .08em;
+    padding: 0 10px; min-width: 58px; text-align: center;
   }
   .navbar-counter b { color: var(--green-bright); }
 
