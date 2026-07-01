@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REIS Logística, Reporte de Publicidad Junio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1a22; --bg-2: #142e3a; --bg-3: #0f2129;
+    --surface: #14232b; --surface-2: #1a2e37; --surface-hover: #1e343e;
+    --green: #2ea73a; --green-2: #37ae40; --green-deep: #248a2f; --green-bright: #4cc859;
+    --green-soft: rgba(46,167,58,.12); --green-tint: rgba(46,167,58,.18);
+    --blue: #2d7ba0; --blue-2: #145474; --blue-deep: #145474; --blue-bright: #3f92b8;
+    --blue-soft: rgba(20,84,116,.16); --blue-tint: rgba(20,84,116,.28);
+    --text: #eaf2f5; --text-2: #c4d4da; --text-mute: #9bb1bb; --text-dim: #6d858f;
+    --line: rgba(255,255,255,.10); --line-2: rgba(255,255,255,.16);
+    --font-sans: 'Titillium Web', system-ui, sans-serif;
+    --font-eyebrow: 'Montserrat', system-ui, sans-serif;
+    --r-sm: 6px; --r-md: 12px; --r-lg: 18px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
+    --shadow-md: 0 4px 16px -4px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.3);
+    --shadow-lg: 0 24px 60px -20px rgba(0,0,0,.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #060f14; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 0 100px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ============================================================
+     SLIDE, fixed 1440 x 900 (16:10), stacked
+     ============================================================ */
+  .slide {
+    width: 1440px;
+    height: 900px;
+    margin: 0 auto 40px;
+    background: linear-gradient(155deg, #0d1e27 0%, #0a1820 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 44px 60px 48px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    scroll-margin-top: 40px;
+  }
+  .slide::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 600px 420px at 90% 5%, rgba(46,167,58,.14), transparent 60%),
+      radial-gradient(ellipse 540px 480px at 3% 98%, rgba(29,110,149,.16), transparent 62%),
+      linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 58px 58px, 58px 58px;
+    pointer-events: none;
+  }
+  .slide > * { position: relative; z-index: 1; }
+
+  /* ============================================================
+     COVER
+     ============================================================ */
+  .cover { background: var(--bg-dark); padding: 0; }
+  .cover-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 80% 20%, rgba(46,167,58,.22), transparent 60%),
+      radial-gradient(ellipse 55% 55% at 12% 85%, rgba(20,84,116,.38), transparent 60%),
+      linear-gradient(140deg, #0b1a22 0%, #14303c 55%, #0b1a22 100%);
+  }
+  .cover-grid {
+    position: absolute; inset: 0; z-index: 1;
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse at center, #000 25%, transparent 82%);
+  }
+  .cover-inner {
+    position: relative; z-index: 2;
+    width: 100%; height: 100%;
+    padding: 72px 80px;
+    display: flex; flex-direction: column;
+    color: #fff;
+  }
+  .cover-logo img { height: 62px; width: auto; display: block; }
+  .cover-mid { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .cover-tag {
+    font-family: var(--font-eyebrow); font-size: 15px; font-weight: 700;
+    color: var(--green-bright);
+    letter-spacing: .24em; text-transform: uppercase;
+    margin-bottom: 30px;
+    display: inline-block;
+    width: fit-content;
+  }
+  .cover-month {
+    font-family: var(--font-sans); font-weight: 600;
+    font-size: 156px; line-height: .92;
+    letter-spacing: -.02em; color: #fff;
+  }
+  .cover-month span { color: var(--green-bright); }
+  .cover-title {
+    font-family: var(--font-sans); font-weight: 400;
+    font-size: 36px; line-height: 1.25;
+    color: rgba(255,255,255,.82);
+    margin-top: 26px; max-width: 860px;
+  }
+  .cover-title b { font-weight: 700; color: #fff; }
+  .cover-bottom {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-top: 34px; border-top: 1px solid rgba(255,255,255,.14);
+  }
+  .cover-meta { display: flex; gap: 56px; }
+  .cover-meta-item { display: flex; flex-direction: column; gap: 8px; }
+  .cover-meta-label { font-family: var(--font-eyebrow); font-size: 14px; font-weight: 700; color: rgba(255,255,255,.65); letter-spacing: .14em; text-transform: uppercase; }
+  .cover-meta-value { font-family: var(--font-sans); font-weight: 700; font-size: 26px; color: #fff; }
+  .cover-brand { font-family: var(--font-eyebrow); font-size: 11px; font-weight: 700; color: rgba(255,255,255,.4); letter-spacing: .2em; text-transform: uppercase; }
+
+  /* ============================================================
+     HEAD
+     ============================================================ */
+  .head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 18px; margin-bottom: 22px;
+    border-bottom: 2px solid var(--line);
+  }
+  .head-left { display: flex; flex-direction: column; gap: 8px; }
+  .head-eyebrow {
+    font-family: var(--font-eyebrow); font-size: 12px; font-weight: 700;
+    color: var(--green-bright); letter-spacing: .16em; text-transform: uppercase;
+  }
+  .head-title {
+    font-family: var(--font-sans); font-weight: 700;
+    font-size: 42px; line-height: 1;
+    letter-spacing: -.02em; color: var(--text);
+  }
+  .head-title em { font-style: normal; color: var(--green-bright); }
+  .head-sub { font-family: var(--font-sans); font-weight: 400; font-size: 18px; color: var(--text-mute); }
+  .head-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .head-logo img { height: 40px; width: auto; opacity: .9; }
+
+  /* PILLS, simple, no icon, no dot */
+  .pill {
+    font-family: var(--font-eyebrow); font-size: 12px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background: rgba(46,167,58,.16);
+    color: var(--green-bright);
+    border: 1px solid rgba(46,167,58,.35);
+  }
+  .pill.blue { background: rgba(29,110,149,.20); color: var(--blue-bright); border-color: rgba(29,110,149,.4); }
+  .pill-num {
+    font-family: var(--font-eyebrow); font-size: 11px; font-weight: 700;
+    color: var(--text-dim); letter-spacing: .14em;
+  }
+  .pill-num b { color: var(--text-mute); }
+
+  .status-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-eyebrow); font-size: 11px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    padding: 7px 15px; border-radius: 999px;
+    background: var(--green-tint); color: var(--green-bright);
+    border: 1px solid rgba(46,167,58,.3);
+  }
+  .status-chip.orange { background: rgba(232,118,25,.18); color: #e8944a; border-color: rgba(232,118,25,.4); }
+
+  /* ============================================================
+     TABLE
+     ============================================================ */
+  .tbl {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .tbl th, .tbl td { padding: 10px 20px; text-align: left; font-size: 16.5px; color: var(--text); }
+  .tbl thead th {
+    font-family: var(--font-eyebrow); font-weight: 600; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .1em;
+    color: var(--text-mute); background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .tbl tbody tr { border-top: 1px solid var(--line); }
+  .tbl tbody tr:first-child { border-top: 0; }
+  .tbl .num { text-align: right; font-weight: 700; font-size: 17px; color: var(--text); }
+  .tbl .tot td { background: rgba(46,167,58,.14); font-weight: 700; border-top: 2px solid var(--green); }
+  .tbl .tot .num { color: var(--green-bright); font-weight: 700; }
+
+  /* ============================================================
+     STATS, clean numbers, weight 700, solid color
+     ============================================================ */
+  .stats { display: grid; gap: 14px; }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 15px 18px;
+    display: flex; flex-direction: column; gap: 6px;
+    box-shadow: var(--shadow-sm);
+    border-top: 3px solid rgba(255,255,255,.14);
+    min-width: 0;
+  }
+  .stat.accent { border-top-color: var(--green); }
+  .stat.blue { border-top-color: var(--blue); }
+  .stat-v {
+    font-family: var(--font-sans); font-weight: 700;
+    font-size: 30px; line-height: 1;
+    color: var(--text); letter-spacing: -.01em;
+    white-space: nowrap;
+  }
+  .stat.accent .stat-v { color: var(--green-bright); }
+  .stat.blue .stat-v { color: var(--blue-bright); }
+  .stat-l { font-family: var(--font-eyebrow); font-size: 10px; font-weight: 600; color: var(--text-mute); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+
+  /* ============================================================
+     INSIGHT CARDS
+     ============================================================ */
+  .ins-grid { display: grid; gap: 16px; }
+  .ins-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--green);
+    border-radius: var(--r-md);
+    padding: 14px 20px;
+    display: flex; gap: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .ins-card.blue { border-left-color: var(--blue); }
+  .ins-num {
+    font-family: var(--font-sans); font-weight: 700; font-size: 26px;
+    color: var(--green-bright); line-height: 1;
+    flex-shrink: 0; min-width: 32px;
+  }
+  .ins-card.blue .ins-num { color: var(--blue-bright); }
+  .ins-body { font-family: var(--font-sans); font-size: 16px; line-height: 1.55; color: var(--text-2); }
+  .ins-body b { color: var(--text); font-weight: 700; }
+
+  /* ============================================================
+     PANEL
+     ============================================================ */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 26px 30px;
+    box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column;
+  }
+  .panel-h {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-eyebrow); font-size: 12px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute);
+    margin-bottom: 20px;
+  }
+  
+
+  /* CHIPS */
+  .adchip { display: inline-flex; align-items: center; font-family: var(--font-eyebrow); font-size: 10px; font-weight: 700; letter-spacing: .1em; padding: 3px 9px; border-radius: var(--r-sm); margin-right: 10px; vertical-align: middle; }
+  .adchip-cx { background: rgba(29,110,149,.22); color: var(--blue-bright); }
+  .adchip-alm { background: rgba(46,167,58,.18); color: var(--green-bright); }
+
+  /* CONVERSION CARDS */
+  .cnv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cnv-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .cnv-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: var(--surface-2); border-bottom: 1px solid var(--line); font-family: var(--font-eyebrow); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-2); }
+  .cnv-tot { font-family: var(--font-sans); font-weight: 700; color: var(--green-bright); font-size: 13px; }
+  .cnv-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .cnv-row { display: flex; align-items: center; gap: 12px; }
+  .cnv-k { font-family: var(--font-sans); font-weight: 600; font-size: 15px; color: var(--text); min-width: 82px; }
+  .cnv-bar { flex: 1; height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .cnv-fill { height: 100%; background: var(--green); border-radius: 4px; }
+  .cnv-v { font-family: var(--font-sans); font-weight: 700; font-size: 15px; color: var(--text); min-width: 30px; text-align: right; }
+
+  /* CITY LAYOUT */
+  .city-2col { display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; flex: 1; min-height: 0; }
+  .city-left { display: flex; flex-direction: column; gap: 18px; }
+  .city-right { display: flex; flex-direction: column; gap: 15px; }
+  .comp-card { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: var(--r-md); padding: 16px 22px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow-sm); }
+  .comp-card-label { font-family: var(--font-eyebrow); font-size: 10px; font-weight: 700; color: var(--green-bright); letter-spacing: .14em; text-transform: uppercase; }
+  .comp-card-value { font-family: var(--font-sans); font-weight: 700; font-size: 19px; color: var(--text); line-height: 1.4; }
+  .ins-item { display: flex; gap: 16px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: var(--r-md); box-shadow: var(--shadow-sm); }
+  .ins-item.blue { border-left-color: var(--blue); }
+  .ins-item-n { font-family: var(--font-sans); font-weight: 700; font-size: 24px; color: var(--green-bright); line-height: 1; flex-shrink: 0; min-width: 30px; }
+  .ins-item.blue .ins-item-n { color: var(--blue-bright); }
+  .ins-item-body { font-family: var(--font-sans); font-size: 16.5px; line-height: 1.6; color: var(--text-2); }
+  .ins-item-body b { color: var(--text); font-weight: 700; }
+
+  /* LEARNINGS + PLAN */
+  .lr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; flex: 1; min-height: 0; }
+  .lr-col { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 32px 34px; display: flex; flex-direction: column; gap: 22px; box-shadow: var(--shadow-sm); border-top: 4px solid var(--green); }
+  .lr-col.plan { border-top-color: var(--blue); }
+  .lr-h { display: flex; align-items: center; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .lr-h-num { font-family: var(--font-sans); font-weight: 700; font-size: 38px; color: var(--green-bright); line-height: 1; }
+  .lr-col.plan .lr-h-num { color: var(--blue-bright); }
+  .lr-h-label { display: flex; flex-direction: column; gap: 2px; }
+  .lr-h-eyebrow { font-family: var(--font-eyebrow); font-size: 11px; font-weight: 700; color: var(--text-mute); letter-spacing: .16em; text-transform: uppercase; }
+  .lr-h-title { font-family: var(--font-sans); font-weight: 700; font-size: 25px; color: var(--text); letter-spacing: -.01em; }
+  .lr-list { display: flex; flex-direction: column; gap: 18px; flex: 1; justify-content: space-evenly; }
+  .lr-item { display: flex; gap: 16px; }
+  .lr-item-n { font-family: var(--font-sans); font-weight: 700; font-size: 22px; color: var(--green-bright); line-height: 1.15; flex-shrink: 0; min-width: 28px; }
+  .lr-col.plan .lr-item-n { color: var(--blue-bright); }
+  .lr-item-body { font-family: var(--font-sans); font-size: 20px; line-height: 1.55; color: var(--text-2); }
+  .lr-item-body b { color: var(--text); font-weight: 700; }
+
+  /* SERVICE BY CITY */
+  .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
+  .svc-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px 26px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-sm); }
+  .svc-h { display: flex; align-items: center; gap: 12px; font-family: var(--font-sans); font-weight: 700; font-size: 20px; color: var(--text); }
+  .svc-sub { font-family: var(--font-sans); font-size: 15.5px; color: var(--text-mute); line-height: 1.55; }
+  .svc-sub b { color: var(--text); font-weight: 700; }
+  .svc-bar { display: flex; height: 28px; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--line); }
+  .svc-seg { display: flex; align-items: center; justify-content: center; font-family: var(--font-sans); font-weight: 700; font-size: 12px; color: #fff; padding: 0 10px; }
+
+  /* IF vs LP */
+  .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 22px; }
+  .cmp-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 24px 26px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--shadow-sm); border-top: 4px solid var(--green); }
+  .cmp-card.blue { border-top-color: var(--blue); }
+  .cmp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .cmp-title { font-family: var(--font-sans); font-weight: 700; font-size: 23px; color: var(--text); }
+  .cmp-title-sub { font-family: var(--font-eyebrow); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-mute); margin-top: 5px; }
+  .cmp-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cmp-stat { background: var(--surface-2); border-radius: var(--r-sm); padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .cmp-stat-l { font-family: var(--font-eyebrow); font-size: 9px; font-weight: 700; color: var(--text-mute); letter-spacing: .14em; text-transform: uppercase; }
+  .cmp-stat-v { font-family: var(--font-sans); font-weight: 700; font-size: 24px; color: var(--text); line-height: 1.1; }
+  .cmp-stat.big .cmp-stat-v { font-size: 40px; color: var(--green-bright); }
+  .cmp-card.blue .cmp-stat.big .cmp-stat-v { color: var(--blue-bright); }
+  .cmp-foot { font-family: var(--font-eyebrow); font-size: 10px; font-weight: 600; color: var(--text-mute); letter-spacing: .1em; text-transform: uppercase; line-height: 1.5; }
+
+  .ad-tbl th:first-child, .ad-tbl td:first-child { min-width: 260px; }
+
+  /* ============================================================
+     NAV BAR (bottom, fixed), arrows like mayo/abril
+     ============================================================ */
+  .navbar {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 100;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(11, 26, 34, .95);
+    backdrop-filter: blur(12px);
+    border-radius: 999px;
+    padding: 8px 10px;
+    box-shadow: var(--shadow-lg);
+  }
+  .navbar-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.1); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; border: 0;
+    transition: background .18s ease;
+  }
+  .navbar-btn:hover { background: var(--green); }
+  .navbar-btn:disabled { opacity: .3; cursor: not-allowed; }
+  .navbar-btn:disabled:hover { background: rgba(255,255,255,.1); }
+  .navbar-btn svg { width: 18px; height: 18px; }
+  .navbar-counter {
+    font-family: var(--font-eyebrow); font-size: 13px; font-weight: 700;
+    color: #fff; letter-spacing: .1em;
+    padding: 0 16px; min-width: 76px; text-align: center;
+  }
+  .navbar-counter b { color: var(--green-bright); }
+
+  @media print {
+    body { padding: 0; background: #fff; }
+    .slide { box-shadow: none; margin: 0; page-break-after: always; border-radius: 0; }
+    .navbar { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- ═══════════ S1, COVER ═══════════ -->
+<div class="slide cover" id="slide-1">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-logo">
+      <img src="data:image/png;base64,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NCpxi+hjFRsnImJeXl7ugw8+eJPMCv+QiqdUzF6xYsVUURQ99WmhoiiyPXv2HAUAwSVF8C8jcuqjp/xzojB7v1b/JS3gcu66S876dR+rS779DfVRnutqKrojIvFlfMp3rmVLDZcUX+5q/LGISHxdR8THBxMyMjKk22+/vdv3338/9+abb77LZDKJkiQJ3myFjDHG8zxGRkbydrsdSktLtRqNZtmJEycWvv7664UAUOe6CeS4RAAATkF7V3E5GZDneeaqUgNA6Msvv5z40EMPjWjevPlzXbp06RgbGwtms5lJkoSEEN6bGk8IEWNiYlSHDx82zp0794HvvvtunxtmxyEixMfHh//666+liYmJCWazGd05kOSYTH727NmPvvfee2vUajX/P2hLDAWAuODg4KAWLVpAy5YtoUOHDtC+fXto2bIl2O12AACora2FgoICOHDgABiNRh0AmNwt7pycHD4nJ4cFPPd/TVGIQ70U32YffvhhXHBw8MC77747FACaV1VV3S4IAsqAZ01MTNyt0WgcBw4cIACQf+zYMd3ChQudAHDe3Tpyl7VGfAXDxx57rOe777677fbbb2+t1+u9qsiy44JFRETwNpsNioqKTp44ceKrV199da3FYqlxAUA+JyeHyAu8ITXpMl1OT093pcoIAJCVlUVSU1OB53nqApAR06dPH5qUlPRKhw4dhskOHypJEvHm+aaU0ujoaP7s2bOmhQsXPqRWq3fVB0UlfnH27Nn/HDly5Gyn00nBTcFdRJRiYmKEnJyc1UOHDn3UW9zjn2jREkIIzJgx45lBgwZ1djgcMWfPnr1ZEISwyMhIiIyMhIiICBAEQXA4HHF2u705z/OhISEhEBwcDIIggEqlAtfiHrJNGE0mEwGAC4SQ82fOnLGGhobuKi8vP7p8+fKdmzZt0rhunKysLHKtUySVzTN9+vSnu3fv3tXpdOKNyPYREVUqFampqbHMnTv32x07dtj9HeN7773XfuDAgS+oVCr0yKQIYSqViqusrMx78cUX16vV6qsOLVNs9AoQvvrqq22HDBnyRPPmzR+Ki4vr3bx582bNmjXziS2azWYwGo1Mq9XaVCrVicrKSjPHcbu0Wu2BefPm5W3fvv2ijH++m2UUOvzII4/cdODAgSq5Aozog/opWSwWtNlsmJeXVzxlypQXZZZwGUzkBdXQyIiLKubP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" alt="REIS Logística">
+    </div>
+    <div class="cover-mid">
+      <div class="cover-tag">Reporte de Publicidad</div>
+      <div class="cover-month">Junio <span>2026</span></div>
+      <div class="cover-title">Análisis de <b>Google Ads y Meta Ads</b> con desempeño por plaza, conversiones y aprendizajes del ciclo.</div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Google Ads</span>
+          <span class="cover-meta-value">$12,752 y 86 conv.</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Meta Ads</span>
+          <span class="cover-meta-value">$13,636 y 25 leads</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Cobertura</span>
+          <span class="cover-meta-value">4 plazas activas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S2, PANORAMA GOOGLE ═══════════ -->
+<div class="slide" id="slide-2">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads</div>
+      <div class="head-title">Panorama <em>del mes</em></div>
+      <div class="head-sub">Desempeño consolidado por plaza, Junio 2026</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">02 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+
+  <table class="tbl" style="margin-bottom: 14px;">
+    <thead>
+      <tr><th>Ciudad</th><th class="num">Costo</th><th class="num">Impresiones</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC Prom.</th><th class="num">Costo / Conv.</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Monterrey</td><td class="num">$6,068.16</td><td class="num">4,352</td><td class="num">291</td><td class="num">6.69%</td><td class="num">$20.85</td><td class="num">&ndash;</td></tr>
+      <tr><td>Cd. Juárez</td><td class="num">$4,695.74</td><td class="num">1,366</td><td class="num">107</td><td class="num">7.83%</td><td class="num">$43.89</td><td class="num">&ndash;</td></tr>
+      <tr><td>San Luis Potosí</td><td class="num">$1,115.88</td><td class="num">1,062</td><td class="num">58</td><td class="num">5.46%</td><td class="num">$19.24</td><td class="num">&ndash;</td></tr>
+      <tr><td>Saltillo</td><td class="num">$872.64</td><td class="num">503</td><td class="num">43</td><td class="num">8.55%</td><td class="num">$20.29</td><td class="num">&ndash;</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="num">$12,752.42</td><td class="num">7,283</td><td class="num">499</td><td class="num">6.85%</td><td class="num">$25.56</td><td class="num">$148.28</td></tr>
+    </tbody>
+  </table>
+
+  <div class="stats" style="grid-template-columns: repeat(6, 1fr); margin-bottom: 14px;">
+    <div class="stat"><div class="stat-v">$12,752</div><div class="stat-l">Inversión Total</div></div>
+    <div class="stat"><div class="stat-v">499</div><div class="stat-l">Clicks</div></div>
+    <div class="stat"><div class="stat-v">7,283</div><div class="stat-l">Impresiones</div></div>
+    <div class="stat accent"><div class="stat-v">86</div><div class="stat-l">Conversiones</div></div>
+    <div class="stat accent"><div class="stat-v">6.85%</div><div class="stat-l">CTR Promedio</div></div>
+    <div class="stat"><div class="stat-v">$25.56</div><div class="stat-l">CPC Promedio</div></div>
+  </div>
+
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr; gap: 12px; flex: 1;">
+    <div class="ins-card">
+      <div class="ins-num">01</div>
+      <div class="ins-body"><b>El CTR general mejoró de 5.26% a 6.85% (+1.6 pp),</b> con Saltillo destacando al 8.55%. La cuenta ganó relevancia por impresión, señal de que el tráfico entrante es de mayor intención de búsqueda.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">02</div>
+      <div class="ins-body"><b>Costo por conversión bajó a $148.28 (vs $172.42 en mayo, −14%).</b> Con 86 conversiones (+15% vs las 75 de mayo), la cuenta se volvió más eficiente en costo por resultado.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">03</div>
+      <div class="ins-body"><b>Monterrey se consolida como el motor de la cuenta</b> con 291 clicks (58% del total) y $6,068 de inversión. La plaza regia mantiene el CPC más eficiente entre las plazas grandes ($20.85).</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">04</div>
+      <div class="ins-body"><b>Warehousing lidera en CTR en todas las plazas:</b> CDJ 11.81%, Saltillo 9.64%, MTY 8.41%, SLP 6.38%. El servicio de almacenaje se posiciona como el mensaje con mayor intención de búsqueda.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S3, CONVERSIONES ═══════════ -->
+<div class="slide" id="slide-3">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads</div>
+      <div class="head-title">Conversiones <em>del mes</em></div>
+      <div class="head-sub">86 conversiones totales, Google Ads y Landing Pages</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">03 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+
+  <div class="stats" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 22px;">
+    <div class="stat accent"><div class="stat-v">86</div><div class="stat-l">Conversiones Totales</div></div>
+    <div class="stat"><div class="stat-v">$148.28</div><div class="stat-l">Costo / Conversión</div></div>
+    <div class="stat"><div class="stat-v">61</div><div class="stat-l">WhatsApp 71%</div></div>
+    <div class="stat"><div class="stat-v">15</div><div class="stat-l">Llamadas 17%</div></div>
+  </div>
+
+  <div class="cnv-grid" style="margin-bottom: 22px;">
+    <div class="cnv-card">
+      <div class="cnv-head"><span>Conversiones Google Ads</span><span class="cnv-tot">67 total</span></div>
+      <div class="cnv-body">
+        <div class="cnv-row"><span class="cnv-k">WhatsApp</span><div class="cnv-bar"><div class="cnv-fill" style="width: 79.1%;"></div></div><span class="cnv-v">53</span></div>
+        <div class="cnv-row"><span class="cnv-k">Llamada</span><div class="cnv-bar"><div class="cnv-fill" style="width: 20.9%;"></div></div><span class="cnv-v">14</span></div>
+        <div class="cnv-row"><span class="cnv-k">Forms</span><div class="cnv-bar"><div class="cnv-fill" style="width: 0%;"></div></div><span class="cnv-v">0</span></div>
+      </div>
+    </div>
+    <div class="cnv-card">
+      <div class="cnv-head"><span>Conversiones Landing Pages</span><span class="cnv-tot">19 total</span></div>
+      <div class="cnv-body">
+        <div class="cnv-row"><span class="cnv-k">WhatsApp</span><div class="cnv-bar"><div class="cnv-fill" style="width: 42.1%;"></div></div><span class="cnv-v">8</span></div>
+        <div class="cnv-row"><span class="cnv-k">Email</span><div class="cnv-bar"><div class="cnv-fill" style="width: 31.6%;"></div></div><span class="cnv-v">6</span></div>
+        <div class="cnv-row"><span class="cnv-k">Forms</span><div class="cnv-bar"><div class="cnv-fill" style="width: 21.1%;"></div></div><span class="cnv-v">4</span></div>
+        <div class="cnv-row"><span class="cnv-k">Llamada</span><div class="cnv-bar"><div class="cnv-fill" style="width: 5.3%;"></div></div><span class="cnv-v">1</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="flex: 1;">
+    <div class="panel-h"><span>Mix Consolidado por Canal de Contacto</span></div>
+    <div style="flex: 1; display: grid; grid-template-columns: 250px 1fr; gap: 40px; align-items: center;">
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <svg viewBox="0 0 200 200" style="width: 100%; height: auto; max-width: 220px;" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="72" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="34"/>
+          <circle cx="100" cy="100" r="72" fill="none" stroke="#2ea73a" stroke-width="34" stroke-dasharray="320.87 452.39" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+          <circle cx="100" cy="100" r="72" fill="none" stroke="#37ae40" stroke-width="34" stroke-dasharray="78.90 452.39" stroke-dashoffset="-320.87" transform="rotate(-90 100 100)"/>
+          <circle cx="100" cy="100" r="72" fill="none" stroke="#2a86b3" stroke-width="34" stroke-dasharray="31.56 452.39" stroke-dashoffset="-399.77" transform="rotate(-90 100 100)"/>
+          <circle cx="100" cy="100" r="72" fill="none" stroke="#1d6e95" stroke-width="34" stroke-dasharray="21.04 452.39" stroke-dashoffset="-431.33" transform="rotate(-90 100 100)"/>
+          <text x="100" y="96" text-anchor="middle" fill="#eaf2f5" font-family="Titillium Web, sans-serif" font-size="36" font-weight="700">86</text>
+          <text x="100" y="116" text-anchor="middle" fill="#9bb1bb" font-family="Montserrat, sans-serif" font-size="9" letter-spacing="1.5" font-weight="600">CONVERSIONES</text>
+        </svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--surface-2); border-radius: 10px;">
+            <span style="width: 14px; height: 14px; border-radius: 4px; background: #2ea73a; flex-shrink: 0;"></span>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex: 1;">
+              <span style="font-family: var(--font-sans); font-weight: 700; font-size: 16px; color: var(--text);">WhatsApp</span>
+              <span style="font-family: var(--font-sans); font-size: 14px; color: var(--text-mute);">61 &nbsp;&nbsp;<b style="color: var(--green-bright); font-weight: 700;">70.9%</b></span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--surface-2); border-radius: 10px;">
+            <span style="width: 14px; height: 14px; border-radius: 4px; background: #37ae40; flex-shrink: 0;"></span>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex: 1;">
+              <span style="font-family: var(--font-sans); font-weight: 700; font-size: 16px; color: var(--text);">Llamada</span>
+              <span style="font-family: var(--font-sans); font-size: 14px; color: var(--text-mute);">15 &nbsp;&nbsp;<b style="color: var(--green-bright); font-weight: 700;">17.4%</b></span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--surface-2); border-radius: 10px;">
+            <span style="width: 14px; height: 14px; border-radius: 4px; background: #2a86b3; flex-shrink: 0;"></span>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex: 1;">
+              <span style="font-family: var(--font-sans); font-weight: 700; font-size: 16px; color: var(--text);">Email</span>
+              <span style="font-family: var(--font-sans); font-size: 14px; color: var(--text-mute);">6 &nbsp;&nbsp;<b style="color: var(--blue-bright); font-weight: 700;">7.0%</b></span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--surface-2); border-radius: 10px;">
+            <span style="width: 14px; height: 14px; border-radius: 4px; background: #1d6e95; flex-shrink: 0;"></span>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex: 1;">
+              <span style="font-family: var(--font-sans); font-weight: 700; font-size: 16px; color: var(--text);">Forms</span>
+              <span style="font-family: var(--font-sans); font-size: 14px; color: var(--text-mute);">4 &nbsp;&nbsp;<b style="color: var(--blue-bright); font-weight: 700;">4.7%</b></span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: var(--font-sans); font-size: 15px; line-height: 1.55; color: var(--text-2); padding-top: 14px; border-top: 1px solid var(--line);">
+          <b style="color: var(--text);">WhatsApp consolidó su liderazgo con 71% de las conversiones</b> (61 de 86). El canal se afianzó como punto de entrada dominante en Google Ads (79%) y sigue con presencia relevante en Landing Pages.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S4, GOOGLE · CDJ ═══════════ -->
+<div class="slide" id="slide-4">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads</div>
+      <div class="head-title">Cd. <em>Juárez</em></div>
+      <div class="head-sub">Desempeño por campaña, Junio 2026</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">04 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th class="num">Costo</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="num">$2,534.15</td><td class="num">1,129</td><td class="num">79</td><td class="num">7.00%</td><td class="num">$32.08</td></tr>
+          <tr><td>Warehousing</td><td class="num">$2,161.59</td><td class="num">237</td><td class="num">28</td><td class="num">11.81%</td><td class="num">$77.20</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="num">$4,695.74</td><td class="num">1,366</td><td class="num">107</td><td class="num">7.83%</td><td class="num">$43.89</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="stat"><div class="stat-v">$4,695</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">107</div><div class="stat-l">Clicks</div></div>
+        <div class="stat accent"><div class="stat-v">7.83%</div><div class="stat-l">CTR</div></div>
+        <div class="stat"><div class="stat-v">$43.89</div><div class="stat-l">CPC Promedio</div></div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-label">Comparativo vs Mayo</div>
+        <div class="comp-card-value">Inversión −2.1%, CTR mejoró +2.9 pp, CPC estable</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins-item"><div class="ins-item-n">01</div><div class="ins-item-body"><b>El CTR de la plaza subió de 4.93% a 7.83% (+2.9 pp),</b> con Warehousing alcanzando 11.81%, el más alto de toda la cuenta. La relevancia por impresión mejoró de forma clara, señal de mayor calidad del tráfico entrante.</div></div>
+      <div class="ins-item"><div class="ins-item-n">02</div><div class="ins-item-body"><b>REIS Logistics concentró el 74% de los clicks (79 de 107) con CPC de $32.08</b> (mejor que $34.62 en mayo). La campaña principal gana volumen y eficiencia simultáneamente, consolidándose como el motor de la plaza.</div></div>
+      <div class="ins-item"><div class="ins-item-n">03</div><div class="ins-item-body"><b>Warehousing entregó 2 conversiones nativas Google en junio</b>, primer mes con seguimiento de conversiones desde Google Ads en la campaña. El CTR récord (11.81%) confirma alta intención en el público que ve el anuncio.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S5, GOOGLE · MTY ═══════════ -->
+<div class="slide" id="slide-5">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads</div>
+      <div class="head-title"><em>Monterrey</em></div>
+      <div class="head-sub">Desempeño por campaña, Junio 2026</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">05 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th class="num">Costo</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="num">$3,701.93</td><td class="num">3,103</td><td class="num">186</td><td class="num">5.99%</td><td class="num">$19.90</td></tr>
+          <tr><td>Warehousing</td><td class="num">$2,366.23</td><td class="num">1,249</td><td class="num">105</td><td class="num">8.41%</td><td class="num">$22.54</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="num">$6,068.16</td><td class="num">4,352</td><td class="num">291</td><td class="num">6.69%</td><td class="num">$20.85</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="stat accent"><div class="stat-v">$6,068</div><div class="stat-l">Inversión</div></div>
+        <div class="stat accent"><div class="stat-v">291</div><div class="stat-l">Clicks (líder)</div></div>
+        <div class="stat"><div class="stat-v">6.69%</div><div class="stat-l">CTR</div></div>
+        <div class="stat"><div class="stat-v">$20.85</div><div class="stat-l">CPC Promedio</div></div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-label">Comparativo vs Mayo</div>
+        <div class="comp-card-value">Inversión +13.8%, Clicks +7.4%, CTR mejoró +1.9 pp</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins-item"><div class="ins-item-n">01</div><div class="ins-item-body"><b>Monterrey mantiene el liderato de la cuenta</b> con 47.6% del gasto y 58% de los clicks (291 de 499). Cuarto mes consecutivo como plaza principal, el mercado regio sigue siendo el más consistente y con mayor demanda.</div></div>
+      <div class="ins-item"><div class="ins-item-n">02</div><div class="ins-item-body"><b>Warehousing destaca con CTR de 8.41%,</b> superando ampliamente el 5.99% de REIS Logistics. Consolidándose como el creativo más relevante de la plaza y patrón consistente con CDJ y Saltillo.</div></div>
+      <div class="ins-item"><div class="ins-item-n">03</div><div class="ins-item-body"><b>REIS Logistics generó 3 conversiones nativas Google con CPC de $19.90</b>, la mejor combinación de volumen y eficiencia entre las campañas de la cuenta. La escala en MTY sigue creciendo con rentabilidad sostenida.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S6, GOOGLE · SLP ═══════════ -->
+<div class="slide" id="slide-6">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads</div>
+      <div class="head-title">San Luis <em>Potosí</em></div>
+      <div class="head-sub">Desempeño por campaña, Junio 2026</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">06 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th class="num">Costo</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="num">$599.04</td><td class="num">686</td><td class="num">34</td><td class="num">4.96%</td><td class="num">$17.62</td></tr>
+          <tr><td>Warehousing</td><td class="num">$516.84</td><td class="num">376</td><td class="num">24</td><td class="num">6.38%</td><td class="num">$21.54</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="num">$1,115.88</td><td class="num">1,062</td><td class="num">58</td><td class="num">5.46%</td><td class="num">$19.24</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="stat"><div class="stat-v">$1,115</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">58</div><div class="stat-l">Clicks</div></div>
+        <div class="stat"><div class="stat-v">5.46%</div><div class="stat-l">CTR</div></div>
+        <div class="stat accent"><div class="stat-v">$19.24</div><div class="stat-l">CPC Promedio</div></div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-label">Comparativo vs Mayo</div>
+        <div class="comp-card-value">Inversión −37.9%, CTR sobre 5%, CPC estable</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins-item"><div class="ins-item-n">01</div><div class="ins-item-body"><b>SLP mantiene CPC eficiente en $19.24,</b> el más competitivo entre las plazas medianas. Con menor inversión que en mayo, la plaza sostiene su capacidad de generar tráfico a bajo costo, perfil sólido de eficiencia operativa.</div></div>
+      <div class="ins-item"><div class="ins-item-n">02</div><div class="ins-item-body"><b>Warehousing sigue con CTR superior (6.38%)</b> vs REIS Logistics (4.96%). Aunque el CTR bajó del récord de mayo (10.11%), el patrón de mayor intención en almacenaje se mantiene consistente y valida el mensaje.</div></div>
+      <div class="ins-item"><div class="ins-item-n">03</div><div class="ins-item-body"><b>SLP representó el 9% del gasto total de la cuenta,</b> operando como plaza secundaria estable. Su rol se ajusta al mix general después del pico de mayo, mantiene su función de canal complementario con buen costo de tráfico.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S7, SALTILLO + RAMOS ═══════════ -->
+<div class="slide" id="slide-7">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads, plaza complementaria</div>
+      <div class="head-title"><em>Saltillo</em></div>
+      <div class="head-sub">Coahuila, Junio 2026</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">07 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+  <div class="city-2col">
+    <div class="city-left">
+      <table class="tbl">
+        <thead><tr><th>Campaña</th><th class="num">Costo</th><th class="num">Impr.</th><th class="num">Clicks</th><th class="num">CTR</th><th class="num">CPC</th></tr></thead>
+        <tbody>
+          <tr><td>REIS Logistics</td><td class="num">$508.78</td><td class="num">337</td><td class="num">27</td><td class="num">8.01%</td><td class="num">$18.84</td></tr>
+          <tr><td>Warehousing</td><td class="num">$363.86</td><td class="num">166</td><td class="num">16</td><td class="num">9.64%</td><td class="num">$22.74</td></tr>
+          <tr class="tot"><td>TOTAL</td><td class="num">$872.64</td><td class="num">503</td><td class="num">43</td><td class="num">8.55%</td><td class="num">$20.29</td></tr>
+        </tbody>
+      </table>
+      <div class="stats" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="stat"><div class="stat-v">$872.64</div><div class="stat-l">Inversión</div></div>
+        <div class="stat"><div class="stat-v">43</div><div class="stat-l">Clicks</div></div>
+        <div class="stat accent"><div class="stat-v">8.55%</div><div class="stat-l">CTR (líder cuenta)</div></div>
+        <div class="stat"><div class="stat-v">$20.29</div><div class="stat-l">CPC Promedio</div></div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-label">Comparativo vs Mayo</div>
+        <div class="comp-card-value">Inversión +11% ($786 → $873) con clicks estables y CTR líder de la cuenta</div>
+      </div>
+    </div>
+    <div class="city-right">
+      <div class="ins-item"><div class="ins-item-n">01</div><div class="ins-item-body"><b>Saltillo tuvo el CTR más alto de la cuenta al 8.55%,</b> con Warehousing en 9.64% y REIS Logistics en 8.01%. La plaza recuperó fuerza y se posicionó como la de mejor relevancia por impresión.</div></div>
+      <div class="ins-item"><div class="ins-item-n">02</div><div class="ins-item-body"><b>La inversión creció +11% vs mayo ($786 → $873)</b> con clicks estables (43 vs 41) y CPC competitivo de $20.29. Buen candidato para seguir aumentando presupuesto gradualmente en el próximo ciclo.</div></div>
+      <div class="ins-item"><div class="ins-item-n">03</div><div class="ins-item-body"><b>Warehousing lidera con CTR de 9.64%</b> sobre REIS Logistics (8.01%). El patrón de mayor intención en almacenaje se mantiene consistente con el resto de las plazas de la cuenta.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S8, APRENDIZAJES GOOGLE ═══════════ -->
+<div class="slide" id="slide-8">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Google Ads</div>
+      <div class="head-title">Aprendizajes <em>y Plan</em></div>
+      <div class="head-sub">Lo que aprendimos y los próximos pasos</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">08 / <b>15</b></span>
+      <span class="pill">Google Ads</span>
+    </div>
+  </div>
+  <div class="lr-grid">
+    <div class="lr-col">
+      <div class="lr-h">
+        <div class="lr-h-num">01</div>
+        <div class="lr-h-label"><div class="lr-h-eyebrow">Aprendizajes</div><div class="lr-h-title">Lo que este mes nos enseñó</div></div>
+      </div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-n">01</div><div class="lr-item-body"><b>La cuenta ganó eficiencia consolidada este mes:</b> costo/conversión bajó a $148.28 (−14%), CTR general subió a 6.85% (+1.6 pp) y las conversiones crecieron 15% (75 → 86). Mejora consistente en todos los indicadores clave.</div></div>
+        <div class="lr-item"><div class="lr-item-n">02</div><div class="lr-item-body"><b>Warehousing lidera CTR en todas las plazas:</b> CDJ 11.81%, Saltillo 9.64%, MTY 8.41%, SLP 6.38%. El almacenaje se posiciona como el mensaje con mayor intención de búsqueda, patrón consistente en 3 meses.</div></div>
+        <div class="lr-item"><div class="lr-item-n">03</div><div class="lr-item-body"><b>Monterrey creció +14% en inversión</b> ($5,330 → $6,068) y +7% en clicks, manteniendo CPC eficiente de $20.85. Cuarto mes consecutivo como líder de la cuenta, la plaza regia sigue con demanda saludable.</div></div>
+      </div>
+    </div>
+    <div class="lr-col plan">
+      <div class="lr-h">
+        <div class="lr-h-num">02</div>
+        <div class="lr-h-label"><div class="lr-h-eyebrow">Plan de Acción</div><div class="lr-h-title">Próximos pasos</div></div>
+      </div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-n">01</div><div class="lr-item-body"><b>Escalar Warehousing CDJ aprovechando el alto CTR:</b> llegó a 11.81% (récord de la cuenta) con solo 237 impresiones. Expandir grupos de keywords o ampliar segmentación dentro de CDJ para capturar más volumen con la relevancia ya validada.</div></div>
+        <div class="lr-item"><div class="lr-item-n">02</div><div class="lr-item-body"><b>Escalar Saltillo gradualmente:</b> con CTR de 8.55% (el más alto de la cuenta) y CPC competitivo de $20.29, la plaza responde bien al incremento. Considerar aumento adicional de 15-20% en presupuesto para el próximo ciclo.</div></div>
+        <div class="lr-item"><div class="lr-item-n">03</div><div class="lr-item-body"><b>Sostener el liderato de Monterrey:</b> con 58% de los clicks de la cuenta y CPC eficiente de $20.85, la plaza regia sigue siendo el motor. Mantener la inversión y monitorear que el CPC se conserve conforme escala el volumen.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ S9, META RESUMEN ═══════════ -->
+<div class="slide" id="slide-9">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title">Panorama <em>del mes</em></div>
+      <div class="head-sub">Instant Form y Landing Page, consolidado por plaza</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">09 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <table class="tbl" style="margin-bottom: 22px;">
+    <thead>
+      <tr><th>Campaña + Plaza</th><th class="num">Resultados</th><th class="num">CPR</th><th class="num">Gasto</th><th class="num">Impresiones</th><th class="num">Alcance</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Instant Form, Cd. Juárez</td><td class="num">11</td><td class="num">$228.66</td><td class="num">$2,515.25</td><td class="num">98,226</td><td class="num">27,790</td></tr>
+      <tr><td>Instant Form, Monterrey</td><td class="num">6</td><td class="num">$370.83</td><td class="num">$2,224.96</td><td class="num">18,976</td><td class="num">8,644</td></tr>
+      <tr><td>Instant Form, San Luis Potosí</td><td class="num">5</td><td class="num">$420.39</td><td class="num">$2,101.93</td><td class="num">54,967</td><td class="num">17,196</td></tr>
+      <tr><td>Landing Page, Monterrey</td><td class="num">3</td><td class="num">$2,264.54</td><td class="num">$6,793.62</td><td class="num">107,296</td><td class="num">66,811</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="num">25</td><td class="num">$545.43</td><td class="num">$13,635.76</td><td class="num">279,465</td><td class="num">120,441</td></tr>
+    </tbody>
+  </table>
+  <div class="stats" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 22px;">
+    <div class="stat blue"><div class="stat-v">25</div><div class="stat-l">Total Resultados</div></div>
+    <div class="stat blue"><div class="stat-v">$545</div><div class="stat-l">CPR Promedio</div></div>
+    <div class="stat blue"><div class="stat-v">$13,636</div><div class="stat-l">Inversión Total</div></div>
+    <div class="stat blue"><div class="stat-v">279K</div><div class="stat-l">Impresiones</div></div>
+    <div class="stat blue"><div class="stat-v">120K</div><div class="stat-l">Alcance</div></div>
+  </div>
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: auto 0; align-items: stretch;">
+    <div class="ins-card blue"><div class="ins-num">01</div><div class="ins-body"><b>Meta creció en volumen y presencia este mes:</b> 25 leads (+14% vs mayo), $13,636 de inversión y 279,465 impresiones (+155%). La cuenta expandió su alcance a más del doble.</div></div>
+    <div class="ins-card blue"><div class="ins-num">02</div><div class="ins-body"><b>Cd. Juárez volvió a liderar Meta con 11 leads y CPR de $228.66,</b> el más eficiente entre las 3 ciudades. La plaza recuperó su rol dominante con ALM_2_Confianza como top performer (8 leads).</div></div>
+    <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>Landing Page consolidó su rol activo:</b> 3 leads capturados con inversión sustancial ($6,794), casi el doble del gasto de mayo. Canal estable de leads de perfil distinto al Instant Form.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ S10, META CDJ ═══════════ -->
+<div class="slide" id="slide-10">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title">Cd. <em>Juárez</em></div>
+      <div class="head-sub">Instant Form, desglose por anuncio</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">10 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <table class="tbl ad-tbl" style="margin-bottom: 24px;">
+    <thead><tr><th>Anuncio</th><th class="num">Resultados</th><th class="num">CPR</th><th class="num">Gasto</th><th class="num">Impresiones</th></tr></thead>
+    <tbody>
+      <tr><td><span class="adchip adchip-cx">CX</span>Fronteras</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$39.33</td><td class="num">802</td></tr>
+      <tr><td><span class="adchip adchip-cx">CX</span>Operaciones</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$44.76</td><td class="num">941</td></tr>
+      <tr><td><span class="adchip adchip-cx">CX</span>Importa / Exporta</td><td class="num">2</td><td class="num">$190.97</td><td class="num">$381.93</td><td class="num">9,160</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Inventario</td><td class="num">1</td><td class="num">$131.55</td><td class="num">$131.55</td><td class="num">7,807</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Confianza</td><td class="num">8</td><td class="num">$231.93</td><td class="num">$1,855.41</td><td class="num">77,414</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Sin Pausas</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$6.06</td><td class="num">177</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="num">11</td><td class="num">$228.66</td><td class="num">$2,515.25</td><td class="num">98,226</td></tr>
+    </tbody>
+  </table>
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: auto 0; align-items: stretch;">
+    <div class="ins-card blue"><div class="ins-num">01</div><div class="ins-body"><b>CDJ recuperó el liderato Meta con 11 leads,</b> +57% vs mayo. Es la plaza con más volumen y CPR más eficiente del canal ($228.66). El equilibrio entre CX y ALM se mantuvo con ambas categorías generando resultados.</div></div>
+    <div class="ins-card blue"><div class="ins-num">02</div><div class="ins-body"><b>ALM_2_Confianza volvió como top performer de la plaza:</b> 8 leads a CPR de $231.93. El creativo consolida su rol de motor principal de CDJ, complementado por CX_3_ImportaExporta con 2 leads a CPR más eficiente ($190.97).</div></div>
+    <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>Las impresiones crecieron a 98,226 (+104% vs mayo)</b> con alcance de 27,790 personas. La plaza expandió su presencia significativamente y la eficiencia por lead se mantuvo estable, buena base para escalar.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ S11, META MTY ═══════════ -->
+<div class="slide" id="slide-11">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title"><em>Monterrey</em></div>
+      <div class="head-sub">Instant Form, desglose por anuncio</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">11 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <table class="tbl ad-tbl" style="margin-bottom: 24px;">
+    <thead><tr><th>Anuncio</th><th class="num">Resultados</th><th class="num">CPR</th><th class="num">Gasto</th><th class="num">Impresiones</th></tr></thead>
+    <tbody>
+      <tr><td><span class="adchip adchip-cx">CX</span>Fronteras</td><td class="num">1</td><td class="num">$48.38</td><td class="num">$48.38</td><td class="num">623</td></tr>
+      <tr><td><span class="adchip adchip-cx">CX</span>Operaciones</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$27.35</td><td class="num">314</td></tr>
+      <tr><td><span class="adchip adchip-cx">CX</span>Importa / Exporta</td><td class="num">3</td><td class="num">$583.38</td><td class="num">$1,750.13</td><td class="num">14,448</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Inventario</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$7.96</td><td class="num">156</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Confianza</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$32.98</td><td class="num">636</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Sin Pausas</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$32.33</td><td class="num">476</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="num">6</td><td class="num">$370.83</td><td class="num">$2,224.96</td><td class="num">18,976</td></tr>
+    </tbody>
+  </table>
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: auto 0; align-items: stretch;">
+    <div class="ins-card blue"><div class="ins-num">01</div><div class="ins-body"><b>Monterrey se enfocó 100% en Comercio Exterior este mes:</b> los 6 leads vinieron de ads CX. La plaza confirma su especialización en el mensaje de comercio exterior, patrón consistente con mayo.</div></div>
+    <div class="ins-card blue"><div class="ins-num">02</div><div class="ins-body"><b>CX_1_Fronteras destacó por eficiencia:</b> 1 lead a CPR de $48.38, el más eficiente entre las 3 ciudades Meta este mes. El creativo mantiene su rol de ad más rentable de la cuenta.</div></div>
+    <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>CX_3_ImportaExporta concentró el 79% del gasto de la plaza</b> ($1,750 de $2,225) generando 3 leads. Los otros ads mantuvieron actividad baja pero presente, dando al algoritmo señales completas.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ S12, META SLP ═══════════ -->
+<div class="slide" id="slide-12">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title">San Luis <em>Potosí</em></div>
+      <div class="head-sub">Instant Form, desglose por anuncio</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">12 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <table class="tbl ad-tbl" style="margin-bottom: 24px;">
+    <thead><tr><th>Anuncio</th><th class="num">Resultados</th><th class="num">CPR</th><th class="num">Gasto</th><th class="num">Impresiones</th></tr></thead>
+    <tbody>
+      <tr><td><span class="adchip adchip-cx">CX</span>Fronteras</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$53.11</td><td class="num">1,256</td></tr>
+      <tr><td><span class="adchip adchip-cx">CX</span>Operaciones</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$309.98</td><td class="num">3,929</td></tr>
+      <tr><td><span class="adchip adchip-cx">CX</span>Importa / Exporta</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$80.60</td><td class="num">1,041</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Inventario</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$35.13</td><td class="num">1,350</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Confianza</td><td class="num">5</td><td class="num">$269.28</td><td class="num">$1,346.40</td><td class="num">39,352</td></tr>
+      <tr><td><span class="adchip adchip-alm">ALM</span>Sin Pausas</td><td class="num">&ndash;</td><td class="num">&ndash;</td><td class="num">$3.18</td><td class="num">73</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="num">5</td><td class="num">$420.39</td><td class="num">$2,101.93</td><td class="num">54,967</td></tr>
+    </tbody>
+  </table>
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: auto 0; align-items: stretch;">
+    <div class="ins-card blue"><div class="ins-num">01</div><div class="ins-body"><b>SLP creció +67% en leads (3 → 5):</b> ALM_2_Confianza fue el motor exclusivo con 5 leads a CPR de $269.28. El creativo consolida su rol como top performer estable en la plaza.</div></div>
+    <div class="ins-card blue"><div class="ins-num">02</div><div class="ins-body"><b>Las impresiones crecieron 164% (20,816 → 54,967)</b> con alcance de 17,196 personas. La plaza expandió significativamente su presencia, la audiencia ya conoce mejor el mensaje.</div></div>
+    <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>SLP se especializa cada vez más en Almacenaje:</b> ALM concentra el 66% de los leads históricos de la plaza. Patrón consistente que valida invertir presupuesto de forma priorizada en ads ALM en este mercado.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ S13, SERVICIO POR CIUDAD ═══════════ -->
+<div class="slide" id="slide-13">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title">Servicio <em>por Ciudad</em></div>
+      <div class="head-sub">Instant Form, Comercio Exterior vs Almacenaje</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">13 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th rowspan="2" style="vertical-align: middle;">Ciudad</th>
+        <th colspan="3" style="text-align: center; border-right: 1px solid var(--line); background: var(--blue-soft); color: var(--blue);">Comercio Exterior</th>
+        <th colspan="3" style="text-align: center; background: var(--green-soft); color: var(--green-bright);">Almacenaje</th>
+      </tr>
+      <tr>
+        <th class="num">Leads</th><th class="num">Gasto</th><th class="num" style="border-right: 1px solid var(--line);">CPR</th>
+        <th class="num">Leads</th><th class="num">Gasto</th><th class="num">CPR</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Cd. Juárez</td><td class="num">2</td><td class="num">$466.02</td><td class="num" style="border-right: 1px solid var(--line);">$233.01</td><td class="num">9</td><td class="num">$1,993.02</td><td class="num">$221.45</td></tr>
+      <tr><td>Monterrey</td><td class="num">6</td><td class="num">$2,144.24</td><td class="num" style="border-right: 1px solid var(--line);">$357.37</td><td class="num">&ndash;</td><td class="num">$73.27</td><td class="num">&ndash;</td></tr>
+      <tr><td>San Luis Potosí</td><td class="num">&ndash;</td><td class="num">$443.69</td><td class="num" style="border-right: 1px solid var(--line);">&ndash;</td><td class="num">5</td><td class="num">$1,384.71</td><td class="num">$276.94</td></tr>
+      <tr class="tot"><td>TOTAL</td><td class="num">8</td><td class="num">$3,053.95</td><td class="num" style="border-right: 1px solid var(--line);">$381.74</td><td class="num">14</td><td class="num">$3,451.00</td><td class="num">$246.50</td></tr>
+    </tbody>
+  </table>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <div class="svc-h"><span class="adchip adchip-cx" style="font-size: 11px; padding: 4px 10px; margin-right: 0;">CX</span>Comercio Exterior</div>
+      <div class="svc-sub">8 leads, $3,053.95, CPR $381.74. <b>75% de los leads vienen de Monterrey</b> (6 de 8)</div>
+      <div class="svc-bar">
+        <div class="svc-seg" style="flex: 6; background: #145474;">MTY 6 (75%)</div>
+        <div class="svc-seg" style="flex: 2; background: rgba(20,84,116,.5);">CDJ 2</div>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-h"><span class="adchip adchip-alm" style="font-size: 11px; padding: 4px 10px; margin-right: 0;">ALM</span>Almacenaje</div>
+      <div class="svc-sub">14 leads, $3,451.00, CPR $246.50. <b>64% de los leads vienen de Cd. Juárez</b> (9 de 14)</div>
+      <div class="svc-bar">
+        <div class="svc-seg" style="flex: 9; background: #2ea73a;">CDJ 9 (64%)</div>
+        <div class="svc-seg" style="flex: 5; background: rgba(46,167,58,.6);">SLP 5</div>
+      </div>
+    </div>
+  </div>
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 18px; flex: 1; align-content: end;">
+    <div class="ins-card blue"><div class="ins-num">01</div><div class="ins-body"><b>Almacenaje volvió como el servicio dominante:</b> 14 leads (64% del total) vs 8 de CX. ALM_2_Confianza recuperó su rol de creativo rey, 13 de los 14 leads ALM son atribuibles a este ad.</div></div>
+    <div class="ins-card blue"><div class="ins-num">02</div><div class="ins-body"><b>Cada plaza tiene su especialidad clara:</b> MTY concentra CX (75%), CDJ lidera ALM (64%) y SLP se enfoca 100% en ALM. Los mercados responden al mensaje que mejor les habla.</div></div>
+    <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>El CPR de ALM ($246.50) es más eficiente que CX ($381.74):</b> el almacenaje sigue rindiendo mejor costo por lead. La cuenta tiene claridad estratégica para asignar presupuesto por mercado.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ S14, IF vs LP ═══════════ -->
+<div class="slide" id="slide-14">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title">Instant Form &amp; <em>Landing Page</em></div>
+      <div class="head-sub">Comparación de canales de captura</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">14 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <div class="cmp-grid">
+    <div class="cmp-card">
+      <div class="cmp-head">
+        <div><div class="cmp-title">Instant Form</div><div class="cmp-title-sub">Captura nativa Meta, formulario integrado</div></div>
+        <span class="status-chip">Activa</span>
+      </div>
+      <div class="cmp-stats">
+        <div class="cmp-stat big"><div class="cmp-stat-l">Resultados</div><div class="cmp-stat-v">22</div></div>
+        <div class="cmp-stat"><div class="cmp-stat-l">CPR Promedio</div><div class="cmp-stat-v">$311</div></div>
+        <div class="cmp-stat"><div class="cmp-stat-l">Inversión</div><div class="cmp-stat-v">$6,842</div></div>
+        <div class="cmp-stat"><div class="cmp-stat-l">Impresiones</div><div class="cmp-stat-v">172,169</div></div>
+      </div>
+      <div class="cmp-foot">3 ad sets, 18 anuncios, 88% del volumen Meta</div>
+    </div>
+    <div class="cmp-card blue">
+      <div class="cmp-head">
+        <div><div class="cmp-title">Landing Page</div><div class="cmp-title-sub">Nurturing con tracking en CRM</div></div>
+        <span class="status-chip" style="background: var(--blue-tint); color: var(--blue); border-color: rgba(20,84,116,.3);">Activa</span>
+      </div>
+      <div class="cmp-stats">
+        <div class="cmp-stat big"><div class="cmp-stat-l">Resultados</div><div class="cmp-stat-v">3</div></div>
+        <div class="cmp-stat"><div class="cmp-stat-l">CPR Promedio</div><div class="cmp-stat-v">$2,264</div></div>
+        <div class="cmp-stat"><div class="cmp-stat-l">Inversión</div><div class="cmp-stat-v">$6,793</div></div>
+        <div class="cmp-stat"><div class="cmp-stat-l">Impresiones</div><div class="cmp-stat-v">107,296</div></div>
+      </div>
+      <div class="cmp-foot">Solo MTY con gasto, 12% del volumen Meta</div>
+    </div>
+  </div>
+  <div class="ins-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: auto 0; align-items: stretch;">
+    <div class="ins-card blue"><div class="ins-num">01</div><div class="ins-body"><b>Instant Form creció +10% en leads (20 → 22) con expansión de alcance del +118%.</b> El canal mantiene su rol de motor principal de captura Meta, generando 88% del volumen total. Base sólida para escalar.</div></div>
+    <div class="ins-card blue"><div class="ins-num">02</div><div class="ins-body"><b>Landing Page creció +50% en leads (2 → 3) y expandió su alcance 251%.</b> Con inversión duplicada, el canal ganó presencia significativa y captura leads con perfil de mayor calidad.</div></div>
+    <div class="ins-card blue"><div class="ins-num">03</div><div class="ins-body"><b>Los dos canales operan de forma complementaria:</b> Instant Form como captura inmediata con alto volumen, Landing Page como nurturing con perfil calificado. Juntos suman 25 leads Meta.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════ S15, APRENDIZAJES META ═══════════ -->
+<div class="slide" id="slide-15">
+  <div class="head">
+    <div class="head-left">
+      <div class="head-eyebrow">Meta Ads</div>
+      <div class="head-title">Aprendizajes <em>y Plan</em></div>
+      <div class="head-sub">Lo que aprendimos y los próximos pasos</div>
+    </div>
+    <div class="head-right">
+      <span class="pill-num">15 / <b>15</b></span>
+      <span class="pill blue">Meta Ads</span>
+    </div>
+  </div>
+  <div class="lr-grid">
+    <div class="lr-col">
+      <div class="lr-h">
+        <div class="lr-h-num">01</div>
+        <div class="lr-h-label"><div class="lr-h-eyebrow">Aprendizajes</div><div class="lr-h-title">Lo que este mes nos enseñó</div></div>
+      </div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-n">01</div><div class="lr-item-body"><b>Meta creció en escala este mes:</b> 25 leads (+14%), $13,636 de inversión y 279,465 impresiones (+155%). La cuenta expandió significativamente su presencia, CDJ regresó como plaza líder con 11 leads.</div></div>
+        <div class="lr-item"><div class="lr-item-n">02</div><div class="lr-item-body"><b>ALM_2_Confianza recuperó su rol de creativo rey:</b> 13 leads combinados (8 CDJ + 5 SLP), 52% del volumen Instant Form. El Almacenaje volvió como dominante (14 vs 8 CX), patrón que refuerza la especialización por plaza.</div></div>
+        <div class="lr-item"><div class="lr-item-n">03</div><div class="lr-item-body"><b>Landing Page consolidó su rol activo con 3 leads e inversión duplicada:</b> el canal crece de forma sostenida y captura leads de perfil distinto al Instant Form. Complementa el funnel de captura de forma efectiva.</div></div>
+      </div>
+    </div>
+    <div class="lr-col plan">
+      <div class="lr-h">
+        <div class="lr-h-num">02</div>
+        <div class="lr-h-label"><div class="lr-h-eyebrow">Plan de Acción</div><div class="lr-h-title">Próximos pasos</div></div>
+      </div>
+      <div class="lr-list">
+        <div class="lr-item"><div class="lr-item-n">01</div><div class="lr-item-body"><b>Escalar ALM_2_Confianza en CDJ y SLP:</b> es el creativo con mayor tracción del canal (13 leads este mes). Aumentar presupuesto 15-20% en los ad sets de estas ciudades para capturar más volumen con la eficiencia ya validada.</div></div>
+        <div class="lr-item"><div class="lr-item-n">02</div><div class="lr-item-body"><b>Reactivar CX_1_Fronteras en Monterrey:</b> generó 1 lead a CPR de $48.38, el más eficiente de la cuenta. Vale la pena aumentar su presupuesto y probar variantes similares en creativo y copy.</div></div>
+        <div class="lr-item"><div class="lr-item-n">03</div><div class="lr-item-body"><b>Continuar la operación de Landing Page:</b> con inversión duplicada este mes y crecimiento de +50% en leads, el canal muestra tendencia positiva. Mantener el ritmo y evaluar si los perfiles capturados convierten a oportunidad real de venta.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════ NAV BAR ═══════════ -->
+<div class="navbar">
+  <button class="navbar-btn" id="prevBtn" aria-label="Anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <span class="navbar-counter"><b id="navCur">01</b> / 15</span>
+  <button class="navbar-btn" id="nextBtn" aria-label="Siguiente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const navCur = document.getElementById('navCur');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let current = 0;
+
+  function update() {
+    navCur.textContent = String(current + 1).padStart(2, '0');
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+  function goTo(i) {
+    current = Math.max(0, Math.min(total - 1, i));
+    slides[current].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    update();
+  }
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); goTo(current + 1); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); goTo(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+  // Sync counter on manual scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        const idx = slides.indexOf(en.target);
+        if (idx >= 0) { current = idx; update(); }
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => io.observe(s));
+  update();
+</script>
+
+</body>
+</html>
